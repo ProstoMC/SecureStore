@@ -423,6 +423,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     // MARK:  TextField Delegate
+    //Keyboard button DONE behavior
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == userNameTextField{
@@ -431,12 +432,14 @@ extension LoginViewController: UITextFieldDelegate {
         if textField == passwordTextField {
             if !signUpMode {
                 view.endEditing(true)
+                bigButtonPressed()
             } else {
                 confirmPasswordTextField.becomeFirstResponder()
             }
         }
         if textField == confirmPasswordTextField {
             view.endEditing(true)
+            bigButtonPressed()
         }
         return true
     }
