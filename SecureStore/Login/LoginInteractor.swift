@@ -33,7 +33,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     
     
     
-    // MARK:  LOGIN
+    // MARK: - LOGIN
     
     func login(request: Login.Login.Request) {
         let textList = TextList.shared.getloginUI()
@@ -64,7 +64,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
 
     }
     
-    // MARK:  SIGN UP
+    // MARK: - SIGN UP
     
     func signUp(request: Login.SignUp.Request) {
         let textList = TextList.shared.getloginUI()
@@ -111,14 +111,15 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
             return
         }
         
-        name = userName ?? textList.messageErrorLogin
-
-        let alert = Login.ShowAlert.Response(title: "", errorMessage: "Making Success")
-        presenter?.showAlert(response: alert)
+        //Login
+        
+        let request = Login.Login.Request(userName: userName, password: password)
+        login(request: request)
+        
 
     }
     
-    // MARK:  TOGGLE LANGUAGE
+    // MARK: - TOGGLE LANGUAGE
     
     func toggleLanguage() {
         GlobalSettings.shared.toggleLanguage()

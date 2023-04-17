@@ -12,9 +12,13 @@
 
 import UIKit
 
-class MainListWorker
-{
-  func doSomeWork()
-  {
-  }
+class MainListWorker {
+   
+//    func createNewBoard(userName: String, boardName: String) -> {
+//        
+//        
+//    }
+    
+    
+
 }

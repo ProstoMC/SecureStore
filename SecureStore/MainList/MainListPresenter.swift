@@ -12,20 +12,61 @@
 
 import UIKit
 
-protocol MainListPresentationLogic
-{
-  func presentBoards(response: MainList.ShowBoards.Response)
+protocol MainListPresentationLogic {
+    func presentUsername(response: MainList.ShowUser.Response)
+    func presentBoards(response: MainList.ShowBoards.Response)
+    func presentNewBoard(response: MainList.CreateNewBoard.Response)
+    func presentChangedBoard(response: MainList.EditBoardName.Response)
+    func deleteBoard(response: MainList.DeleteBoard.Response)
+    
+    func presentError(response: MainList.DisplayError.Response)
 }
 
-class MainListPresenter: MainListPresentationLogic
-{
-  weak var viewController: MainListDisplayLogic?
-  
-  // MARK: Do something
-  
-  func presentBoards(response: MainList.ShowBoards.Response)
-  {
-    let viewModel = MainList.ShowBoards.ViewModel(username: response.username)
-    viewController?.displayBoards(viewModel: viewModel)
-  }
+class MainListPresenter: MainListPresentationLogic {
+
+    
+
+    
+    weak var viewController: MainListDisplayLogic?
+    
+    // MARK: Do something
+    
+    func presentUsername(response: MainList.ShowUser.Response) {
+        
+        let viewModel = MainList.ShowUser.ViewModel(username: response.user?.name ?? "Error", imageData: response.user?.imageData)
+        viewController?.displayUser(viewModel: viewModel)
+    }
+    
+    func presentBoards(response: MainList.ShowBoards.Response) {
+        let viewModel = MainList.ShowBoards.ViewModel(boardsNames: response.boardsNames)
+        viewController?.displayBoards(viewModel: viewModel)
+    }
+    
+    func presentNewBoard(response: MainList.CreateNewBoard.Response) {
+        let viewModel = MainList.CreateNewBoard.ViewModel(name: response.name)
+        viewController?.displayNewBoard(viewModel: viewModel)
+    }
+    
+    func presentChangedBoard(response: MainList.EditBoardName.Response) {
+        let viewModel = MainList.EditBoardName.ViewModel(name: response.name, indexPath: response.indexPath)
+        viewController?.displayEditedBoard(viewModel: viewModel)
+    }
+    
+    func deleteBoard(response: MainList.DeleteBoard.Response) {
+        let viewModel = MainList.DeleteBoard.ViewModel(indexPath: response.indexPath)
+        viewController?.deleteBoard(viewModel: viewModel)
+    }
+    
+}
+
+// MARK:  - Present Errors
+
+extension MainListPresenter {
+    func presentError(response: MainList.DisplayError.Response) {
+        let viewModel = MainList.DisplayError.ViewModel(
+            title: response.title,
+            message: response.message,
+            buttonTitle: "Ok")
+        viewController?.displayError(viewModel: viewModel)
+    }
 }

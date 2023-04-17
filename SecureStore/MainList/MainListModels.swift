@@ -15,15 +15,105 @@ import UIKit
 enum MainList {
     // MARK: Use cases
     
+    
+    enum ShowUser {
+        struct Request {
+            
+        }
+        struct Response {
+            var user: User?
+        }
+        struct ViewModel {
+            var username: String
+            var imageData: Data?
+        }
+    }
+    enum ChangeUserFields {
+        enum Key {
+            case fetchNewUserName
+            case startChangingPassword
+            case fetchOldPassword
+            case fetchNewPassword1
+            case fetchNewPassword2
+        }
+        struct Request {
+            var key: Key
+            var value: String
+        }
+        struct Response {
+            var key: Key
+            var title: String
+            var user: User?
+        }
+        struct ViewModel {
+            var key: Key
+            var title: String
+            var textLabel: String
+        }
+    }
+   
     enum ShowBoards {
         struct Request {
             
         }
         struct Response {
-            var username: String
+            var boardsNames: [String]
         }
         struct ViewModel {
-            var username: String
+            var boardsNames: [String]
         }
     }
+    
+    enum CreateNewBoard {
+        struct Request {
+            var name: String
+        }
+        struct Response {
+            var name: String
+        }
+        struct ViewModel {
+            var name: String
+        }
+    }
+    
+    enum EditBoardName {
+        struct Request {
+            var name: String
+            var indexPath: IndexPath
+        }
+        struct Response {
+            var name: String
+            var indexPath: IndexPath
+        }
+        struct ViewModel {
+            var name: String
+            var indexPath: IndexPath
+        }
+    }
+    enum DeleteBoard {
+        struct Request {
+            var indexPath: IndexPath
+        }
+        struct Response {
+            var indexPath: IndexPath
+        }
+        struct ViewModel {
+            var indexPath: IndexPath
+        }
+    }
+    enum DisplayError {
+        struct Request {
+            
+        }
+        struct Response {
+            var title: String
+            var message: String
+        }
+        struct ViewModel {
+            var title: String
+            var message: String
+            var buttonTitle: String
+        }
+    }
+    
 }

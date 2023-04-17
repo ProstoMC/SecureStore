@@ -208,6 +208,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     private func setupRouteButton(){
+        routeButton.isHidden = true
 
         routeButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -258,7 +259,7 @@ extension LoginViewController: UITextFieldDelegate {
                         
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
-        // Apperance
+        // Appearance
         stackView.axis = .vertical
         stackView.spacing = 30
         

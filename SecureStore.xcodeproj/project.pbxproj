@@ -195,12 +195,12 @@
 		A59091AD29B2619800EC628D /* MainList */ = {
 			isa = PBXGroup;
 			children = (
+				A59091B229B2624E00EC628D /* MainListViewController.swift */,
+				A59091B329B2624E00EC628D /* MainListInteractor.swift */,
 				A59091AE29B2624E00EC628D /* MainListPresenter.swift */,
 				A59091AF29B2624E00EC628D /* MainListWorker.swift */,
 				A59091B029B2624E00EC628D /* MainListRouter.swift */,
 				A59091B129B2624E00EC628D /* MainListModels.swift */,
-				A59091B229B2624E00EC628D /* MainListViewController.swift */,
-				A59091B329B2624E00EC628D /* MainListInteractor.swift */,
 			);
 			path = MainList;
 			sourceTree = "<group>";

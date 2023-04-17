@@ -13,26 +13,112 @@
 import UIKit
 
 protocol MainListBusinessLogic {
+    func showUser(request: MainList.ShowUser.Request)
     func showBoards(request: MainList.ShowBoards.Request)
+    func createNewBoard(request: MainList.CreateNewBoard.Request)
+    func editBoardName(request: MainList.EditBoardName.Request)
+    func deleteBoard(request: MainList.DeleteBoard.Request)
+    func changeUserFields(request: MainList.ChangeUserFields.Request)
 }
 
 protocol MainListDataStore {
     var name: String! { get set }
+    var boards: [Board] { get }
 }
 
 class MainListInteractor: MainListBusinessLogic, MainListDataStore {
+
+    
+
+    var boards: [Board] = []
+
+    
     //var name: String
+    weak var viewController: MainListViewController?
     var presenter: MainListPresentationLogic?
     var worker: MainListWorker?
     var name: String!
     
     // MARK: Do something
     
+    func showUser (request: MainList.ShowUser.Request) {
+        let user = CoreDataManager.shared.fetchUser(userName: name)
+        let response = MainList.ShowUser.Response(user: user)
+        presenter?.presentUsername(response: response)
+    }
+    
     func showBoards (request: MainList.ShowBoards.Request) {
-//        worker = MainListWorker()
-//        worker?.doSomeWork()
+        boards = CoreDataManager.shared.getBoards(userName: name)
+        var boardsNames: [String] = []
+        boards.forEach { board in
+            boardsNames.append(board.name ?? "Error")
+        }
         
-        let response = MainList.ShowBoards.Response(username: name)
+        let response = MainList.ShowBoards.Response(boardsNames: boardsNames)
         presenter?.presentBoards(response: response)
     }
+    
+    
+    
+    func createNewBoard(request: MainList.CreateNewBoard.Request) {
+        //let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name)
+        guard let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name) else {
+            let response = MainList.DisplayError.Response(title: "Creating Failed", message: "Try Again")
+            presenter?.presentError(response: response)
+            return
+        }
+        boards.append(board)
+        let response = MainList.CreateNewBoard.Response(name: board.name ?? "Error")
+        presenter?.presentNewBoard(response: response)
+        
+        
+    }
+    
+    func editBoardName(request: MainList.EditBoardName.Request) {
+        let board = boards[request.indexPath.row]
+        board.name = request.name
+        if CoreDataManager.shared.saveChanges() {
+            let response = MainList.EditBoardName.Response(name: board.name ?? "Error", indexPath: request.indexPath)
+            presenter?.presentChangedBoard(response: response)
+        }
+        else {
+            let response = MainList.DisplayError.Response(title: "Changing Failed", message: "Try Again")
+            presenter?.presentError(response: response)
+        }
+    }
+    
+    func deleteBoard(request: MainList.DeleteBoard.Request) {
+        if CoreDataManager.shared.deleteBoard(board: boards[request.indexPath.row]) {
+            boards.remove(at: request.indexPath.row)
+            let response = MainList.DeleteBoard.Response(indexPath: request.indexPath)
+            presenter?.deleteBoard(response: response)
+        }
+        else {
+            let response = MainList.DisplayError.Response(title: "Error", message: "Deleting Failed")
+            presenter?.presentError(response: response)
+        }
+    }
+    
+    
+    // MARK:  - User Field Changing
+    
+    func changeUserFields(request: MainList.ChangeUserFields.Request) {
+        switch request.key {
+        case .fetchNewUserName:
+            fetchNewUserName(request: request)
+        case .startChangingPassword:
+            return
+        case .fetchOldPassword:
+            return
+        case .fetchNewPassword1:
+            return
+        case .fetchNewPassword2:
+            return
+        }
+    }
+    
+    private func fetchNewUserName(request: MainList.ChangeUserFields.Request) {
+        
+    }
+    
 }

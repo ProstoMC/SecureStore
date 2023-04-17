@@ -2,21 +2,24 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H2026" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Board" representedClassName="Board" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="units" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BoardUnit"/>
+        <relationship name="units" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BoardUnit" inverseName="board" inverseEntity="BoardUnit"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="boards" inverseEntity="User"/>
     </entity>
     <entity name="BoardUnit" representedClassName="BoardUnit" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="board" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Board" inverseName="units" inverseEntity="Board"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="imageData" optional="YES" attributeType="Binary"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="passwordHash" attributeType="String"/>
-        <relationship name="boards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Board"/>
+        <relationship name="boards" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Board" inverseName="user" inverseEntity="Board"/>
     </entity>
     <elements>
-        <element name="User" positionX="-16501.58203125" positionY="-12079.97265625" width="128" height="88"/>
-        <element name="Board" positionX="-16246.37890625" positionY="-12075.14453125" width="128" height="73"/>
-        <element name="BoardUnit" positionX="-15987.1328125" positionY="-12079.6328125" width="128" height="88"/>
+        <element name="Board" positionX="-16246.37890625" positionY="-12075.14453125" width="128" height="88"/>
+        <element name="BoardUnit" positionX="-15987.1328125" positionY="-12079.6328125" width="128" height="103"/>
+        <element name="User" positionX="-16501.58203125" positionY="-12079.97265625" width="128" height="103"/>
     </elements>
 </model>
