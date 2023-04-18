@@ -28,27 +28,30 @@ enum MainList {
             var imageData: Data?
         }
     }
-    enum ChangeUserFields {
-        enum Key {
-            case fetchNewUserName
-            case startChangingPassword
-            case fetchOldPassword
-            case fetchNewPassword1
-            case fetchNewPassword2
-        }
+    enum ChangeUserName {
+        
         struct Request {
-            var key: Key
-            var value: String
+            var userName: String
         }
         struct Response {
-            var key: Key
-            var title: String
             var user: User?
         }
         struct ViewModel {
-            var key: Key
-            var title: String
-            var textLabel: String
+            var userName: String
+        }
+    }
+    enum ChangePassword {
+        
+        struct Request {
+            var oldPassword: String
+            var newPassword: String
+            var confirmPassword: String
+        }
+        struct Response {
+            var user: User?
+        }
+        struct ViewModel {
+            var userName: String
         }
     }
    

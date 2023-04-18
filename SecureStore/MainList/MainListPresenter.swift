@@ -29,7 +29,7 @@ class MainListPresenter: MainListPresentationLogic {
     
     weak var viewController: MainListDisplayLogic?
     
-    // MARK: Do something
+    // MARK: Presentation logic
     
     func presentUsername(response: MainList.ShowUser.Response) {
         

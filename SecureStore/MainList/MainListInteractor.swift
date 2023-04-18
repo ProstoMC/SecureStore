@@ -14,41 +14,44 @@ import UIKit
 
 protocol MainListBusinessLogic {
     func showUser(request: MainList.ShowUser.Request)
+    func changeUserName(request: MainList.ChangeUserName.Request)
+    func changePassword(request: MainList.ChangePassword.Request)
+    
     func showBoards(request: MainList.ShowBoards.Request)
     func createNewBoard(request: MainList.CreateNewBoard.Request)
     func editBoardName(request: MainList.EditBoardName.Request)
     func deleteBoard(request: MainList.DeleteBoard.Request)
-    func changeUserFields(request: MainList.ChangeUserFields.Request)
+   
+
 }
 
 protocol MainListDataStore {
-    var name: String! { get set }
+    var user: User! { get set }
+    
     var boards: [Board] { get }
 }
 
 class MainListInteractor: MainListBusinessLogic, MainListDataStore {
-
     
-
+    var user: User!
     var boards: [Board] = []
 
     
     //var name: String
     weak var viewController: MainListViewController?
     var presenter: MainListPresentationLogic?
-    var worker: MainListWorker?
-    var name: String!
+    
+    
     
     // MARK: Do something
     
     func showUser (request: MainList.ShowUser.Request) {
-        let user = CoreDataManager.shared.fetchUser(userName: name)
         let response = MainList.ShowUser.Response(user: user)
         presenter?.presentUsername(response: response)
     }
     
     func showBoards (request: MainList.ShowBoards.Request) {
-        boards = CoreDataManager.shared.getBoards(userName: name)
+        boards = CoreDataManager.shared.getBoards(user: user)
         var boardsNames: [String] = []
         boards.forEach { board in
             boardsNames.append(board.name ?? "Error")
@@ -62,7 +65,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     
     func createNewBoard(request: MainList.CreateNewBoard.Request) {
         //let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name)
-        guard let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name) else {
+        guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name) else {
             let response = MainList.DisplayError.Response(title: "Creating Failed", message: "Try Again")
             presenter?.presentError(response: response)
             return
@@ -102,22 +105,19 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     
     // MARK:  - User Field Changing
     
-    func changeUserFields(request: MainList.ChangeUserFields.Request) {
-        switch request.key {
-        case .fetchNewUserName:
-            fetchNewUserName(request: request)
-        case .startChangingPassword:
-            return
-        case .fetchOldPassword:
-            return
-        case .fetchNewPassword1:
-            return
-        case .fetchNewPassword2:
-            return
+    func changeUserName(request: MainList.ChangeUserName.Request) {
+        user.name = request.userName
+        if CoreDataManager.shared.saveChanges() {
+            let response = MainList.ShowUser.Response(user: user)
+            presenter?.presentUsername(response: response)
+        }
+        else {
+            let response = MainList.DisplayError.Response(title: "Changing Failed", message: "Try Again")
+            presenter?.presentError(response: response)
         }
     }
     
-    private func fetchNewUserName(request: MainList.ChangeUserFields.Request) {
+    func changePassword(request: MainList.ChangePassword.Request){
         
     }
     

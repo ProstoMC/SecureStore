@@ -51,20 +51,15 @@ class LoginWorker {
 
 extension LoginWorker {
     
-    func makeNewUser(userName: String, passwordHash: String) -> Bool {
-        return CoreDataManager.shared.saveUser(name: userName, passwordHash: passwordHash)
-    }
-    
-    
-    func compareUsers(userName: String, passwordHash: String) -> Bool {
-        var success = false
+    func compareUsers(userName: String, passwordHash: String) -> User? {
+        
         let users = CoreDataManager.shared.fetchUsers()
         for user in users {
             if user.name == userName && user.passwordHash == passwordHash {
-                success = true
+                return user
             }
         }
-        return success
+        return nil
     }
     
     func checkUserInStore(userName: String) -> Bool {
@@ -85,7 +80,7 @@ extension LoginWorker {
 // MARK:  ENCRYPTION
 
 extension LoginWorker {
-    func encryptString(string: String) -> String? {
+    func encryptString(string: String) -> String {
         
         let computed = Insecure.MD5.hash(data: string.data(using: .utf8)!)
         return computed.map { String(format: "%02hhx", $0) }.joined()

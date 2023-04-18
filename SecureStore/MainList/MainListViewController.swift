@@ -18,7 +18,7 @@ protocol MainListDisplayLogic: class {
     func displayNewBoard(viewModel: MainList.CreateNewBoard.ViewModel)
     func displayEditedBoard(viewModel: MainList.EditBoardName.ViewModel)
     func deleteBoard(viewModel: MainList.DeleteBoard.ViewModel)
-    func editUserAlert(viewModel: MainList.ChangeUserFields.ViewModel)
+    
     
     func displayError(viewModel: MainList.DisplayError.ViewModel)
 }
@@ -32,6 +32,8 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     
     var menuMode = false
     var menuPanel = UIView()
+    let userImageView = UIImageView()
+    let userNameLabel = UILabel()
        
     private var boardsList: [String] = []
     private var userImageData: Data?
@@ -91,6 +93,7 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
 
     func displayUser(viewModel: MainList.ShowUser.ViewModel) {
         title = viewModel.username
+        userNameLabel.text = viewModel.username
         guard let imageData = viewModel.imageData else { return }
         userImageData = imageData
     }
@@ -132,31 +135,9 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     
     // MARK:  - Changing User Fields
     
-    func editUserAlert(viewModel: MainList.ChangeUserFields.ViewModel) {
-        let alert = UIAlertController(title: viewModel.title, message: nil, preferredStyle: .alert)
 
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
-            guard let text = alert.textFields?.first?.text, !text.isEmpty else {
-                print("Epmty field")
-                return
-            }
-            let request = MainList.ChangeUserFields.Request(key: viewModel.key, value: text)
-            self.interactor?.changeUserFields(request: request)
-
-        }
-
-
-        let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
-
-        alert.addTextField() { textField in
-            textField.text = viewModel.textLabel
-        }
-        
-        alert.addAction(saveAction)
-        alert.addAction(canselAction)
-
-        present(alert, animated: true)
-    }
+    
+    
 
 }
 
@@ -183,11 +164,11 @@ extension MainListViewController {
     }
     
     @objc private func userNameLapelTapped(){
-        let viewModel = MainList.ChangeUserFields.ViewModel(
-            key: .fetchNewUserName,
-            title: "Change username",
-            textLabel: title ?? "")
-        editUserAlert(viewModel: viewModel)
+        editUserNameAlert()
+    }
+    
+    @objc private func editButtonTapped(){
+        editUserPasswordAlert()
     }
     
 }
@@ -195,7 +176,11 @@ extension MainListViewController {
 
 
 // MARK: - Alerts
+
 extension MainListViewController {
+    
+    // Lines edditing Alert
+    
     private func showAlert(title: String, message: String, indexPath: IndexPath?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -229,9 +214,75 @@ extension MainListViewController {
         present(alert, animated: true)
     }
     
+    // Users fields edditing Alerts
     
+    func editUserNameAlert() {
+        let alert = UIAlertController(title: "Change username", message: nil, preferredStyle: .alert)
+
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let text = alert.textFields?.first?.text, !text.isEmpty else {
+                print("Epmty field")
+                return
+            }
+            let request = MainList.ChangeUserName.Request(userName: text)
+            self.interactor?.changeUserName(request: request)
+
+        }
+
+
+        let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
+
+        alert.addTextField() { textField in
+            textField.text = self.title
+        }
+        
+        alert.addAction(saveAction)
+        alert.addAction(canselAction)
+
+        present(alert, animated: true)
+    }
     
-    
+    func editUserPasswordAlert() {
+        let alert = UIAlertController(title: "Change password", message: nil, preferredStyle: .alert)
+
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            guard let oldPassword = alert.textFields?.first?.text, !oldPassword.isEmpty else {
+                print("Epmty field")
+                return
+            }
+            guard let newPassword = alert.textFields?[1].text, !newPassword.isEmpty else {
+                print("Epmty field")
+                return
+            }
+            guard let confirmPassword = alert.textFields?[2].text, !confirmPassword.isEmpty else {
+                print("Epmty field")
+                return
+            }
+            
+            let request = MainList.ChangePassword.Request(
+                oldPassword: oldPassword,
+                newPassword: newPassword,
+                confirmPassword: confirmPassword)
+            self.interactor?.changePassword(request: request)
+        }
+
+        let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        alert.addTextField() { textField in
+            textField.placeholder = "Enter current password"
+        }
+        alert.addTextField() { textField in
+            textField.placeholder = "Enter new password"
+        }
+        alert.addTextField() { textField in
+            textField.placeholder = "Confirm new password"
+        }
+        
+        alert.addAction(saveAction)
+        alert.addAction(canselAction)
+
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - TableView Configuration
@@ -340,7 +391,7 @@ extension MainListViewController {
     }
     
     private func setupUserImage() {
-        let userImageView = UIImageView()
+        
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         
         //Appearance
@@ -366,7 +417,7 @@ extension MainListViewController {
     }
     
     private func setupUserNameLabel() {
-        let userNameLabel = UILabel()
+        
        
         //Appearance
         
@@ -403,7 +454,7 @@ extension MainListViewController {
         //Appearance
         line.backgroundColor = ColorsList.purpleColor
         editButton.setTitleColor(ColorsList.purpleColor, for: .normal)
-        editButton.setTitle("Edit", for: .normal)
+        editButton.setTitle("Change password", for: .normal)
         
         logoutButton.setTitleColor(ColorsList.purpleColor, for: .normal)
         logoutButton.setTitle("Log out", for: .normal)
@@ -411,6 +462,7 @@ extension MainListViewController {
         //Behavior
         
         logoutButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
         //Constraints
         line.frame = CGRect(

@@ -17,9 +17,9 @@ class CoreDataManager {
     
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func saveUser(name: String, passwordHash: String) -> Bool {
+    func saveUser(name: String, passwordHash: String) -> User? {
         
-        guard let entityDescription = NSEntityDescription.entity(forEntityName: "User", in: managedContext) else { return false}
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "User", in: managedContext) else { return nil}
         let user = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! User
         user.name = name
         user.passwordHash = passwordHash
@@ -28,9 +28,9 @@ class CoreDataManager {
             try managedContext.save()
         } catch let error {
             print (error.localizedDescription)
-            return false
+            return nil
         }
-        return true
+        return user
     }
     
     func fetchUsers() -> [User] {
@@ -72,9 +72,9 @@ class CoreDataManager {
 extension CoreDataManager {
     
     
-    func createBoard(userName: String, boardName: String) -> Board? {
+    func createBoard(user: User, boardName: String) -> Board? {
         
-        guard let user = fetchUser(userName: userName) else { return nil}
+        
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "Board", in: managedContext) else { return nil}
         let board = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Board
@@ -91,9 +91,8 @@ extension CoreDataManager {
         return board
     }
     
-    func getBoards(userName: String) -> [Board] {
+    func getBoards(user: User) -> [Board] {
         var boards: [Board] = []
-        guard let user = fetchUser(userName: userName) else { return [] }
         guard let boardsElements = user.boards else { return [] }
         
         for element in boardsElements {

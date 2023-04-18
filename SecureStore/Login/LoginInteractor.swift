@@ -20,13 +20,13 @@ protocol LoginBusinessLogic {
 }
 
 protocol LoginDataStore {
-    var name: String { get }
+    var user: User? { get }
 }
 
 class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     
-
-    var name: String = "Error"
+    var user: User?
+    
     var presenter: LoginPresentationLogic?
     var worker: LoginWorker?
     var router: LoginRouter?
@@ -45,12 +45,9 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         let password = request.password
         let passwordHash = worker?.encryptString(string: password ?? "")
         
-        let success = worker?.compareUsers(userName: userName ?? "", passwordHash: passwordHash ?? "")
+        user = worker?.compareUsers(userName: userName ?? "", passwordHash: passwordHash ?? "")
         
-        
-        
-        if success == true {
-            name = userName ?? "Error Test"
+        if user != nil {
             presenter?.moveToMainlist()
         }
         else {
@@ -104,7 +101,8 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         
         //Making User
 
-        guard worker?.makeNewUser(userName: userName!, passwordHash: passwordHash) == true else {
+        user = CoreDataManager.shared.saveUser(name: userName!, passwordHash: passwordHash)
+        if user == nil {
             errorMessage = "Making user error"
             let alert = Login.ShowAlert.Response(title: "", errorMessage: errorMessage ?? "")
             presenter?.showAlert(response: alert)
