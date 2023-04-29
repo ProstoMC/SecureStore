@@ -12,49 +12,39 @@
 
 import UIKit
 
-@objc protocol MainListRoutingLogic
-{
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
+@objc protocol MainListRoutingLogic {
+    func navigateToBoardDesk(indexPath: IndexPath)
 }
 
-protocol MainListDataPassing
-{
-  var dataStore: MainListDataStore? { get }
+protocol MainListDataPassing {
+    var dataStore: MainListDataStore? { get }
 }
 
-class MainListRouter: NSObject, MainListRoutingLogic, MainListDataPassing
-{
-  weak var viewController: MainListViewController?
-  var dataStore: MainListDataStore?
-  
-  // MARK: Routing
-  
-  //func routeToSomewhere(segue: UIStoryboardSegue?)
-  //{
-  //  if let segue = segue {
-  //    let destinationVC = segue.destination as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //  } else {
-  //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-  //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-  //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-  //  }
-  //}
-
-  // MARK: Navigation
-  
-  //func navigateToSomewhere(source: MainListViewController, destination: SomewhereViewController)
-  //{
-  //  source.show(destination, sender: nil)
-  //}
-  
-  // MARK: Passing data
-  
-  //func passDataToSomewhere(source: MainListDataStore, destination: inout SomewhereDataStore)
-  //{
-  //  destination.name = source.name
-  //}
+class MainListRouter: NSObject, MainListRoutingLogic, MainListDataPassing {
+    weak var viewController: MainListViewController?
+    var dataStore: MainListDataStore?
+    
+    
+    
+    //MARK: Navigation
+    
+    func navigateToBoardDesk(indexPath: IndexPath) {
+        let boardDeskVC = BoardDeskViewController(nibName: nil, bundle: nil)
+        
+        let navigationController = UINavigationController(rootViewController: boardDeskVC)
+        navigationController.modalPresentationStyle = .fullScreen
+        
+        navigationController.modalPresentationStyle = .fullScreen
+        
+        var boardDeskDS = boardDeskVC.router!.dataStore!
+        
+        viewController!.present(navigationController, animated: true)
+        passDataToBoardDesk(source: dataStore!, destination: &boardDeskDS, indexPath: indexPath)
+    }
+    
+    // MARK: Passing data
+    
+    func passDataToBoardDesk(source: MainListDataStore, destination: inout BoardDeskDataStore, indexPath: IndexPath) {
+        destination.board = source.boards[indexPath.row]
+    }
 }

@@ -16,6 +16,7 @@ protocol MainListBusinessLogic {
     func showUser(request: MainList.ShowUser.Request)
     func changeUserName(request: MainList.ChangeUserName.Request)
     func changePassword(request: MainList.ChangePassword.Request)
+    func changeUserImage(request: MainList.ChangeUserImage.Request)
     
     func showBoards(request: MainList.ShowBoards.Request)
     func createNewBoard(request: MainList.CreateNewBoard.Request)
@@ -47,7 +48,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     
     func showUser (request: MainList.ShowUser.Request) {
         let response = MainList.ShowUser.Response(user: user)
-        presenter?.presentUsername(response: response)
+        presenter?.presentUser(response: response)
     }
     
     func showBoards (request: MainList.ShowBoards.Request) {
@@ -66,14 +67,13 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     func createNewBoard(request: MainList.CreateNewBoard.Request) {
         //let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name)
         guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name) else {
-            let response = MainList.DisplayError.Response(title: "Creating Failed", message: "Try Again")
+            let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
             presenter?.presentError(response: response)
             return
         }
         boards.append(board)
         let response = MainList.CreateNewBoard.Response(name: board.name ?? "Error")
         presenter?.presentNewBoard(response: response)
-        
         
     }
     
@@ -85,7 +85,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
             presenter?.presentChangedBoard(response: response)
         }
         else {
-            let response = MainList.DisplayError.Response(title: "Changing Failed", message: "Try Again")
+            let response = MainList.DisplayMessage.Response(title: "Changing Failed", message: "Try Again")
             presenter?.presentError(response: response)
         }
     }
@@ -97,7 +97,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
             presenter?.deleteBoard(response: response)
         }
         else {
-            let response = MainList.DisplayError.Response(title: "Error", message: "Deleting Failed")
+            let response = MainList.DisplayMessage.Response(title: "Error", message: "Deleting Failed")
             presenter?.presentError(response: response)
         }
     }
@@ -109,16 +109,55 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
         user.name = request.userName
         if CoreDataManager.shared.saveChanges() {
             let response = MainList.ShowUser.Response(user: user)
-            presenter?.presentUsername(response: response)
+            presenter?.presentUser(response: response)
         }
         else {
-            let response = MainList.DisplayError.Response(title: "Changing Failed", message: "Try Again")
+            let response = MainList.DisplayMessage.Response(title: "Changing Failed", message: "Try Again")
             presenter?.presentError(response: response)
         }
     }
     
     func changePassword(request: MainList.ChangePassword.Request){
+        let oldPasswordHash = CoreDataManager.shared.encryptString(string: request.oldPassword)
         
+        // Check old password
+        guard oldPasswordHash == user.passwordHash else {
+            let response = MainList.DisplayMessage.Response(title: "Password is incorrect", message: "Try Again")
+            presenter?.presentError(response: response)
+            return
+        }
+        
+        // Check new passwords
+        guard request.newPassword == request.confirmPassword else {
+            let response = MainList.DisplayMessage.Response(title: "New passwords don't match", message: "Try Again")
+            presenter?.presentError(response: response)
+            return
+        }
+        
+        // Changing password
+        let newPasswordHash = CoreDataManager.shared.encryptString(string: request.newPassword)
+        user.passwordHash = newPasswordHash
+        if CoreDataManager.shared.saveChanges() {
+            let response = MainList.DisplayMessage.Response(title: "Success", message: "Password was changed")
+            presenter?.presentError(response: response)
+        }
+        else {
+            let response = MainList.DisplayMessage.Response(title: "Changing failed", message: "Try Again")
+            presenter?.presentError(response: response)
+        }
+        
+    }
+    
+    func changeUserImage(request: MainList.ChangeUserImage.Request) {
+        user.imageData = request.imageData
+        if CoreDataManager.shared.saveChanges() {
+            let response = MainList.ShowUser.Response(user: user)
+            presenter?.presentUser(response: response)
+        }
+        else {
+            let response = MainList.DisplayMessage.Response(title: "Changing Failed", message: "Try Again")
+            presenter?.presentError(response: response)
+        }
     }
     
 }

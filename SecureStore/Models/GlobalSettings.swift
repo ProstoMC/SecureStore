@@ -23,3 +23,17 @@ extension GlobalSettings {
         }
     }
 }
+
+// MARK:  - User Defaults
+
+extension GlobalSettings {
+    func saveUserNameToDefaults(userName: String){
+        let userDefauls = UserDefaults.standard
+        userDefauls.setValue(userName, forKey: "username")
+    }
+    func fetchUserNameFromeDefaults() -> String? {
+        let userDefauls = UserDefaults.standard
+        let userName = userDefauls.string(forKey: "username")
+        return userName
+    }
+}

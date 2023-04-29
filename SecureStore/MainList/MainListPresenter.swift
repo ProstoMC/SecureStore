@@ -13,13 +13,13 @@
 import UIKit
 
 protocol MainListPresentationLogic {
-    func presentUsername(response: MainList.ShowUser.Response)
+    func presentUser(response: MainList.ShowUser.Response)
     func presentBoards(response: MainList.ShowBoards.Response)
     func presentNewBoard(response: MainList.CreateNewBoard.Response)
     func presentChangedBoard(response: MainList.EditBoardName.Response)
     func deleteBoard(response: MainList.DeleteBoard.Response)
     
-    func presentError(response: MainList.DisplayError.Response)
+    func presentError(response: MainList.DisplayMessage.Response)
 }
 
 class MainListPresenter: MainListPresentationLogic {
@@ -31,7 +31,7 @@ class MainListPresenter: MainListPresentationLogic {
     
     // MARK: Presentation logic
     
-    func presentUsername(response: MainList.ShowUser.Response) {
+    func presentUser(response: MainList.ShowUser.Response) {
         
         let viewModel = MainList.ShowUser.ViewModel(username: response.user?.name ?? "Error", imageData: response.user?.imageData)
         viewController?.displayUser(viewModel: viewModel)
@@ -62,11 +62,11 @@ class MainListPresenter: MainListPresentationLogic {
 // MARK:  - Present Errors
 
 extension MainListPresenter {
-    func presentError(response: MainList.DisplayError.Response) {
-        let viewModel = MainList.DisplayError.ViewModel(
+    func presentError(response: MainList.DisplayMessage.Response) {
+        let viewModel = MainList.DisplayMessage.ViewModel(
             title: response.title,
             message: response.message,
             buttonTitle: "Ok")
-        viewController?.displayError(viewModel: viewModel)
+        viewController?.displayMessage(viewModel: viewModel)
     }
 }

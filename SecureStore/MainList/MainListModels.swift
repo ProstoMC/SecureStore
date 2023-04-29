@@ -13,8 +13,8 @@
 import UIKit
 
 enum MainList {
-    // MARK: Use cases
     
+    // MARK: - User models
     
     enum ShowUser {
         struct Request {
@@ -48,12 +48,25 @@ enum MainList {
             var confirmPassword: String
         }
         struct Response {
-            var user: User?
+            
         }
         struct ViewModel {
-            var userName: String
+            
         }
     }
+    enum ChangeUserImage {
+        struct Request {
+            var imageData: Data
+        }
+        struct Response {
+            
+        }
+        struct ViewModel {
+            
+        }
+    }
+    
+    // MARK:  - Boards models
    
     enum ShowBoards {
         struct Request {
@@ -104,7 +117,7 @@ enum MainList {
             var indexPath: IndexPath
         }
     }
-    enum DisplayError {
+    enum DisplayMessage {
         struct Request {
             
         }

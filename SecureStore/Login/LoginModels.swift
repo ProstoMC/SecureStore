@@ -70,9 +70,10 @@ enum Login
             
         }
         struct Response {
-            
+            var defaultUserName: String?
         }
         struct ViewModel {
+            var defaultUserName: String
             var textList: TextList.LoginTextList
         }
     }

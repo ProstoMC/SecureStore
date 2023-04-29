@@ -13,10 +13,8 @@
 import UIKit
 
 protocol LoginPresentationLogic {
-    func login(response: Login.Login.Response)
-    func signUp(response: Login.SignUp.Response)
     func showAlert(response: Login.ShowAlert.Response)
-    func getLanguage()
+    func getLanguage(response: Login.Texts.Response)
     func moveToMainlist()
 }
 
@@ -37,22 +35,9 @@ class LoginPresenter: LoginPresentationLogic {
     weak var viewController: LoginDisplayLogic?
   
     // MARK: Do something
-  
-    func login(response: Login.Login.Response) {
-        let viewModel = Login.Login.ViewModel()
-        viewController?.displayLogin(viewModel: viewModel)
-        viewController?.clearTextFields()
-    }
     
-    func signUp(response: Login.SignUp.Response) {
-        
-       // let viewModel = Login.SignUp.ViewModel()
-        
-        
-    }
-    
-    func getLanguage() {
-        let viewModel = Login.Texts.ViewModel(textList: TextList.shared.getloginUI())
+    func getLanguage(response: Login.Texts.Response) {
+        let viewModel = Login.Texts.ViewModel(defaultUserName: response.defaultUserName ?? "", textList: TextList.shared.getloginUI())
         viewController?.setupUI(viewModel: viewModel)
 
     }

@@ -14,8 +14,7 @@ import UIKit
 
 protocol LoginDisplayLogic: class {
     
-    func displaySignUp(viewModel: Login.SignUp.ViewModel)
-    func displayLogin(viewModel: Login.Login.ViewModel)
+
     func showAlert(viewModel: Login.ShowAlert.ViewModel)
     func clearTextFields()
     func setupUI(viewModel: Login.Texts.ViewModel)
@@ -28,6 +27,7 @@ class LoginViewController: UIViewController {
     var interactor: LoginBusinessLogic?
     var router: (NSObjectProtocol & LoginRoutingLogic & LoginDataPassing)?
     
+    var defaultUserName = ""
     var screenSize: CGRect!
     
     var signUpMode = false
@@ -103,16 +103,6 @@ extension LoginViewController: LoginDisplayLogic {
     func moveToMainList() {
         router?.navigateToMainList()
     }
-
-    
-    
-    func displayLogin(viewModel: Login.Login.ViewModel) {
-        
-    }
-    
-    func displaySignUp(viewModel: Login.SignUp.ViewModel) {
-        
-    }
     
     func showAlert(viewModel: Login.ShowAlert.ViewModel) {
 
@@ -133,6 +123,7 @@ extension LoginViewController: LoginDisplayLogic {
     func setupUI(viewModel: Login.Texts.ViewModel) {
         loginTextList = viewModel.textList
         screenSize = UIScreen.main.bounds
+        defaultUserName = viewModel.defaultUserName
         
         makeBackgoundColor()
         
@@ -297,7 +288,7 @@ extension LoginViewController: UITextFieldDelegate {
         userNameTextField.borderStyle = .roundedRect
         userNameTextField.keyboardType = .default
         userNameTextField.placeholder = loginTextList.userNameFieldPlaceholder
-        userNameTextField.text = ""
+        userNameTextField.text = defaultUserName
         
         // Delegate
         userNameTextField.delegate = self

@@ -11,10 +11,8 @@
 //
 
 import UIKit
-import CryptoKit
 
-
-// MARK:  TEXT FIELDS CHECKING
+// MARK: - TEXT FIELDS CHECKING
 
 class LoginWorker {
     
@@ -47,7 +45,7 @@ class LoginWorker {
     }
 }
 
-// MARK:  USER DEFAULTS
+// MARK: - USER DEFAULTS
 
 extension LoginWorker {
     
@@ -77,13 +75,5 @@ extension LoginWorker {
 
 
 
-// MARK:  ENCRYPTION
 
-extension LoginWorker {
-    func encryptString(string: String) -> String {
-        
-        let computed = Insecure.MD5.hash(data: string.data(using: .utf8)!)
-        return computed.map { String(format: "%02hhx", $0) }.joined()
-    }
-}
 

@@ -43,11 +43,13 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         
         let userName = request.userName
         let password = request.password
-        let passwordHash = worker?.encryptString(string: password ?? "")
+        let passwordHash = CoreDataManager.shared.encryptString(string: password ?? "")
         
-        user = worker?.compareUsers(userName: userName ?? "", passwordHash: passwordHash ?? "")
+        user = worker?.compareUsers(userName: userName ?? "", passwordHash: passwordHash)
         
         if user != nil {
+            //Saving to User defaults
+            GlobalSettings.shared.saveUserNameToDefaults(userName: userName!)
             presenter?.moveToMainlist()
         }
         else {
@@ -92,13 +94,8 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         
         //Encrypting Password
         
-        guard let passwordHash = worker?.encryptString(string: password!) else {
-            errorMessage = "Encrypt Error"
-            let alert = Login.ShowAlert.Response(title: "", errorMessage: errorMessage ?? "")
-            presenter?.showAlert(response: alert)
-            return
-        }
-        
+         let passwordHash = CoreDataManager.shared.encryptString(string: password!) 
+ 
         //Making User
 
         user = CoreDataManager.shared.saveUser(name: userName!, passwordHash: passwordHash)
@@ -121,10 +118,14 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     
     func toggleLanguage() {
         GlobalSettings.shared.toggleLanguage()
-        presenter?.getLanguage()
+        let userName = GlobalSettings.shared.fetchUserNameFromeDefaults()
+        let response = Login.Texts.Response(defaultUserName: userName)
+        presenter?.getLanguage(response: response)
     }
     func getLanguage() {
-        presenter?.getLanguage()
+        let userName = GlobalSettings.shared.fetchUserNameFromeDefaults()
+        let response = Login.Texts.Response(defaultUserName: userName)
+        presenter?.getLanguage(response: response)
     }
 
     

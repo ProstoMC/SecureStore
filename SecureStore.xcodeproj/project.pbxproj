@@ -14,6 +14,7 @@
 		A5226545299D7B06005798B1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653F299D7B06005798B1 /* LoginViewController.swift */; };
 		A5226546299D7B06005798B1 /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5226540299D7B06005798B1 /* LoginInteractor.swift */; };
 		A522654B299D7BC4005798B1 /* ColorsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522654A299D7BC4005798B1 /* ColorsList.swift */; };
+		A5455F2629F806BF00E2FD99 /* UnitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5455F2529F806BF00E2FD99 /* UnitCell.swift */; };
 		A560512E299A83BA00A61213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560512D299A83BA00A61213 /* AppDelegate.swift */; };
 		A5605137299A83BE00A61213 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5605136299A83BE00A61213 /* Assets.xcassets */; };
 		A560513A299A83BE00A61213 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5605138299A83BE00A61213 /* LaunchScreen.storyboard */; };
@@ -30,6 +31,12 @@
 		A59091B729B2624E00EC628D /* MainListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B129B2624E00EC628D /* MainListModels.swift */; };
 		A59091B829B2624E00EC628D /* MainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B229B2624E00EC628D /* MainListViewController.swift */; };
 		A59091B929B2624E00EC628D /* MainListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B329B2624E00EC628D /* MainListInteractor.swift */; };
+		A5F3E44929F6EDF300BD09B0 /* BoardDeskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44329F6EDF300BD09B0 /* BoardDeskPresenter.swift */; };
+		A5F3E44A29F6EDF300BD09B0 /* BoardDeskWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44429F6EDF300BD09B0 /* BoardDeskWorker.swift */; };
+		A5F3E44B29F6EDF300BD09B0 /* BoardDeskRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44529F6EDF300BD09B0 /* BoardDeskRouter.swift */; };
+		A5F3E44C29F6EDF300BD09B0 /* BoardDeskModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44629F6EDF300BD09B0 /* BoardDeskModels.swift */; };
+		A5F3E44D29F6EDF300BD09B0 /* BoardDeskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44729F6EDF300BD09B0 /* BoardDeskViewController.swift */; };
+		A5F3E44E29F6EDF300BD09B0 /* BoardDeskInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44829F6EDF300BD09B0 /* BoardDeskInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +64,7 @@
 		A522653F299D7B06005798B1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A5226540299D7B06005798B1 /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
 		A522654A299D7BC4005798B1 /* ColorsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsList.swift; sourceTree = "<group>"; };
+		A5455F2529F806BF00E2FD99 /* UnitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitCell.swift; sourceTree = "<group>"; };
 		A560512A299A83BA00A61213 /* SecureStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecureStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A560512D299A83BA00A61213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5605136299A83BE00A61213 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -79,6 +87,12 @@
 		A59091B129B2624E00EC628D /* MainListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListModels.swift; sourceTree = "<group>"; };
 		A59091B229B2624E00EC628D /* MainListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListViewController.swift; sourceTree = "<group>"; };
 		A59091B329B2624E00EC628D /* MainListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListInteractor.swift; sourceTree = "<group>"; };
+		A5F3E44329F6EDF300BD09B0 /* BoardDeskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskPresenter.swift; sourceTree = "<group>"; };
+		A5F3E44429F6EDF300BD09B0 /* BoardDeskWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskWorker.swift; sourceTree = "<group>"; };
+		A5F3E44529F6EDF300BD09B0 /* BoardDeskRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskRouter.swift; sourceTree = "<group>"; };
+		A5F3E44629F6EDF300BD09B0 /* BoardDeskModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskModels.swift; sourceTree = "<group>"; };
+		A5F3E44729F6EDF300BD09B0 /* BoardDeskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskViewController.swift; sourceTree = "<group>"; };
+		A5F3E44829F6EDF300BD09B0 /* BoardDeskInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +120,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A503F4BE29F6EC50000B4045 /* BoardDesk */ = {
+			isa = PBXGroup;
+			children = (
+				A5F3E44729F6EDF300BD09B0 /* BoardDeskViewController.swift */,
+				A5F3E44829F6EDF300BD09B0 /* BoardDeskInteractor.swift */,
+				A5F3E44329F6EDF300BD09B0 /* BoardDeskPresenter.swift */,
+				A5F3E44429F6EDF300BD09B0 /* BoardDeskWorker.swift */,
+				A5F3E44529F6EDF300BD09B0 /* BoardDeskRouter.swift */,
+				A5F3E44629F6EDF300BD09B0 /* BoardDeskModels.swift */,
+				A5455F2529F806BF00E2FD99 /* UnitCell.swift */,
+			);
+			path = BoardDesk;
+			sourceTree = "<group>";
+		};
 		A5226528299D4D20005798B1 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +184,7 @@
 				A5614BA129BA527E00B8C5A7 /* TestViewController.swift */,
 				A5226528299D4D20005798B1 /* Login */,
 				A59091AD29B2619800EC628D /* MainList */,
+				A503F4BE29F6EC50000B4045 /* BoardDesk */,
 				A55D557D299D4A62008E19B3 /* Models */,
 				A57E464229A10AAD004EFA16 /* Core Data */,
 				A5605136299A83BE00A61213 /* Assets.xcassets */,
@@ -335,23 +364,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				A59091B829B2624E00EC628D /* MainListViewController.swift in Sources */,
+				A5455F2629F806BF00E2FD99 /* UnitCell.swift in Sources */,
 				A5614BA229BA527E00B8C5A7 /* TestViewController.swift in Sources */,
 				A59091B629B2624E00EC628D /* MainListRouter.swift in Sources */,
 				A5226542299D7B06005798B1 /* LoginWorker.swift in Sources */,
 				A59091B929B2624E00EC628D /* MainListInteractor.swift in Sources */,
 				A5226541299D7B06005798B1 /* LoginPresenter.swift in Sources */,
+				A5F3E44D29F6EDF300BD09B0 /* BoardDeskViewController.swift in Sources */,
 				A5226544299D7B06005798B1 /* LoginModels.swift in Sources */,
 				A59091B729B2624E00EC628D /* MainListModels.swift in Sources */,
 				A5226543299D7B06005798B1 /* LoginRouter.swift in Sources */,
 				A59091B429B2624E00EC628D /* MainListPresenter.swift in Sources */,
 				A5226545299D7B06005798B1 /* LoginViewController.swift in Sources */,
 				A59091B529B2624E00EC628D /* MainListWorker.swift in Sources */,
+				A5F3E44B29F6EDF300BD09B0 /* BoardDeskRouter.swift in Sources */,
 				A56BE42D29B13971006DF505 /* GlobalSettings.swift in Sources */,
 				A522654B299D7BC4005798B1 /* ColorsList.swift in Sources */,
+				A5F3E44A29F6EDF300BD09B0 /* BoardDeskWorker.swift in Sources */,
+				A5F3E44E29F6EDF300BD09B0 /* BoardDeskInteractor.swift in Sources */,
+				A5F3E44C29F6EDF300BD09B0 /* BoardDeskModels.swift in Sources */,
 				A57E464529A10B1A004EFA16 /* UsersStorage.xcdatamodeld in Sources */,
 				A560512E299A83BA00A61213 /* AppDelegate.swift in Sources */,
 				A5226546299D7B06005798B1 /* LoginInteractor.swift in Sources */,
 				A57E464A29A10EE0004EFA16 /* CoreDataManager.swift in Sources */,
+				A5F3E44929F6EDF300BD09B0 /* BoardDeskPresenter.swift in Sources */,
 				A56BE42829AB9CC5006DF505 /* TextList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import UIKit
+import CryptoKit
 
 
 
@@ -111,9 +112,60 @@ extension CoreDataManager {
             return false
         }
     }
-    
-
-    
-    
-    
 }
+
+// MARK:  - UNITS
+
+extension CoreDataManager {
+    
+    func createUnit(board: Board, unitType: String, data: Data) -> BoardUnit? {
+        
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "BoardUnit", in: managedContext) else { return nil}
+        let boardUnit = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! BoardUnit
+        boardUnit.board = board
+        boardUnit.data = data
+        boardUnit.type = unitType
+        
+        do {
+            try managedContext.save()
+            print ("Succeess saving to CoreData")
+        } catch let error {
+            print (error.localizedDescription)
+            return nil
+        }
+        return boardUnit
+    }
+    
+    func getUnits(board: Board) -> [BoardUnit] {
+        var units: [BoardUnit] = []
+        guard let unitsElements = board.units else { return [] }
+        
+        for element in unitsElements {
+            let unit = element as! BoardUnit
+            units.append(unit)
+            //print (unit.type ?? "Error getting")
+        }
+        return units
+    }
+    
+    func deleteUnit(unit: BoardUnit) -> Bool{
+        managedContext.delete(unit)
+        if saveChanges() {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+// MARK:  ENCRYPTION
+
+extension CoreDataManager {
+    func encryptString(string: String) -> String {
+        
+        let computed = Insecure.MD5.hash(data: string.data(using: .utf8)!)
+        return computed.map { String(format: "%02hhx", $0) }.joined()
+    }
+}
+
+

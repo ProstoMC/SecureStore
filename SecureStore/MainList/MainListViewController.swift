@@ -20,17 +20,17 @@ protocol MainListDisplayLogic: class {
     func deleteBoard(viewModel: MainList.DeleteBoard.ViewModel)
     
     
-    func displayError(viewModel: MainList.DisplayError.ViewModel)
+    func displayMessage(viewModel: MainList.DisplayMessage.ViewModel)
 }
 
-class MainListViewController: UITableViewController, MainListDisplayLogic {
-    
 
+class MainListViewController: UITableViewController, MainListDisplayLogic {
     
     var interactor: MainListBusinessLogic?
     var router: (NSObjectProtocol & MainListRoutingLogic & MainListDataPassing)?
     
     var menuMode = false
+
     var menuPanel = UIView()
     let userImageView = UIImageView()
     let userNameLabel = UILabel()
@@ -67,17 +67,6 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         router.dataStore = interactor
     }
   
-  // MARK: - Routing
-  
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
-        }
-    }
-  
   // MARK: - View lifecycle
   
     override func viewDidLoad() {
@@ -95,7 +84,8 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         title = viewModel.username
         userNameLabel.text = viewModel.username
         guard let imageData = viewModel.imageData else { return }
-        userImageData = imageData
+        userImageData = imageData   //Behavior during making Menu panel
+        userImageView.image = UIImage(data: imageData)
     }
     
     func displayBoards(viewModel: MainList.ShowBoards.ViewModel) {
@@ -122,7 +112,7 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         tableView.deleteRows(at: [viewModel.indexPath], with: .automatic)
     }
     
-    func displayError(viewModel: MainList.DisplayError.ViewModel) {
+    func displayMessage(viewModel: MainList.DisplayMessage.ViewModel) {
 
         let alert = UIAlertController(
             title: viewModel.title,
@@ -132,13 +122,6 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         self.present(alert, animated: true, completion: nil)
         
     }
-    
-    // MARK:  - Changing User Fields
-    
-
-    
-    
-
 }
 
 // MARK: -  ACTIONS
@@ -170,14 +153,39 @@ extension MainListViewController {
     @objc private func editButtonTapped(){
         editUserPasswordAlert()
     }
+    @objc private func userImageTapped(){
+        choosingImageSourceAlert()
+    }
     
+}
+
+// MARK:  - Image picker
+
+extension MainListViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+    func fetchImageFromPicker(source: UIImagePickerController.SourceType){
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = source
+        present(imagePicker, animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            let request = MainList.ChangeUserImage.Request(imageData:editedImage.pngData()!)
+            interactor?.changeUserImage(request: request)
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            let request = MainList.ChangeUserImage.Request(imageData:originalImage.pngData()!)
+            interactor?.changeUserImage(request: request)
+        }
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 
 
 // MARK: - Alerts
 
-extension MainListViewController {
+extension MainListViewController: UITextFieldDelegate {
     
     // Lines edditing Alert
     
@@ -229,11 +237,12 @@ extension MainListViewController {
 
         }
 
-
         let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
 
         alert.addTextField() { textField in
             textField.text = self.title
+            textField.returnKeyType = .done
+            textField.delegate = self
         }
         
         alert.addAction(saveAction)
@@ -274,8 +283,10 @@ extension MainListViewController {
         alert.addTextField() { textField in
             textField.placeholder = "Enter new password"
         }
-        alert.addTextField() { textField in
+        alert.addTextField() { [weak self] textField in
             textField.placeholder = "Confirm new password"
+            textField.returnKeyType = .done
+            textField.delegate = self
         }
         
         alert.addAction(saveAction)
@@ -283,7 +294,33 @@ extension MainListViewController {
 
         present(alert, animated: true)
     }
+    
+    private func choosingImageSourceAlert() {
+        let alert = UIAlertController(title: "Choose source", message: nil, preferredStyle: .actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            self.fetchImageFromPicker(source: .camera)
+            return
+        }
+        let libraryAction = UIAlertAction(title: "Photo gallery", style: .default) { _ in
+            self.fetchImageFromPicker(source: .photoLibrary)
+            return
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        
+        alert.addAction(cameraAction)
+        alert.addAction(libraryAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+        
+    }
+    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//
+//    }
 }
+
+
 
 // MARK: - TableView Configuration
 extension MainListViewController {
@@ -304,13 +341,15 @@ extension MainListViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        router?.navigateToBoardDesk(indexPath: indexPath)
+    }
+    
     // MARK:  - Add buttons
     
     
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-
-        //CURRENT CODE
 
         let deleteButton = UIContextualAction(style: .normal, title:  "", handler: {
             [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
@@ -343,6 +382,7 @@ extension MainListViewController {
     
     private func setupUI() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.tableFooterView = UIView()
         view.backgroundColor = .gray
         setupNavigationBar()
         setupMenuPanel()
@@ -394,7 +434,7 @@ extension MainListViewController {
         
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        //Appearance
+        // Appearance
        
         if userImageData != nil {
             userImageView.image = UIImage(data: userImageData!)
@@ -404,7 +444,7 @@ extension MainListViewController {
             userImageView.backgroundColor = .gray
         }
         
-        //Constraints
+        // Constraints
         
         userImageView.frame = CGRect(
             x: menuPanel.frame.width/2-menuPanel.frame.width/6,
@@ -412,6 +452,13 @@ extension MainListViewController {
             width: menuPanel.frame.width/3,
             height: menuPanel.frame.width/3)
         userImageView.layer.cornerRadius = userImageView.frame.size.height/2
+        userImageView.layer.masksToBounds = true
+        userImageView.contentMode = .scaleToFill
+        
+        // Behavior
+        let tap = UITapGestureRecognizer(target: self, action: #selector(userImageTapped))
+        userImageView.isUserInteractionEnabled = true
+        userImageView.addGestureRecognizer(tap)
         
         menuPanel.addSubview(userImageView)
     }
@@ -491,10 +538,7 @@ extension MainListViewController {
         menuPanel.addSubview(logoutButton)
         
     }
-    
-    // MARK:  - Alert
 
-    
 }
 
 
