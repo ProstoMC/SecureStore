@@ -26,3 +26,5 @@ Menu screen
 
 ![Menu screen](https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/Menu%20Screen.png?raw=true)
 
+Board list screen
+![Board list screen](https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/Board%20Screen.png?raw=true)
