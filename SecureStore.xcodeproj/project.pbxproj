@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		A5051E2329FD51D3005DA4AC /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5051E2229FD51D3005DA4AC /* FullScreenImageViewController.swift */; };
+		A514249A2A0CFD040000794E /* Menu Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424962A0CFD040000794E /* Menu Screen.png */; };
+		A514249B2A0CFD040000794E /* Login Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424972A0CFD040000794E /* Login Screen.png */; };
+		A514249C2A0CFD040000794E /* Board Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424982A0CFD040000794E /* Board Screen.png */; };
+		A514249D2A0CFD040000794E /* MainList Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424992A0CFD040000794E /* MainList Screen.png */; };
 		A5226541299D7B06005798B1 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653B299D7B06005798B1 /* LoginPresenter.swift */; };
 		A5226542299D7B06005798B1 /* LoginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653C299D7B06005798B1 /* LoginWorker.swift */; };
 		A5226543299D7B06005798B1 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653D299D7B06005798B1 /* LoginRouter.swift */; };
@@ -60,6 +64,10 @@
 
 /* Begin PBXFileReference section */
 		A5051E2229FD51D3005DA4AC /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
+		A51424962A0CFD040000794E /* Menu Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Menu Screen.png"; sourceTree = "<group>"; };
+		A51424972A0CFD040000794E /* Login Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Login Screen.png"; sourceTree = "<group>"; };
+		A51424982A0CFD040000794E /* Board Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Board Screen.png"; sourceTree = "<group>"; };
+		A51424992A0CFD040000794E /* MainList Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainList Screen.png"; sourceTree = "<group>"; };
 		A522653B299D7B06005798B1 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		A522653C299D7B06005798B1 /* LoginWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWorker.swift; sourceTree = "<group>"; };
 		A522653D299D7B06005798B1 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
@@ -140,6 +148,17 @@
 			path = BoardDesk;
 			sourceTree = "<group>";
 		};
+		A514248A2A0CFC230000794E /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				A51424982A0CFD040000794E /* Board Screen.png */,
+				A51424972A0CFD040000794E /* Login Screen.png */,
+				A51424992A0CFD040000794E /* MainList Screen.png */,
+				A51424962A0CFD040000794E /* Menu Screen.png */,
+			);
+			path = Screenshots;
+			sourceTree = "<group>";
+		};
 		A5226528299D4D20005798B1 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +215,7 @@
 				A5605138299A83BE00A61213 /* LaunchScreen.storyboard */,
 				A5804E122A0283CA004C3B45 /* Assets.xcassets */,
 				A560513B299A83BE00A61213 /* Info.plist */,
+				A514248A2A0CFC230000794E /* Screenshots */,
 			);
 			path = SecureStore;
 			sourceTree = "<group>";
@@ -343,8 +363,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A514249B2A0CFD040000794E /* Login Screen.png in Resources */,
+				A514249D2A0CFD040000794E /* MainList Screen.png in Resources */,
+				A514249C2A0CFD040000794E /* Board Screen.png in Resources */,
 				A5804E132A0283CB004C3B45 /* Assets.xcassets in Resources */,
 				A560513A299A83BE00A61213 /* LaunchScreen.storyboard in Resources */,
+				A514249A2A0CFD040000794E /* Menu Screen.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
