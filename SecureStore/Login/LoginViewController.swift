@@ -194,7 +194,7 @@ extension LoginViewController: UITextFieldDelegate {
     private func makeBackgoundColor(){
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.view.bounds
-        gradientLayer.colors = [ColorsList.purpleColor.cgColor, ColorsList.darkBlueColor.cgColor]
+        gradientLayer.colors = [ColorsList.powder.cgColor, ColorsList.additionalBlue.cgColor]
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -207,7 +207,7 @@ extension LoginViewController: UITextFieldDelegate {
         
         // Apperance
         
-        routeButton.setTitleColor(ColorsList.darkBlueColor, for: .normal)
+        routeButton.setTitleColor(ColorsList.additionalBlue, for: .normal)
         routeButton.setTitle("GO", for: .normal)
         
         routeButton.addTarget(self, action: #selector(routeButtonPressed), for: .touchUpInside)
@@ -228,7 +228,7 @@ extension LoginViewController: UITextFieldDelegate {
         
         // Apperance
         
-        languageButton.setTitleColor(ColorsList.darkBlueColor, for: .normal)
+        languageButton.setTitleColor(ColorsList.additionalBlue, for: .normal)
         languageButton.setTitle(GlobalSettings.shared.language, for: .normal)
         
         languageButton.addTarget(self, action: #selector(toggleLanguage), for: .touchUpInside)
@@ -373,7 +373,7 @@ extension LoginViewController: UITextFieldDelegate {
         
         bigButton.setTitleColor(.lightGray, for: .normal)
         bigButton.setTitle(title, for: .normal)
-        bigButton.backgroundColor = ColorsList.darkBlueColor
+        bigButton.backgroundColor = ColorsList.additionalBlue
         bigButton.layer.cornerRadius = 5
         bigButton.addTarget(self, action: #selector(bigButtonPressed), for: .touchUpInside)
         
@@ -400,7 +400,7 @@ extension LoginViewController: UITextFieldDelegate {
         var title = loginTextList.signUpButtonTitle
         if signUpMode {title = loginTextList.signInButtonTitle}
         
-        smallButton.setTitleColor(ColorsList.darkBlueColor, for: .normal)
+        smallButton.setTitleColor(ColorsList.additionalBlue, for: .normal)
         smallButton.setTitle(title, for: .normal)
 
         //Constraints

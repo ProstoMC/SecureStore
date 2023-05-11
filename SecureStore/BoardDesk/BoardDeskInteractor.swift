@@ -15,14 +15,16 @@ import UIKit
 protocol BoardDeskBusinessLogic {
     func showBoard(request: BoardDesk.ShowBoard.Request)
     func getCountOfUnits() -> Int
-    func getUnit(index: Int) -> (type: String, data: Data)
+    func getUnit(indexPath: IndexPath) -> (type: String, data: Data)
     
-    func saveImageAsUnit(request: BoardDesk.SaveImageAsUnit.Request)
+    func saveImageAsUnit(request: BoardDesk.CreateUnit.Request)
+    func saveTextFieldAsUnit(request: BoardDesk.CreateUnit.Request)
     func deleteUnit(request: BoardDesk.DeleteUnit.Request)
 }
 
 protocol BoardDeskDataStore {
     var board: Board! { get set }
+    var units: [BoardUnit] { get }
 }
 
 class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
@@ -30,25 +32,25 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     var worker: BoardDeskWorker?
     
     var board: Board!
-    var units: [BoardUnit]!
+    var units: [BoardUnit] = []
     
     // MARK: Show the board
     
     func showBoard(request: BoardDesk.ShowBoard.Request) {
+        units = CoreDataManager.shared.getUnits(board: board)
         
         let response = BoardDesk.ShowBoard.Response(board: board)
         presenter?.presentBoard(response: response)
     }
     
     func getCountOfUnits() -> Int {
-        units = CoreDataManager.shared.getUnits(board: board)
-        
+ 
         return units.count
     }
     
-    
-    func saveImageAsUnit(request: BoardDesk.SaveImageAsUnit.Request){
-        guard let unit = CoreDataManager.shared.createUnit(board: board, unitType: "image", data: request.imageData) else {
+    // MARK:  - Saving Units
+    func saveImageAsUnit(request: BoardDesk.CreateUnit.Request){
+        guard let unit = CoreDataManager.shared.createUnit(board: board, unitType: "image", data: request.data) else {
             
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
@@ -56,14 +58,27 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         }
         
         units.append(unit)
-        
-        let response = BoardDesk.SaveImageAsUnit.Response(unit: unit)
-        presenter?.presentNewUnit(response: response)
+        presenter?.presentNewUnit()
         
     }
     
-    func getUnit(index: Int) -> (type: String, data: Data) {
-        let unit = units[index]
+    func saveTextFieldAsUnit(request: BoardDesk.CreateUnit.Request) {
+        guard let unit = CoreDataManager.shared.createUnit(board: board, unitType: "textfield", data: request.data) else {
+            
+            let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
+            presenter?.presentMessage(response: response)
+            return
+        }
+        
+        units.append(unit)
+        presenter?.presentNewUnit()
+    }
+    
+    // MARK:  - Edditing Units
+    
+    func getUnit(indexPath: IndexPath) -> (type: String, data: Data) {
+        let unit = units[indexPath.row]
+        print (unit.type!)
         return (unit.type!, unit.data!)
     }
     

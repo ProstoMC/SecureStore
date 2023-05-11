@@ -13,7 +13,7 @@
 import UIKit
 
 @objc protocol BoardDeskRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func navigateToFullScreenImage(indexPath: IndexPath)
 }
 
 protocol BoardDeskDataPassing {
@@ -24,29 +24,17 @@ class BoardDeskRouter: NSObject, BoardDeskRoutingLogic, BoardDeskDataPassing {
     weak var viewController: BoardDeskViewController?
     var dataStore: BoardDeskDataStore?
     
-    // MARK: Routing
-    
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
-    //{
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
-    
     // MARK: Navigation
     
-    //func navigateToSomewhere(source: BoardDeskViewController, destination: SomewhereViewController)
-    //{
-    //  source.show(destination, sender: nil)
-    //}
+    func navigateToFullScreenImage(indexPath: IndexPath){
+        
+        let fullScreanImageVC = FullScreenImageViewController()
+        fullScreanImageVC.image = UIImage(data: dataStore!.units[indexPath.row].data!)
+        
+        fullScreanImageVC.modalPresentationStyle = .fullScreen
+        viewController?.present(fullScreanImageVC, animated: true, completion: nil)
+        
+    }
     
     // MARK: Passing data
     

@@ -26,15 +26,15 @@ enum BoardDesk {
         }
     }
     
-    enum SaveImageAsUnit {
+    enum CreateUnit {
         struct Request {
-            var imageData: Data
+            var data: Data
         }
         struct Response {
-            var unit: BoardUnit
+            
         }
         struct ViewModel {
-            var imageData: Data
+            
         }
     }
     

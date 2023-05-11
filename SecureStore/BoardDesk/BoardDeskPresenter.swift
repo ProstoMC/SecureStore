@@ -17,7 +17,7 @@ protocol BoardDeskPresentationLogic {
     func presentMessage(response: BoardDesk.Message.Response)
     
     func presentBoard(response: BoardDesk.ShowBoard.Response)
-    func presentNewUnit(response: BoardDesk.SaveImageAsUnit.Response)
+    func presentNewUnit()
     func deleteUnit(response: BoardDesk.DeleteUnit.Response)
 }
 
@@ -31,9 +31,9 @@ class BoardDeskPresenter: BoardDeskPresentationLogic {
         viewController?.displayBoard(viewModel: viewModel)
     }
     
-    func presentNewUnit(response: BoardDesk.SaveImageAsUnit.Response) {
-        let viewModel = BoardDesk.SaveImageAsUnit.ViewModel(imageData: response.unit.data!)
-        viewController?.displayNewUnit(viewModel: viewModel)
+    func presentNewUnit() {
+        
+        viewController?.displayNewUnit()
     }
     
     func deleteUnit(response: BoardDesk.DeleteUnit.Response) {

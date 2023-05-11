@@ -32,11 +32,17 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     var menuMode = false
 
     var menuPanel = UIView()
+    let horizontalLine = UIView()
     let userImageView = UIImageView()
     let userNameLabel = UILabel()
        
     private var boardsList: [String] = []
     private var userImageData: Data?
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
 
     // MARK: - Object lifecycle
@@ -331,10 +337,10 @@ extension MainListViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .gray
+        cell.backgroundColor = ColorsList.mainBlue
         cell.selectionStyle = .none
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        cell.textLabel?.textColor = ColorsList.darkBlueColor
+        cell.textLabel?.textColor = ColorsList.textColor
         
         let board = boardsList[indexPath.row]
         cell.textLabel?.text = board
@@ -359,6 +365,7 @@ extension MainListViewController {
 
         })
         deleteButton.image = UIImage(systemName: "trash")
+        
 
         let editButton = UIContextualAction(style: .normal, title: "", handler: {
             [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
@@ -367,8 +374,9 @@ extension MainListViewController {
         })
         editButton.image = UIImage(systemName: "square.and.pencil")
 
-        editButton.backgroundColor = ColorsList.darkBlueColor
-        deleteButton.backgroundColor = ColorsList.purpleColor
+        editButton.backgroundColor = ColorsList.additionalBlue
+        deleteButton.backgroundColor = ColorsList.textColor
+     
 
         return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
     }
@@ -383,7 +391,8 @@ extension MainListViewController {
     private func setupUI() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView()
-        view.backgroundColor = .gray
+        
+        view.backgroundColor = ColorsList.mainBlue
         setupNavigationBar()
         setupMenuPanel()
     }
@@ -394,23 +403,36 @@ extension MainListViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = ColorsList.darkBlueColor
+        appearance.backgroundColor = ColorsList.mainBlue
         
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().standardAppearance = appearance
-        appearance.largeTitleTextAttributes = [.foregroundColor: ColorsList.purpleColor]
-        appearance.titleTextAttributes = [.foregroundColor: ColorsList.purpleColor]
-        UINavigationBar.appearance().backgroundColor = ColorsList.darkBlueColor
+        appearance.largeTitleTextAttributes = [.foregroundColor: ColorsList.textColor]
+        appearance.titleTextAttributes = [.foregroundColor: ColorsList.textColor]
+        UINavigationBar.appearance().backgroundColor = ColorsList.mainBlue
+        
+        // Add bottom line
+        
+        let lineView = UIView()
+        navigationController?.navigationBar.addSubview(lineView)
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        lineView.backgroundColor = ColorsList.textColor
+        var constraints: [NSLayoutConstraint] = []
+        constraints.append(lineView.bottomAnchor.constraint(equalTo: navigationController!.navigationBar.bottomAnchor))
+        constraints.append(lineView.leftAnchor.constraint(equalTo: navigationController!.navigationBar.leftAnchor))
+        constraints.append(lineView.rightAnchor.constraint(equalTo: navigationController!.navigationBar.rightAnchor))
+        constraints.append(lineView.heightAnchor.constraint(equalToConstant: navigationController!.navigationBar.bounds.width*0.002))
+        NSLayoutConstraint.activate(constraints)
                 
         // Add button +
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
-        navigationItem.rightBarButtonItem?.tintColor = ColorsList.purpleColor
+        navigationItem.rightBarButtonItem?.tintColor = ColorsList.textColor
         
         
         // Add button Menu
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.fill"), style: .plain, target: self, action: #selector(menuPanelToggle))
-        navigationItem.leftBarButtonItem?.tintColor = ColorsList.purpleColor
+        navigationItem.leftBarButtonItem?.tintColor = ColorsList.textColor
         
     }
     
@@ -418,16 +440,47 @@ extension MainListViewController {
        
         menuPanel.translatesAutoresizingMaskIntoConstraints = false
         
-        //Appearance
-        menuPanel.layer.backgroundColor = ColorsList.darkBlueColor.cgColor
-        
         //Frames
         menuPanel.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width/2, height: tableView.frame.size.height)
         
+        //Appearance
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = menuPanel.bounds
+        gradientLayer.colors = [ColorsList.mainBlue.cgColor, ColorsList.powder.cgColor]
+        menuPanel.layer.insertSublayer(gradientLayer, at: 100)
+        
+        //menuPanel.layer.backgroundColor = ColorsList.mainBlue.cgColor
+        
         //Add Elements
+        setupLines()
         setupUserImage()
         setupUserNameLabel()
         setupButtons()
+        
+    }
+    
+    private func setupLines() {
+        let verticalLine = UIView()
+        
+        horizontalLine.backgroundColor = ColorsList.textColor
+        verticalLine.backgroundColor = ColorsList.textColor
+        
+        horizontalLine.frame = CGRect(
+            x: menuPanel.bounds.width*0.05,
+            y: menuPanel.bounds.midY/2.4,
+            width: menuPanel.bounds.width/1.1,
+            height: view.bounds.width*0.003
+        )
+        verticalLine.frame = CGRect(
+            x: menuPanel.bounds.maxX,
+            y: menuPanel.bounds.maxY-menuPanel.bounds.height*0.35,
+            width: view.bounds.width*0.003,
+            height: menuPanel.bounds.height*0.7
+        )
+        
+        menuPanel.addSubview(horizontalLine)
+        //menuPanel.addSubview(verticalLine)
     }
     
     private func setupUserImage() {
@@ -440,8 +493,8 @@ extension MainListViewController {
             userImageView.image = UIImage(data: userImageData!)
         } else {
             userImageView.image = UIImage(systemName: "person.circle.fill")
-            userImageView.tintColor = ColorsList.darkBlueColor
-            userImageView.backgroundColor = .gray
+            userImageView.tintColor =  ColorsList.textColor
+            userImageView.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0)
         }
         
         // Constraints
@@ -463,6 +516,8 @@ extension MainListViewController {
         menuPanel.addSubview(userImageView)
     }
     
+    
+    
     private func setupUserNameLabel() {
         
        
@@ -473,7 +528,7 @@ extension MainListViewController {
         userNameLabel.textAlignment = .center
         userNameLabel.adjustsFontSizeToFitWidth = true
         
-        userNameLabel.textColor = ColorsList.purpleColor
+        userNameLabel.textColor = ColorsList.textColor
         
         //Constraints
         
@@ -494,16 +549,16 @@ extension MainListViewController {
     }
     
     private func setupButtons() {
-        let line = UIView()
+        
         let editButton = UIButton()
         let logoutButton = UIButton()
         
         //Appearance
-        line.backgroundColor = ColorsList.purpleColor
-        editButton.setTitleColor(ColorsList.purpleColor, for: .normal)
+        
+        editButton.setTitleColor(ColorsList.textColor, for: .normal)
         editButton.setTitle("Change password", for: .normal)
         
-        logoutButton.setTitleColor(ColorsList.purpleColor, for: .normal)
+        logoutButton.setTitleColor(ColorsList.textColor, for: .normal)
         logoutButton.setTitle("Log out", for: .normal)
         
         //Behavior
@@ -512,16 +567,11 @@ extension MainListViewController {
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
         //Constraints
-        line.frame = CGRect(
-            x: menuPanel.frame.width*0.05,
-            y: menuPanel.frame.midY/2.4,
-            width: menuPanel.frame.width/1.1,
-            height: 2
-        )
+        
         
         editButton.frame = CGRect(
             x: menuPanel.frame.width*0.05,
-            y: line.frame.minY + menuPanel.frame.height/50,
+            y: horizontalLine.frame.minY + menuPanel.frame.height/50,
             width: menuPanel.frame.width/1.1,
             height: menuPanel.frame.height/20
         )
@@ -533,7 +583,7 @@ extension MainListViewController {
         )
         
         
-        menuPanel.addSubview(line)
+        
         menuPanel.addSubview(editButton)
         menuPanel.addSubview(logoutButton)
         
