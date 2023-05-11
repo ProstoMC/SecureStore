@@ -17,9 +17,6 @@ TO-DO лист с защитой данных по паролю.
 Login screen
 
 ![Login screen](https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/Login%20Screen.png?raw=true)
-
-Main list screen
-
 ![Login screen](https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/MainList%20Screen.png?raw=true)
 
 Menu screen
@@ -29,3 +26,4 @@ Menu screen
 Board list screen
 
 ![Board list screen](https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/Board%20Screen.png?raw=true)
+Main list screen
