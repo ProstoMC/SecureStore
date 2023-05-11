@@ -15,4 +15,4 @@ TO-DO лист с защитой данных по паролю.
 Написано с использованием паттерна Clean Swift
 
 
-![Login Screen](https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/Login%20Screen.png?raw=true)
+![Login Screen] (https://github.com/ProstoMC/SecureStore/blob/main/SecureStore/Screenshots/Login%20Screen.png?raw=true)
