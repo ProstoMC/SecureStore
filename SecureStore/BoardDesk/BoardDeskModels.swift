@@ -12,6 +12,12 @@
 
 import UIKit
 
+enum UnitType {
+    static let image = "image"
+    static let text = "text"
+    static let todo = "todo"
+}
+
 enum BoardDesk {
 
     enum ShowBoard {
@@ -66,10 +72,10 @@ enum BoardDesk {
         }
     }
     
-    enum ChangingUnit {
+    enum ChangingTextUnit {
         struct Request {
             var indexPatch: IndexPath
-            var data: Data
+            var text: String
         }
         struct Response {
             

@@ -53,6 +53,10 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     
     func showBoards (request: MainList.ShowBoards.Request) {
         boards = CoreDataManager.shared.getBoards(user: user)
+        boards.sort { (board1, board2) -> Bool in
+            board1.id < board2.id
+        }
+        
         var boardsNames: [String] = []
         boards.forEach { board in
             boardsNames.append(board.name ?? "Error")
@@ -66,7 +70,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     
     func createNewBoard(request: MainList.CreateNewBoard.Request) {
         //let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name)
-        guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name) else {
+        guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name, id: boards.count) else {
             let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
             presenter?.presentError(response: response)
             return
@@ -93,12 +97,19 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     func deleteBoard(request: MainList.DeleteBoard.Request) {
         if CoreDataManager.shared.deleteBoard(board: boards[request.indexPath.row]) {
             boards.remove(at: request.indexPath.row)
+            renumberBoards()
             let response = MainList.DeleteBoard.Response(indexPath: request.indexPath)
             presenter?.deleteBoard(response: response)
         }
         else {
             let response = MainList.DisplayMessage.Response(title: "Error", message: "Deleting Failed")
             presenter?.presentError(response: response)
+        }
+    }
+    //Used when delete board
+    func renumberBoards() {
+        for (index, board) in boards.enumerated() {
+            board.id = Int64(index)
         }
     }
     

@@ -73,14 +73,13 @@ class CoreDataManager {
 extension CoreDataManager {
     
     
-    func createBoard(user: User, boardName: String) -> Board? {
-        
-        
+    func createBoard(user: User, boardName: String, id: Int) -> Board? {
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "Board", in: managedContext) else { return nil}
         let board = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Board
         board.name = boardName
         board.user = user
+        board.id = Int64(id)
         
         do {
             try managedContext.save()
@@ -114,11 +113,11 @@ extension CoreDataManager {
     }
 }
 
-// MARK:  - UNITS
+// MARK:  - CREATING UNITS
 
 extension CoreDataManager {
     
-    func createUnit(board: Board, unitType: String, data: Data) -> BoardUnit? {
+    func createImageUnit(board: Board, unitType: String, data: Data) -> BoardUnit? {
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "BoardUnit", in: managedContext) else { return nil}
         let boardUnit = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! BoardUnit
@@ -135,6 +134,28 @@ extension CoreDataManager {
         }
         return boardUnit
     }
+    
+    func createTextUnit(board: Board, unitType: String, text: String) -> BoardUnit? {
+        
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "BoardUnit", in: managedContext) else { return nil}
+        let boardUnit = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! BoardUnit
+        boardUnit.board = board
+        boardUnit.type = unitType
+        boardUnit.text = text
+        
+        do {
+            try managedContext.save()
+            print ("Succeess saving to CoreData")
+        } catch let error {
+            print (error.localizedDescription)
+            return nil
+        }
+        return boardUnit
+    }
+    
+    
+    
+    // MARK:  - ANY ACTIONS WHITH UNITS
     
     func getUnits(board: Board) -> [BoardUnit] {
         var units: [BoardUnit] = []

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TextFieldCell: UITableViewCell, UITextViewDelegate {
+class TextViewCell: UITableViewCell, UITextViewDelegate {
     
     //var textViewHeight: CGFloat = 18
     
@@ -30,7 +30,7 @@ class TextFieldCell: UITableViewCell, UITextViewDelegate {
         textView.sizeToFit()
         textView.isScrollEnabled = false
         
-        textView.backgroundColor = ColorList.mainBlue
+        textView.backgroundColor = ColorList.additionalBlue
         textView.textColor = ColorList.textColor
         
         textView.clipsToBounds = true
@@ -68,8 +68,8 @@ class TextFieldCell: UITableViewCell, UITextViewDelegate {
         commonInit()
     }
     
-    func configure(data: Data) {
-        textView.text = String(decoding: data, as: UTF8.self)
+    func configure(text: String) {
+        textView.text = text
     }
     
     // MARK:  - ACTIONS

@@ -117,7 +117,7 @@ extension BoardDeskViewController {
         let textFieldAction = UIAlertAction(title: "Text", style: .default) { _ in
             let text = " "
             let request = BoardDesk.CreateUnit.Request(data: text.data(using: .utf8)!)
-            self.interactor?.saveTextFieldAsUnit(request: request)
+            self.interactor?.createTextUnit(request: request)
             return
         }
         
@@ -149,8 +149,8 @@ extension BoardDeskViewController {
 extension BoardDeskViewController {
     func setupUI() {
         view.backgroundColor = ColorList.mainBlue
-        tableView.register(ImageCell.self, forCellReuseIdentifier: "image")
-        tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textfield")
+        tableView.register(ImageCell.self, forCellReuseIdentifier: UnitType.image)
+        tableView.register(TextViewCell.self, forCellReuseIdentifier: UnitType.text)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = UITableView.automaticDimension
@@ -221,29 +221,33 @@ extension BoardDeskViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let unit = interactor?.getUnit(indexPath: indexPath)
+        let unit = interactor?.getUnit(indexPath: indexPath)  // Hear unit is cortege
         
         switch unit!.type {
-        case "image":
-            let cell = tableView.dequeueReusableCell(withIdentifier: "image", for: indexPath) as! ImageCell
-            cell.configure(data: unit!.data)
+        case UnitType.image:
+            let cell = tableView.dequeueReusableCell(withIdentifier: UnitType.image, for: indexPath) as! ImageCell
+            cell.configure(data: unit!.data!)
             return cell
             
-        case "textfield":
-            let cell = tableView.dequeueReusableCell(withIdentifier: "textfield", for: indexPath) as! TextFieldCell
-            cell.configure(data: unit!.data)
+        case UnitType.text:
+            let cell = tableView.dequeueReusableCell(withIdentifier: UnitType.text, for: indexPath) as! TextViewCell
+            cell.configure(text: unit!.text!)
             
             
             cell.saveText = { [weak self] in
-                let request = BoardDesk.ChangingUnit.Request(indexPatch: indexPath, data: cell.textView.text.data(using: .utf8)!)
+                cell.textView.endEditing(true)
+                let request = BoardDesk.ChangingTextUnit.Request(indexPatch: indexPath, text: cell.textView.text)
                 self?.interactor?.changeTextUnit(request: request)
                 self?.tableView.beginUpdates()
                 self?.tableView.endUpdates()
+                
             }
             
             cell.textWasChanged = { [weak self] in
-                self?.tableView.beginUpdates()
-                self?.tableView.endUpdates()
+                DispatchQueue.main.async {
+                    self?.tableView.beginUpdates()
+                    self?.tableView.endUpdates()
+                }
             }
             
             return cell
@@ -256,7 +260,7 @@ extension BoardDeskViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let unit = interactor?.getUnit(indexPath: indexPath) else { return }
-        if unit.type == "image" {
+        if unit.type == UnitType.image {
             router?.navigateToFullScreenImage(indexPath: indexPath)
         }
     }
@@ -291,22 +295,13 @@ extension BoardDeskViewController: UIImagePickerControllerDelegate & UINavigatio
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             let request = BoardDesk.CreateUnit.Request(data:editedImage.pngData()!)
-            interactor?.saveImageAsUnit(request: request)
+            interactor?.createImageUnit(request: request)
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             let request = BoardDesk.CreateUnit.Request(data:originalImage.pngData()!)
-            interactor?.saveImageAsUnit(request: request)
+            interactor?.createImageUnit(request: request)
         }
         dismiss(animated: true, completion: nil)
     }
 }
 
 
-//extension BoardDeskViewController: UITextViewDelegate {
-//    // MARK:  - KEYBOARD DISSMISS
-//
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//
-//            //saveText()
-//        super .touchesBegan(touches, with: event)
-//    }
-//}

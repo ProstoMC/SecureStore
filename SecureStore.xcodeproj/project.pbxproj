@@ -20,7 +20,7 @@
 		A5226546299D7B06005798B1 /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5226540299D7B06005798B1 /* LoginInteractor.swift */; };
 		A522654B299D7BC4005798B1 /* ColorList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522654A299D7BC4005798B1 /* ColorList.swift */; };
 		A5455F2629F806BF00E2FD99 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5455F2529F806BF00E2FD99 /* ImageCell.swift */; };
-		A54B9A1F2A054E1600AE65D8 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54B9A1E2A054E1600AE65D8 /* TextFieldCell.swift */; };
+		A54B9A1F2A054E1600AE65D8 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54B9A1E2A054E1600AE65D8 /* TextViewCell.swift */; };
 		A560512E299A83BA00A61213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560512D299A83BA00A61213 /* AppDelegate.swift */; };
 		A560513A299A83BE00A61213 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5605138299A83BE00A61213 /* LaunchScreen.storyboard */; };
 		A5605145299A83BE00A61213 /* SecureStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5605144299A83BE00A61213 /* SecureStoreTests.swift */; };
@@ -76,7 +76,7 @@
 		A5226540299D7B06005798B1 /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
 		A522654A299D7BC4005798B1 /* ColorList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorList.swift; sourceTree = "<group>"; };
 		A5455F2529F806BF00E2FD99 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		A54B9A1E2A054E1600AE65D8 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		A54B9A1E2A054E1600AE65D8 /* TextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		A560512A299A83BA00A61213 /* SecureStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecureStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A560512D299A83BA00A61213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5605139299A83BE00A61213 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 				A5F3E44529F6EDF300BD09B0 /* BoardDeskRouter.swift */,
 				A5F3E44629F6EDF300BD09B0 /* BoardDeskModels.swift */,
 				A5455F2529F806BF00E2FD99 /* ImageCell.swift */,
-				A54B9A1E2A054E1600AE65D8 /* TextFieldCell.swift */,
+				A54B9A1E2A054E1600AE65D8 /* TextViewCell.swift */,
 				A5051E2229FD51D3005DA4AC /* FullScreenImageViewController.swift */,
 			);
 			path = BoardDesk;
@@ -412,7 +412,7 @@
 				A522654B299D7BC4005798B1 /* ColorList.swift in Sources */,
 				A5051E2329FD51D3005DA4AC /* FullScreenImageViewController.swift in Sources */,
 				A5F3E44A29F6EDF300BD09B0 /* BoardDeskWorker.swift in Sources */,
-				A54B9A1F2A054E1600AE65D8 /* TextFieldCell.swift in Sources */,
+				A54B9A1F2A054E1600AE65D8 /* TextViewCell.swift in Sources */,
 				A5F3E44E29F6EDF300BD09B0 /* BoardDeskInteractor.swift in Sources */,
 				A5F3E44C29F6EDF300BD09B0 /* BoardDeskModels.swift in Sources */,
 				A57E464529A10B1A004EFA16 /* UsersStorage.xcdatamodeld in Sources */,

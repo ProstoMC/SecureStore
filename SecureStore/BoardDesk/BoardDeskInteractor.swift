@@ -15,13 +15,13 @@ import UIKit
 protocol BoardDeskBusinessLogic {
     func showBoard(request: BoardDesk.ShowBoard.Request)
     func getCountOfUnits() -> Int
-    func getUnit(indexPath: IndexPath) -> (type: String, data: Data)
+    func getUnit(indexPath: IndexPath) -> (type: String, data: Data?, text: String?)
     
-    func saveImageAsUnit(request: BoardDesk.CreateUnit.Request)
-    func saveTextFieldAsUnit(request: BoardDesk.CreateUnit.Request)
+    func createImageUnit(request: BoardDesk.CreateUnit.Request)
+    func createTextUnit(request: BoardDesk.CreateUnit.Request)
     func deleteUnit(request: BoardDesk.DeleteUnit.Request)
     
-    func changeTextUnit(request: BoardDesk.ChangingUnit.Request) 
+    func changeTextUnit(request: BoardDesk.ChangingTextUnit.Request) 
 }
 
 protocol BoardDeskDataStore {
@@ -52,16 +52,16 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         return units.count
     }
     
-    func getUnit(indexPath: IndexPath) -> (type: String, data: Data) {
+    func getUnit(indexPath: IndexPath) -> (type: String, data: Data?, text: String?) {
         let unit = units[indexPath.row]
         print (unit.type!)
-        return (unit.type!, unit.data!)
+        return (unit.type!, unit.data, unit.text)
     }
     
     // MARK:  - CREATING UNITS
     
-    func saveImageAsUnit(request: BoardDesk.CreateUnit.Request){
-        guard let unit = CoreDataManager.shared.createUnit(board: board, unitType: "image", data: request.data) else {
+    func createImageUnit(request: BoardDesk.CreateUnit.Request){
+        guard let unit = CoreDataManager.shared.createImageUnit(board: board, unitType: UnitType.image, data: request.data) else {
             
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
@@ -73,8 +73,8 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         
     }
     
-    func saveTextFieldAsUnit(request: BoardDesk.CreateUnit.Request) {
-        guard let unit = CoreDataManager.shared.createUnit(board: board, unitType: "textfield", data: request.data) else {
+    func createTextUnit(request: BoardDesk.CreateUnit.Request) {
+        guard let unit = CoreDataManager.shared.createTextUnit(board: board, unitType: UnitType.text, text: "") else {
             
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
@@ -103,9 +103,9 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         }
     }
     
-    func changeTextUnit(request: BoardDesk.ChangingUnit.Request) {
+    func changeTextUnit(request: BoardDesk.ChangingTextUnit.Request) {
         let unit = units[request.indexPatch.row]
-        unit.data = request.data
+        unit.text = request.text
         if CoreDataManager.shared.saveChanges() {
             let response = BoardDesk.Message.Response(title: "Saving successful", message: "")
             presenter?.presentMessage(response: response)
