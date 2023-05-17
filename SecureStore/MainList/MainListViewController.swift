@@ -337,10 +337,10 @@ extension MainListViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = ColorsList.mainBlue
+        cell.backgroundColor = ColorList.mainBlue
         cell.selectionStyle = .none
         cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        cell.textLabel?.textColor = ColorsList.textColor
+        cell.textLabel?.textColor = ColorList.textColor
         
         let board = boardsList[indexPath.row]
         cell.textLabel?.text = board
@@ -374,8 +374,8 @@ extension MainListViewController {
         })
         editButton.image = UIImage(systemName: "square.and.pencil")
 
-        editButton.backgroundColor = ColorsList.additionalBlue
-        deleteButton.backgroundColor = ColorsList.textColor
+        editButton.backgroundColor = ColorList.additionalBlue
+        deleteButton.backgroundColor = ColorList.textColor
      
 
         return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
@@ -392,7 +392,7 @@ extension MainListViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView()
         
-        view.backgroundColor = ColorsList.mainBlue
+        view.backgroundColor = ColorList.mainBlue
         setupNavigationBar()
         setupMenuPanel()
     }
@@ -403,21 +403,21 @@ extension MainListViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = ColorsList.mainBlue
+        appearance.backgroundColor = ColorList.mainBlue
         
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().standardAppearance = appearance
-        appearance.largeTitleTextAttributes = [.foregroundColor: ColorsList.textColor]
-        appearance.titleTextAttributes = [.foregroundColor: ColorsList.textColor]
-        UINavigationBar.appearance().backgroundColor = ColorsList.mainBlue
+        appearance.largeTitleTextAttributes = [.foregroundColor: ColorList.textColor]
+        appearance.titleTextAttributes = [.foregroundColor: ColorList.textColor]
+        UINavigationBar.appearance().backgroundColor = ColorList.mainBlue
         
         // Add bottom line
         
         let lineView = UIView()
         navigationController?.navigationBar.addSubview(lineView)
         lineView.translatesAutoresizingMaskIntoConstraints = false
-        lineView.backgroundColor = ColorsList.textColor
+        lineView.backgroundColor = ColorList.textColor
         var constraints: [NSLayoutConstraint] = []
         constraints.append(lineView.bottomAnchor.constraint(equalTo: navigationController!.navigationBar.bottomAnchor))
         constraints.append(lineView.leftAnchor.constraint(equalTo: navigationController!.navigationBar.leftAnchor))
@@ -427,12 +427,12 @@ extension MainListViewController {
                 
         // Add button +
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
-        navigationItem.rightBarButtonItem?.tintColor = ColorsList.textColor
+        navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
         
         
         // Add button Menu
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.fill"), style: .plain, target: self, action: #selector(menuPanelToggle))
-        navigationItem.leftBarButtonItem?.tintColor = ColorsList.textColor
+        navigationItem.leftBarButtonItem?.tintColor = ColorList.textColor
         
     }
     
@@ -447,7 +447,7 @@ extension MainListViewController {
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = menuPanel.bounds
-        gradientLayer.colors = [ColorsList.mainBlue.cgColor, ColorsList.powder.cgColor]
+        gradientLayer.colors = [ColorList.mainBlue.cgColor, ColorList.powder.cgColor]
         menuPanel.layer.insertSublayer(gradientLayer, at: 100)
         
         //menuPanel.layer.backgroundColor = ColorsList.mainBlue.cgColor
@@ -463,8 +463,8 @@ extension MainListViewController {
     private func setupLines() {
         let verticalLine = UIView()
         
-        horizontalLine.backgroundColor = ColorsList.textColor
-        verticalLine.backgroundColor = ColorsList.textColor
+        horizontalLine.backgroundColor = ColorList.textColor
+        verticalLine.backgroundColor = ColorList.textColor
         
         horizontalLine.frame = CGRect(
             x: menuPanel.bounds.width*0.05,
@@ -493,7 +493,7 @@ extension MainListViewController {
             userImageView.image = UIImage(data: userImageData!)
         } else {
             userImageView.image = UIImage(systemName: "person.circle.fill")
-            userImageView.tintColor =  ColorsList.textColor
+            userImageView.tintColor =  ColorList.textColor
             userImageView.backgroundColor = UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0)
         }
         
@@ -528,7 +528,7 @@ extension MainListViewController {
         userNameLabel.textAlignment = .center
         userNameLabel.adjustsFontSizeToFitWidth = true
         
-        userNameLabel.textColor = ColorsList.textColor
+        userNameLabel.textColor = ColorList.textColor
         
         //Constraints
         
@@ -555,10 +555,10 @@ extension MainListViewController {
         
         //Appearance
         
-        editButton.setTitleColor(ColorsList.textColor, for: .normal)
+        editButton.setTitleColor(ColorList.textColor, for: .normal)
         editButton.setTitle("Change password", for: .normal)
         
-        logoutButton.setTitleColor(ColorsList.textColor, for: .normal)
+        logoutButton.setTitleColor(ColorList.textColor, for: .normal)
         logoutButton.setTitle("Log out", for: .normal)
         
         //Behavior

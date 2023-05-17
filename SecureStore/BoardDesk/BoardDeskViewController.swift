@@ -56,7 +56,7 @@ class BoardDeskViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = ColorsList.mainBlue
+        view.backgroundColor = ColorList.mainBlue
         setupUI()
     }
     
@@ -148,7 +148,7 @@ extension BoardDeskViewController {
 
 extension BoardDeskViewController {
     func setupUI() {
-        view.backgroundColor = ColorsList.mainBlue
+        view.backgroundColor = ColorList.mainBlue
         tableView.register(ImageCell.self, forCellReuseIdentifier: "image")
         tableView.register(TextFieldCell.self, forCellReuseIdentifier: "textfield")
         tableView.tableFooterView = UIView()
@@ -156,6 +156,7 @@ extension BoardDeskViewController {
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.rowHeight = UITableView.automaticDimension
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.keyboardDismissMode = .onDrag
         
         let request = BoardDesk.ShowBoard.Request()
         interactor?.showBoard(request: request)
@@ -169,14 +170,14 @@ extension BoardDeskViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
 
         let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = ColorsList.mainBlue
+        appearance.backgroundColor = ColorList.mainBlue
         
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().standardAppearance = appearance
-        appearance.largeTitleTextAttributes = [.foregroundColor: ColorsList.textColor]
-        appearance.titleTextAttributes = [.foregroundColor: ColorsList.textColor]
-        UINavigationBar.appearance().backgroundColor = ColorsList.mainBlue
+        appearance.largeTitleTextAttributes = [.foregroundColor: ColorList.textColor]
+        appearance.titleTextAttributes = [.foregroundColor: ColorList.textColor]
+        UINavigationBar.appearance().backgroundColor = ColorList.mainBlue
         
         
         // Add bottom line
@@ -184,7 +185,7 @@ extension BoardDeskViewController {
         let lineView = UIView()
         navigationController?.navigationBar.addSubview(lineView)
         lineView.translatesAutoresizingMaskIntoConstraints = false
-        lineView.backgroundColor = ColorsList.textColor
+        lineView.backgroundColor = ColorList.textColor
         var constraints: [NSLayoutConstraint] = []
         constraints.append(lineView.bottomAnchor.constraint(equalTo: navigationController!.navigationBar.bottomAnchor))
         constraints.append(lineView.leftAnchor.constraint(equalTo: navigationController!.navigationBar.leftAnchor))
@@ -194,13 +195,13 @@ extension BoardDeskViewController {
                 
         // Add button +
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewUnit))
-        navigationItem.rightBarButtonItem?.tintColor = ColorsList.textColor
+        navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
 
 
         // Add back button
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
-        navigationItem.leftBarButtonItem?.tintColor = ColorsList.textColor
+        navigationItem.leftBarButtonItem?.tintColor = ColorList.textColor
         
     }
 }
@@ -227,17 +228,37 @@ extension BoardDeskViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "image", for: indexPath) as! ImageCell
             cell.configure(data: unit!.data)
             return cell
+            
         case "textfield":
             let cell = tableView.dequeueReusableCell(withIdentifier: "textfield", for: indexPath) as! TextFieldCell
             cell.configure(data: unit!.data)
+            
+            
+            cell.saveText = { [weak self] in
+                let request = BoardDesk.ChangingUnit.Request(indexPatch: indexPath, data: cell.textView.text.data(using: .utf8)!)
+                self?.interactor?.changeTextUnit(request: request)
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
+            }
+            
+            cell.textWasChanged = { [weak self] in
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
+            }
+            
             return cell
+            
         default:  //Dont used
             return tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        router?.navigateToFullScreenImage(indexPath: indexPath)
+        
+        guard let unit = interactor?.getUnit(indexPath: indexPath) else { return }
+        if unit.type == "image" {
+            router?.navigateToFullScreenImage(indexPath: indexPath)
+        }
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -251,7 +272,7 @@ extension BoardDeskViewController {
         })
         
         deleteButton.image = UIImage(systemName: "trash")
-        deleteButton.backgroundColor = ColorsList.mainBlue
+        deleteButton.backgroundColor = ColorList.mainBlue
 
         return UISwipeActionsConfiguration(actions: [deleteButton])
     }
@@ -278,3 +299,14 @@ extension BoardDeskViewController: UIImagePickerControllerDelegate & UINavigatio
         dismiss(animated: true, completion: nil)
     }
 }
+
+
+//extension BoardDeskViewController: UITextViewDelegate {
+//    // MARK:  - KEYBOARD DISSMISS
+//
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//
+//            //saveText()
+//        super .touchesBegan(touches, with: event)
+//    }
+//}

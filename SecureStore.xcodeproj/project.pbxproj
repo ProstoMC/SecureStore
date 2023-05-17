@@ -18,7 +18,7 @@
 		A5226544299D7B06005798B1 /* LoginModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653E299D7B06005798B1 /* LoginModels.swift */; };
 		A5226545299D7B06005798B1 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653F299D7B06005798B1 /* LoginViewController.swift */; };
 		A5226546299D7B06005798B1 /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5226540299D7B06005798B1 /* LoginInteractor.swift */; };
-		A522654B299D7BC4005798B1 /* ColorsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522654A299D7BC4005798B1 /* ColorsList.swift */; };
+		A522654B299D7BC4005798B1 /* ColorList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522654A299D7BC4005798B1 /* ColorList.swift */; };
 		A5455F2629F806BF00E2FD99 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5455F2529F806BF00E2FD99 /* ImageCell.swift */; };
 		A54B9A1F2A054E1600AE65D8 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54B9A1E2A054E1600AE65D8 /* TextFieldCell.swift */; };
 		A560512E299A83BA00A61213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560512D299A83BA00A61213 /* AppDelegate.swift */; };
@@ -74,7 +74,7 @@
 		A522653E299D7B06005798B1 /* LoginModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModels.swift; sourceTree = "<group>"; };
 		A522653F299D7B06005798B1 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A5226540299D7B06005798B1 /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
-		A522654A299D7BC4005798B1 /* ColorsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsList.swift; sourceTree = "<group>"; };
+		A522654A299D7BC4005798B1 /* ColorList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorList.swift; sourceTree = "<group>"; };
 		A5455F2529F806BF00E2FD99 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		A54B9A1E2A054E1600AE65D8 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		A560512A299A83BA00A61213 /* SecureStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SecureStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				A56BE42729AB9CC5006DF505 /* TextList.swift */,
-				A522654A299D7BC4005798B1 /* ColorsList.swift */,
+				A522654A299D7BC4005798B1 /* ColorList.swift */,
 				A56BE42C29B13971006DF505 /* GlobalSettings.swift */,
 			);
 			path = Models;
@@ -409,7 +409,7 @@
 				A59091B529B2624E00EC628D /* MainListWorker.swift in Sources */,
 				A5F3E44B29F6EDF300BD09B0 /* BoardDeskRouter.swift in Sources */,
 				A56BE42D29B13971006DF505 /* GlobalSettings.swift in Sources */,
-				A522654B299D7BC4005798B1 /* ColorsList.swift in Sources */,
+				A522654B299D7BC4005798B1 /* ColorList.swift in Sources */,
 				A5051E2329FD51D3005DA4AC /* FullScreenImageViewController.swift in Sources */,
 				A5F3E44A29F6EDF300BD09B0 /* BoardDeskWorker.swift in Sources */,
 				A54B9A1F2A054E1600AE65D8 /* TextFieldCell.swift in Sources */,

@@ -20,6 +20,8 @@ protocol BoardDeskBusinessLogic {
     func saveImageAsUnit(request: BoardDesk.CreateUnit.Request)
     func saveTextFieldAsUnit(request: BoardDesk.CreateUnit.Request)
     func deleteUnit(request: BoardDesk.DeleteUnit.Request)
+    
+    func changeTextUnit(request: BoardDesk.ChangingUnit.Request) 
 }
 
 protocol BoardDeskDataStore {
@@ -43,12 +45,21 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         presenter?.presentBoard(response: response)
     }
     
+    // MARK:  - GETTING FROM DATASTORE
+    
     func getCountOfUnits() -> Int {
  
         return units.count
     }
     
-    // MARK:  - Saving Units
+    func getUnit(indexPath: IndexPath) -> (type: String, data: Data) {
+        let unit = units[indexPath.row]
+        print (unit.type!)
+        return (unit.type!, unit.data!)
+    }
+    
+    // MARK:  - CREATING UNITS
+    
     func saveImageAsUnit(request: BoardDesk.CreateUnit.Request){
         guard let unit = CoreDataManager.shared.createUnit(board: board, unitType: "image", data: request.data) else {
             
@@ -76,11 +87,6 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     
     // MARK:  - Edditing Units
     
-    func getUnit(indexPath: IndexPath) -> (type: String, data: Data) {
-        let unit = units[indexPath.row]
-        print (unit.type!)
-        return (unit.type!, unit.data!)
-    }
     
     func deleteUnit(request: BoardDesk.DeleteUnit.Request) {
         print("Units count: \(units.count)")
@@ -93,6 +99,19 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         }
         else {
             let response = BoardDesk.Message.Response(title: "Error", message: "Deleting Failed")
+            presenter?.presentMessage(response: response)
+        }
+    }
+    
+    func changeTextUnit(request: BoardDesk.ChangingUnit.Request) {
+        let unit = units[request.indexPatch.row]
+        unit.data = request.data
+        if CoreDataManager.shared.saveChanges() {
+            let response = BoardDesk.Message.Response(title: "Saving successful", message: "")
+            presenter?.presentMessage(response: response)
+        }
+        else {
+            let response = BoardDesk.Message.Response(title: "Saving Failed", message: "Try Again")
             presenter?.presentMessage(response: response)
         }
     }

@@ -66,5 +66,19 @@ enum BoardDesk {
         }
     }
     
+    enum ChangingUnit {
+        struct Request {
+            var indexPatch: IndexPath
+            var data: Data
+        }
+        struct Response {
+            
+        }
+        struct ViewModel {
+            
+        }
+    }
+    
+    
     
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum ColorsList {
+enum ColorList {
     static let purple = UIColor(
         red: 233/255,
         green: 89/255,

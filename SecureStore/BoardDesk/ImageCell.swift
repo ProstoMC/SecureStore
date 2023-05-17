@@ -39,7 +39,7 @@ class ImageCell: UITableViewCell {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         imgView.translatesAutoresizingMaskIntoConstraints = false
         
-        backgroundColor = ColorsList.mainBlue
+        backgroundColor = ColorList.mainBlue
         selectionStyle = .none
         
         NSLayoutConstraint.activate([

@@ -35,7 +35,7 @@ class FullScreenImageViewController: UIViewController {
         super.viewWillLayoutSubviews()
         backButton.layer.cornerRadius = backButton.bounds.height/2
         backButton.layer.borderWidth = 1
-        backButton.layer.borderColor = ColorsList.textColor.cgColor
+        backButton.layer.borderColor = ColorList.textColor.cgColor
     }
     
     
@@ -185,7 +185,7 @@ class FullScreenImageViewController: UIViewController {
 extension FullScreenImageViewController {
         
      private func setupUI(){
-        view.backgroundColor = ColorsList.mainBlue
+        view.backgroundColor = ColorList.mainBlue
         setupImageView()
         setupBackButton()
     }
@@ -249,7 +249,7 @@ extension FullScreenImageViewController {
         NSLayoutConstraint.activate(anchors)
         
         backButton.setTitle("Back", for: .normal)
-        backButton.setTitleColor(ColorsList.textColor, for: .normal)
+        backButton.setTitleColor(ColorList.textColor, for: .normal)
         backButton.backgroundColor = UIColor(displayP3Red: 50, green: 50, blue: 50, alpha: 0.1)
         
         backButton.layer.borderWidth = 1

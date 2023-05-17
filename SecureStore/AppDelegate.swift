@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = LoginViewController()
-        //window.rootViewController = FullScreenImageViewController() //for tests
+        //window.rootViewController = TestViewController() //for tests
         window.makeKeyAndVisible()
        
         self.window = window
