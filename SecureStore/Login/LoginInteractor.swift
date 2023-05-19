@@ -15,8 +15,8 @@ import UIKit
 protocol LoginBusinessLogic {
     func login(request: Login.Login.Request)
     func signUp(request: Login.SignUp.Request)
-    func toggleLanguage()
-    func getLanguage()
+//    func toggleLanguage()
+    func getDefaultUserName()
 }
 
 protocol LoginDataStore {
@@ -36,7 +36,6 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     // MARK: - LOGIN
     
     func login(request: Login.Login.Request) {
-        let textList = TextList.shared.getloginUI()
         
         worker = LoginWorker()
         router = LoginRouter()
@@ -53,7 +52,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
             presenter?.moveToMainlist()
         }
         else {
-            let errorMessage = textList.messageErrorLogin
+            let errorMessage = "Error Login".localized()
             let alert = Login.ShowAlert.Response(title: "", errorMessage: errorMessage)
             presenter?.showAlert(response: alert)
         }
@@ -66,7 +65,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     // MARK: - SIGN UP
     
     func signUp(request: Login.SignUp.Request) {
-        let textList = TextList.shared.getloginUI()
+     
         worker = LoginWorker()
         
         let userName = request.userName
@@ -77,7 +76,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         
         var errorMessage = worker?.check3Fields(userName: userName, password: password, confirmPassword: confirmPassword)
         
-        if errorMessage != textList.messageSuccess {
+        if errorMessage != "Success".localized() {
             let alert = Login.ShowAlert.Response(title: "", errorMessage: errorMessage ?? "")
             presenter?.showAlert(response: alert)
             return
@@ -86,7 +85,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         //Checking username in store
         
         guard worker?.checkUserInStore(userName: userName ?? "") == true else {
-            errorMessage = textList.messageUserNameTaken
+            errorMessage = "User name already taken".localized()
             let alert = Login.ShowAlert.Response(title: "", errorMessage: errorMessage ?? "")
             presenter?.showAlert(response: alert)
             return
@@ -116,16 +115,16 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     
     // MARK: - TOGGLE LANGUAGE
     
-    func toggleLanguage() {
-        GlobalSettings.shared.toggleLanguage()
+//    func toggleLanguage() {
+//        GlobalSettings.shared.toggleLanguage()
+//        let userName = GlobalSettings.shared.fetchUserNameFromeDefaults()
+//        let response = Login.Texts.Response(defaultUserName: userName)
+//        presenter?.getLanguage(response: response)
+//    }
+    func getDefaultUserName() {
         let userName = GlobalSettings.shared.fetchUserNameFromeDefaults()
         let response = Login.Texts.Response(defaultUserName: userName)
-        presenter?.getLanguage(response: response)
-    }
-    func getLanguage() {
-        let userName = GlobalSettings.shared.fetchUserNameFromeDefaults()
-        let response = Login.Texts.Response(defaultUserName: userName)
-        presenter?.getLanguage(response: response)
+        presenter?.presentUserName(response: response)
     }
 
     

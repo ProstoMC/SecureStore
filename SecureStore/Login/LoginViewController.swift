@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
     var screenSize: CGRect!
     
     var signUpMode = false
-    var loginTextList: TextList.LoginTextList!
+    
     
     var languageButton = UIButton()
     var routeButton = UIButton()
@@ -86,12 +86,11 @@ class LoginViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        //doSomething()
+        interactor?.getDefaultUserName()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        interactor?.getLanguage()
     }
 }
 
@@ -121,7 +120,7 @@ extension LoginViewController: LoginDisplayLogic {
     }
     
     func setupUI(viewModel: Login.Texts.ViewModel) {
-        loginTextList = viewModel.textList
+        //loginTextList = viewModel.textList
         screenSize = UIScreen.main.bounds
         defaultUserName = viewModel.defaultUserName
         
@@ -159,9 +158,10 @@ extension LoginViewController {
             login()
         }
     }
-    @objc func toggleLanguage() {
-        interactor?.toggleLanguage()
-    }
+    // DONT USED
+//    @objc func toggleLanguage() {
+//        interactor?.toggleLanguage()
+//    }
     
     func login() {
         let request = Login.Login.Request(
@@ -189,8 +189,6 @@ extension LoginViewController {
 
 extension LoginViewController: UITextFieldDelegate {
     
-
-   
     private func makeBackgoundColor(){
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.view.bounds
@@ -221,7 +219,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
     
     private func setupLanguageButton(){
-
+        languageButton.isHidden = true  //LANGUAGE CHANGING DONT USED
         languageButton.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(languageButton)
@@ -231,7 +229,7 @@ extension LoginViewController: UITextFieldDelegate {
         languageButton.setTitleColor(ColorList.additionalBlue, for: .normal)
         languageButton.setTitle(GlobalSettings.shared.language, for: .normal)
         
-        languageButton.addTarget(self, action: #selector(toggleLanguage), for: .touchUpInside)
+//        languageButton.addTarget(self, action: #selector(toggleLanguage), for: .touchUpInside)
         
         //Constraints
         let topAnchor = languageButton.topAnchor.constraint(equalTo: view.topAnchor, constant: screenSize.height*0.06)
@@ -287,7 +285,7 @@ extension LoginViewController: UITextFieldDelegate {
         userNameTextField.clearButtonMode = .always
         userNameTextField.borderStyle = .roundedRect
         userNameTextField.keyboardType = .default
-        userNameTextField.placeholder = loginTextList.userNameFieldPlaceholder
+        userNameTextField.placeholder = "Username".localized()
         userNameTextField.text = defaultUserName
         
         // Delegate
@@ -312,7 +310,7 @@ extension LoginViewController: UITextFieldDelegate {
         passwordTextField.clearButtonMode = .always
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.keyboardType = .default
-        passwordTextField.placeholder = loginTextList.passwordFieldPlaceholder
+        passwordTextField.placeholder = "Password".localized()
         passwordTextField.isSecureTextEntry = true
         passwordTextField.returnKeyType = UIReturnKeyType.done
         passwordTextField.text = ""
@@ -343,7 +341,7 @@ extension LoginViewController: UITextFieldDelegate {
         confirmPasswordTextField.clearButtonMode = .always
         confirmPasswordTextField.borderStyle = .roundedRect
         confirmPasswordTextField.keyboardType = .default
-        confirmPasswordTextField.placeholder = loginTextList.confirmPasswordFieldPlaceholder
+        confirmPasswordTextField.placeholder = "Confirm Password".localized()
         confirmPasswordTextField.isSecureTextEntry = true
         confirmPasswordTextField.returnKeyType = UIReturnKeyType.done
         confirmPasswordTextField.text = ""
@@ -368,8 +366,8 @@ extension LoginViewController: UITextFieldDelegate {
         bigButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Apperance
-        var title = loginTextList.signInButtonTitle
-        if signUpMode {title = loginTextList.signUpButtonTitle}
+        var title = "Sign In".localized()
+        if signUpMode { title = "Sign Up".localized() }
         
         bigButton.setTitleColor(.lightGray, for: .normal)
         bigButton.setTitle(title, for: .normal)
@@ -377,14 +375,9 @@ extension LoginViewController: UITextFieldDelegate {
         bigButton.layer.cornerRadius = 5
         bigButton.addTarget(self, action: #selector(bigButtonPressed), for: .touchUpInside)
         
-         
-        
-        
         //Constraints
         let leftAnchor  = bigButton.leftAnchor.constraint(equalTo: userNameTextField.leftAnchor, constant: 20)
         let rightAnchor = bigButton.rightAnchor.constraint(equalTo: userNameTextField.rightAnchor, constant: -20)
-        
-        //var topAnchor = bigButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 40)
 
         NSLayoutConstraint.activate([leftAnchor, rightAnchor])
     }
@@ -397,8 +390,8 @@ extension LoginViewController: UITextFieldDelegate {
         smallButton.addTarget(self, action: #selector(smallButtonPressed), for: .touchUpInside)
         
         // Apperance
-        var title = loginTextList.signUpButtonTitle
-        if signUpMode {title = loginTextList.signInButtonTitle}
+        var title = "Sign Up".localized()
+        if signUpMode {title = "Sign In".localized()}
         
         smallButton.setTitleColor(ColorList.additionalBlue, for: .normal)
         smallButton.setTitle(title, for: .normal)

@@ -248,7 +248,7 @@ extension FullScreenImageViewController {
         
         NSLayoutConstraint.activate(anchors)
         
-        backButton.setTitle("Back", for: .normal)
+        backButton.setTitle("Back".localized(), for: .normal)
         backButton.setTitleColor(ColorList.textColor, for: .normal)
         backButton.backgroundColor = UIColor(displayP3Red: 50, green: 50, blue: 50, alpha: 0.1)
         

@@ -14,7 +14,7 @@ import UIKit
 
 protocol LoginPresentationLogic {
     func showAlert(response: Login.ShowAlert.Response)
-    func getLanguage(response: Login.Texts.Response)
+    func presentUserName(response: Login.Texts.Response)
     func moveToMainlist()
 }
 
@@ -36,8 +36,8 @@ class LoginPresenter: LoginPresentationLogic {
   
     // MARK: Do something
     
-    func getLanguage(response: Login.Texts.Response) {
-        let viewModel = Login.Texts.ViewModel(defaultUserName: response.defaultUserName ?? "", textList: TextList.shared.getloginUI())
+    func presentUserName(response: Login.Texts.Response) {
+        let viewModel = Login.Texts.ViewModel(defaultUserName: response.defaultUserName ?? "")
         viewController?.setupUI(viewModel: viewModel)
 
     }

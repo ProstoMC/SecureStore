@@ -32,9 +32,16 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     var menuMode = false
 
     var menuPanel = UIView()
+    var closeTapArea = UIView() // Hide menuPanel when u tap here
     let horizontalLine = UIView()
     let userImageView = UIImageView()
     let userNameLabel = UILabel()
+    //Changing language don't used
+    let languageButton: UIButton = {
+        let button = UIButton()
+        button.isHidden = true
+        return button
+    }()
        
     private var boardsList: [String] = []
     private var userImageData: Data?
@@ -133,7 +140,7 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
 // MARK: -  ACTIONS
 extension MainListViewController {
     @objc private func addNewTask() {
-        showAlert(title: "New task", message: "Enter new task", indexPath: nil)
+        showAlert(title: "New board".localized(), message: "Enter new board".localized(), indexPath: nil)
     }
     
     @objc private func menuPanelToggle() {
@@ -141,9 +148,11 @@ extension MainListViewController {
         if !menuMode {  //Making Panel during first tuch
             setupMenuPanel()
             self.view.addSubview(menuPanel)
+            self.view.addSubview(closeTapArea)
             menuMode = true
         } else {
             menuPanel.isHidden.toggle()
+            closeTapArea.isHidden.toggle()
         }
         
     }
@@ -199,9 +208,9 @@ extension MainListViewController: UITextFieldDelegate {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+        let saveAction = UIAlertAction(title: "Save".localized(), style: .default) { _ in
             guard let boardName = alert.textFields?.first?.text, !boardName.isEmpty else {
-                print("Epmty field")
+                print("Epmty field".localized())
                 return
             }
                 
@@ -210,7 +219,7 @@ extension MainListViewController: UITextFieldDelegate {
                 let request = MainList.CreateNewBoard.Request(name: boardName)
                 self.interactor?.createNewBoard(request: request)
             } else {
-                print("Edditing ", boardName)
+                print("Edditing ".localized(), boardName)
                 let request = MainList.EditBoardName.Request(name: boardName, indexPath: indexPath!)
                 self.interactor?.editBoardName(request: request)
             }
@@ -218,7 +227,7 @@ extension MainListViewController: UITextFieldDelegate {
         }
             
         
-        let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let canselAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
         
         alert.addTextField()
         if indexPath != nil { alert.textFields?.first?.text = message }
@@ -231,11 +240,11 @@ extension MainListViewController: UITextFieldDelegate {
     // Users fields edditing Alerts
     
     func editUserNameAlert() {
-        let alert = UIAlertController(title: "Change username", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Change username".localized(), message: nil, preferredStyle: .alert)
 
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+        let saveAction = UIAlertAction(title: "Save".localized(), style: .default) { _ in
             guard let text = alert.textFields?.first?.text, !text.isEmpty else {
-                print("Epmty field")
+                print("Epmty field".localized())
                 return
             }
             let request = MainList.ChangeUserName.Request(userName: text)
@@ -243,7 +252,7 @@ extension MainListViewController: UITextFieldDelegate {
 
         }
 
-        let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let canselAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
 
         alert.addTextField() { textField in
             textField.text = self.title
@@ -258,19 +267,19 @@ extension MainListViewController: UITextFieldDelegate {
     }
     
     func editUserPasswordAlert() {
-        let alert = UIAlertController(title: "Change password", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Change password".localized(), message: nil, preferredStyle: .alert)
 
-        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+        let saveAction = UIAlertAction(title: "Save".localized(), style: .default) { _ in
             guard let oldPassword = alert.textFields?.first?.text, !oldPassword.isEmpty else {
-                print("Epmty field")
+                print("Epmty field".localized())
                 return
             }
             guard let newPassword = alert.textFields?[1].text, !newPassword.isEmpty else {
-                print("Epmty field")
+                print("Epmty field".localized())
                 return
             }
             guard let confirmPassword = alert.textFields?[2].text, !confirmPassword.isEmpty else {
-                print("Epmty field")
+                print("Epmty field".localized())
                 return
             }
             
@@ -281,16 +290,16 @@ extension MainListViewController: UITextFieldDelegate {
             self.interactor?.changePassword(request: request)
         }
 
-        let canselAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let canselAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
         
         alert.addTextField() { textField in
-            textField.placeholder = "Enter current password"
+            textField.placeholder = "Enter current password".localized()
         }
         alert.addTextField() { textField in
-            textField.placeholder = "Enter new password"
+            textField.placeholder = "Enter new password".localized()
         }
         alert.addTextField() { [weak self] textField in
-            textField.placeholder = "Confirm new password"
+            textField.placeholder = "Confirm new password".localized()
             textField.returnKeyType = .done
             textField.delegate = self
         }
@@ -302,17 +311,17 @@ extension MainListViewController: UITextFieldDelegate {
     }
     
     private func choosingImageSourceAlert() {
-        let alert = UIAlertController(title: "Choose source", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Choose source".localized(), message: nil, preferredStyle: .actionSheet)
         
-        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+        let cameraAction = UIAlertAction(title: "Camera".localized(), style: .default) { _ in
             self.fetchImageFromPicker(source: .camera)
             return
         }
-        let libraryAction = UIAlertAction(title: "Photo gallery", style: .default) { _ in
+        let libraryAction = UIAlertAction(title: "Photo gallery".localized(), style: .default) { _ in
             self.fetchImageFromPicker(source: .photoLibrary)
             return
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let cancelAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
         
         alert.addAction(cameraAction)
         alert.addAction(libraryAction)
@@ -370,7 +379,7 @@ extension MainListViewController {
         let editButton = UIContextualAction(style: .normal, title: "", handler: {
             [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
             in
-            self.showAlert(title: "Edit the task", message: self.boardsList[indexPath.row], indexPath: indexPath)
+            self.showAlert(title: "Edit the board".localized(), message: self.boardsList[indexPath.row], indexPath: indexPath)
         })
         editButton.image = UIImage(systemName: "square.and.pencil")
 
@@ -398,7 +407,7 @@ extension MainListViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Tasks list"
+        title = "Error"
         
         navigationController?.navigationBar.prefersLargeTitles = true
 
@@ -438,10 +447,18 @@ extension MainListViewController {
     
     private func setupMenuPanel() {
        
-        menuPanel.translatesAutoresizingMaskIntoConstraints = false
+        //menuPanel.translatesAutoresizingMaskIntoConstraints = false
+        //closeTapArea.translatesAutoresizingMaskIntoConstraints = false
+        
+        //Behavior for touch outside of menuPanel
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(menuPanelToggle))
+        closeTapArea.isUserInteractionEnabled = true
+        closeTapArea.addGestureRecognizer(tap)
         
         //Frames
         menuPanel.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width/2, height: tableView.frame.size.height)
+        closeTapArea.frame = CGRect(x: tableView.frame.midX, y: 0, width: tableView.frame.size.width/2, height: tableView.frame.size.height)
         
         //Appearance
         
@@ -450,13 +467,14 @@ extension MainListViewController {
         gradientLayer.colors = [ColorList.mainBlue.cgColor, ColorList.powder.cgColor]
         menuPanel.layer.insertSublayer(gradientLayer, at: 100)
         
-        //menuPanel.layer.backgroundColor = ColorsList.mainBlue.cgColor
+        closeTapArea.backgroundColor = UIColor(white: 0.5, alpha: 0)
         
         //Add Elements
         setupLines()
         setupUserImage()
         setupUserNameLabel()
         setupButtons()
+        setupLanguageButton()
         
     }
     
@@ -485,7 +503,7 @@ extension MainListViewController {
     
     private func setupUserImage() {
         
-        userImageView.translatesAutoresizingMaskIntoConstraints = false
+        //userImageView.translatesAutoresizingMaskIntoConstraints = false
         
         // Appearance
        
@@ -523,7 +541,7 @@ extension MainListViewController {
        
         //Appearance
         
-        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        //userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.text = title
         userNameLabel.textAlignment = .center
         userNameLabel.adjustsFontSizeToFitWidth = true
@@ -556,10 +574,10 @@ extension MainListViewController {
         //Appearance
         
         editButton.setTitleColor(ColorList.textColor, for: .normal)
-        editButton.setTitle("Change password", for: .normal)
+        editButton.setTitle("Change password".localized(), for: .normal)
         
         logoutButton.setTitleColor(ColorList.textColor, for: .normal)
-        logoutButton.setTitle("Log out", for: .normal)
+        logoutButton.setTitle("Log out".localized(), for: .normal)
         
         //Behavior
         
@@ -567,7 +585,6 @@ extension MainListViewController {
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
         //Constraints
-        
         
         editButton.frame = CGRect(
             x: menuPanel.frame.width*0.05,
@@ -582,11 +599,30 @@ extension MainListViewController {
             height: menuPanel.frame.height/20
         )
         
-        
-        
         menuPanel.addSubview(editButton)
         menuPanel.addSubview(logoutButton)
+    }
+    
+    private func setupLanguageButton() {
         
+        //Appearance
+        
+        languageButton.setTitleColor(ColorList.mainBlue, for: .normal)
+        languageButton.setTitle(GlobalSettings.shared.language, for: .normal)
+        
+        //Behavior
+        
+        //languageButton.addTarget(self, action: #selector(logout), for: .touchUpInside)
+                
+        //Constraints
+        
+        languageButton.frame = CGRect(
+            x: menuPanel.frame.width*0.05,
+            y: UIScreen.main.bounds.height/2 + UIScreen.main.bounds.height/5,
+            width: menuPanel.frame.width/1.1,
+            height: menuPanel.frame.height/20
+        )
+        menuPanel.addSubview(languageButton)
     }
 
 }

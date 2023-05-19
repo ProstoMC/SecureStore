@@ -13,7 +13,7 @@ class TextList {
 
     
     //Login UI
-    struct LoginTextList {
+    struct LoginTextList1 {
         var userNameFieldPlaceholder: String
         var passwordFieldPlaceholder: String
         var confirmPasswordFieldPlaceholder: String
@@ -31,45 +31,45 @@ class TextList {
 
 
 
-    func getloginUI() -> LoginTextList{
-        if GlobalSettings.shared.language == "EN" {
-            return getEnglishUI()
-        } else {
-            return getRussianUI()
-        }
-    }
-
-    private func getEnglishUI() -> LoginTextList {
-        return LoginTextList(
-            userNameFieldPlaceholder: "Username",
-            passwordFieldPlaceholder: "Password",
-            confirmPasswordFieldPlaceholder: "Confirm Password",
-            signUpButtonTitle: "Sign Up",
-            signInButtonTitle: "Sign In",
-            messageErrorLogin: "Error Login",
-            messageErrorPassword: "Error Password",
-            messageSuccess: "Success",
-            messageFieldsEmpty: "Some fields are empty",
-            messagePasswordsDontMatch: "Passwords do not match",
-            messageUserNameCannotSpace: "Username cannot contain a space",
-            messageUserNameTaken: "User name already taken"
-        )
-    }
-
-    private func getRussianUI() -> LoginTextList {
-        return LoginTextList(
-            userNameFieldPlaceholder: "Имя пользователя",
-            passwordFieldPlaceholder: "Пароль",
-            confirmPasswordFieldPlaceholder: "Подтверждение пароля",
-            signUpButtonTitle: "Создать запись",
-            signInButtonTitle: "Войти",
-            messageErrorLogin: "Неправильный логин",
-            messageErrorPassword: "Неправильный пароль",
-            messageSuccess: "Успешно",
-            messageFieldsEmpty: "Одно из полей пустое",
-            messagePasswordsDontMatch: "Пароли не совпадают",
-            messageUserNameCannotSpace: "Имя пользователя не должно содержать пробел",
-            messageUserNameTaken: "Такой пользователь уже существует"
-        )
-    }
+//    func getloginUI() -> LoginTextList{
+//        if GlobalSettings.shared.language == "EN" {
+//            return getEnglishUI()
+//        } else {
+//            return getRussianUI()
+//        }
+//    }
+//
+//    private func getEnglishUI() -> LoginTextList {
+//        return LoginTextList(
+//            userNameFieldPlaceholder: "Username",
+//            passwordFieldPlaceholder: "Password",
+//            confirmPasswordFieldPlaceholder: "Confirm Password",
+//            signUpButtonTitle: "Sign Up",
+//            signInButtonTitle: "Sign In",
+//            messageErrorLogin: "Error Login",
+//            messageErrorPassword: "Error Password",
+//            messageSuccess: "Success",
+//            messageFieldsEmpty: "Some fields are empty",
+//            messagePasswordsDontMatch: "Passwords do not match",
+//            messageUserNameCannotSpace: "Username cannot contain a space",
+//            messageUserNameTaken: "User name already taken"
+//        )
+//    }
+//
+//    private func getRussianUI() -> LoginTextList {
+//        return LoginTextList(
+//            userNameFieldPlaceholder: "Имя пользователя",
+//            passwordFieldPlaceholder: "Пароль",
+//            confirmPasswordFieldPlaceholder: "Подтверждение пароля",
+//            signUpButtonTitle: "Создать запись",
+//            signInButtonTitle: "Войти",
+//            messageErrorLogin: "Неправильный логин",
+//            messageErrorPassword: "Неправильный пароль",
+//            messageSuccess: "Успешно",
+//            messageFieldsEmpty: "Одно из полей пустое",
+//            messagePasswordsDontMatch: "Пароли не совпадают",
+//            messageUserNameCannotSpace: "Имя пользователя не должно содержать пробел",
+//            messageUserNameTaken: "Такой пользователь уже существует"
+//        )
+//    }
 }

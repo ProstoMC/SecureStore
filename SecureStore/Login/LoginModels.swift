@@ -74,7 +74,7 @@ enum Login
         }
         struct ViewModel {
             var defaultUserName: String
-            var textList: TextList.LoginTextList
+            //var textList: TextList.LoginTextList
         }
     }
     

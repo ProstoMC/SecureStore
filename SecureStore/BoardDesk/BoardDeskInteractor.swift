@@ -40,6 +40,9 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     
     func showBoard(request: BoardDesk.ShowBoard.Request) {
         units = CoreDataManager.shared.getUnits(board: board)
+        units.sort { (unit1, unit2) -> Bool in
+            unit1.id < unit2.id
+        }
         
         let response = BoardDesk.ShowBoard.Response(board: board)
         presenter?.presentBoard(response: response)
@@ -61,7 +64,7 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     // MARK:  - CREATING UNITS
     
     func createImageUnit(request: BoardDesk.CreateUnit.Request){
-        guard let unit = CoreDataManager.shared.createImageUnit(board: board, unitType: UnitType.image, data: request.data) else {
+        guard let unit = CoreDataManager.shared.createImageUnit(board: board, unitType: UnitType.image, data: request.data, id: units.count) else {
             
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
@@ -74,7 +77,7 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     }
     
     func createTextUnit(request: BoardDesk.CreateUnit.Request) {
-        guard let unit = CoreDataManager.shared.createTextUnit(board: board, unitType: UnitType.text, text: "") else {
+        guard let unit = CoreDataManager.shared.createTextUnit(board: board, unitType: UnitType.text, text: "", id: units.count) else {
             
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
@@ -87,6 +90,13 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     
     // MARK:  - Edditing Units
     
+    //Used when delete unit
+    func renumberUnits() {
+        for (index, unit) in units.enumerated() {
+            unit.id = Int64(index)
+        }
+    }
+    
     
     func deleteUnit(request: BoardDesk.DeleteUnit.Request) {
         print("Units count: \(units.count)")
@@ -94,6 +104,7 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         
         if CoreDataManager.shared.deleteUnit(unit: units[request.indexPath.row]) {
             units.remove(at: request.indexPath.row)
+            renumberUnits()
             let response = BoardDesk.DeleteUnit.Response(indexPath: request.indexPath)
             presenter?.deleteUnit(response: response)
         }

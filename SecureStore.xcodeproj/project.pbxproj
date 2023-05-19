@@ -37,6 +37,8 @@
 		A59091B729B2624E00EC628D /* MainListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B129B2624E00EC628D /* MainListModels.swift */; };
 		A59091B829B2624E00EC628D /* MainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B229B2624E00EC628D /* MainListViewController.swift */; };
 		A59091B929B2624E00EC628D /* MainListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B329B2624E00EC628D /* MainListInteractor.swift */; };
+		A5EE4E052A16309B00C0F818 /* LocalizeExtentionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EE4E042A16309B00C0F818 /* LocalizeExtentionString.swift */; };
+		A5EE4E0E2A16322700C0F818 /* LocalizableTexts.strings in Resources */ = {isa = PBXBuildFile; fileRef = A5EE4E102A16322700C0F818 /* LocalizableTexts.strings */; };
 		A5F3E44929F6EDF300BD09B0 /* BoardDeskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44329F6EDF300BD09B0 /* BoardDeskPresenter.swift */; };
 		A5F3E44A29F6EDF300BD09B0 /* BoardDeskWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44429F6EDF300BD09B0 /* BoardDeskWorker.swift */; };
 		A5F3E44B29F6EDF300BD09B0 /* BoardDeskRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F3E44529F6EDF300BD09B0 /* BoardDeskRouter.swift */; };
@@ -99,6 +101,9 @@
 		A59091B129B2624E00EC628D /* MainListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListModels.swift; sourceTree = "<group>"; };
 		A59091B229B2624E00EC628D /* MainListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListViewController.swift; sourceTree = "<group>"; };
 		A59091B329B2624E00EC628D /* MainListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListInteractor.swift; sourceTree = "<group>"; };
+		A5EE4E042A16309B00C0F818 /* LocalizeExtentionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizeExtentionString.swift; sourceTree = "<group>"; };
+		A5EE4E0F2A16322700C0F818 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizableTexts.strings; sourceTree = "<group>"; };
+		A5EE4E112A16324000C0F818 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LocalizableTexts.strings; sourceTree = "<group>"; };
 		A5F3E44329F6EDF300BD09B0 /* BoardDeskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskPresenter.swift; sourceTree = "<group>"; };
 		A5F3E44429F6EDF300BD09B0 /* BoardDeskWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskWorker.swift; sourceTree = "<group>"; };
 		A5F3E44529F6EDF300BD09B0 /* BoardDeskRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDeskRouter.swift; sourceTree = "<group>"; };
@@ -178,6 +183,7 @@
 				A56BE42729AB9CC5006DF505 /* TextList.swift */,
 				A522654A299D7BC4005798B1 /* ColorList.swift */,
 				A56BE42C29B13971006DF505 /* GlobalSettings.swift */,
+				A5EE4E102A16322700C0F818 /* LocalizableTexts.strings */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,6 +213,7 @@
 			children = (
 				A560512D299A83BA00A61213 /* AppDelegate.swift */,
 				A5614BA129BA527E00B8C5A7 /* TestViewController.swift */,
+				A5EE4E042A16309B00C0F818 /* LocalizeExtentionString.swift */,
 				A5226528299D4D20005798B1 /* Login */,
 				A59091AD29B2619800EC628D /* MainList */,
 				A503F4BE29F6EC50000B4045 /* BoardDesk */,
@@ -345,6 +352,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = A5605121299A83BA00A61213;
 			productRefGroup = A560512B299A83BA00A61213 /* Products */;
@@ -364,6 +372,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5804E132A0283CB004C3B45 /* Assets.xcassets in Resources */,
+				A5EE4E0E2A16322700C0F818 /* LocalizableTexts.strings in Resources */,
 				A51424AE2A0CFF470000794E /* MainList Screen.png in Resources */,
 				A560513A299A83BE00A61213 /* LaunchScreen.storyboard in Resources */,
 				A51424B02A0CFF470000794E /* Login Screen.png in Resources */,
@@ -408,6 +417,7 @@
 				A5226545299D7B06005798B1 /* LoginViewController.swift in Sources */,
 				A59091B529B2624E00EC628D /* MainListWorker.swift in Sources */,
 				A5F3E44B29F6EDF300BD09B0 /* BoardDeskRouter.swift in Sources */,
+				A5EE4E052A16309B00C0F818 /* LocalizeExtentionString.swift in Sources */,
 				A56BE42D29B13971006DF505 /* GlobalSettings.swift in Sources */,
 				A522654B299D7BC4005798B1 /* ColorList.swift in Sources */,
 				A5051E2329FD51D3005DA4AC /* FullScreenImageViewController.swift in Sources */,
@@ -464,6 +474,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		A5EE4E102A16322700C0F818 /* LocalizableTexts.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A5EE4E0F2A16322700C0F818 /* en */,
+				A5EE4E112A16324000C0F818 /* ru */,
+			);
+			name = LocalizableTexts.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -471,6 +490,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -532,6 +552,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

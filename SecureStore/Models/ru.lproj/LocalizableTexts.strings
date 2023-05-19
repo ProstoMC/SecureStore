@@ -1,0 +1,53 @@
+/* 
+  LocalizebleTexts.strings
+  SecureStore
+
+  Created by macSlm on 18.05.2023.
+  
+*/
+//Login
+"Username" = "Имя пользователя";
+"Password" = "Пароль";
+"Confirm Password" = "Подтверждение пароля";
+"Sign Up" = "Создать запись";
+"Sign In" = "Войти";
+"Error Login" = "Неправильный логин";
+"Error Password" = "Неправильный пароль";
+"Success" = "Успешно";
+"Some fields are empty" = "Одно из полей пустое";
+"Passwords do not match" = "Пароли не совпадают";
+"Username cannot contain a space" = "Имя пользователя не должно содержать пробел";
+"User name already taken" = "Такой пользователь уже существует";
+//MainList
+"New board" = "Новая доска";
+"Enter new board" = "Ввод новой доски";
+"Save" = "Сохранить";
+"Epmty field" = "Пустое поле";
+"Edditing " = "Редактирование ";
+"Cancel" = "Отмена";
+"Change username" = "Изменить имя пользователя";
+"Change password" = "Изменить пароль";
+"Enter current password" = "Действующий пароль";
+"Enter new password" = "Новый пароль";
+"Confirm new password" = "Подтверждение пароль";
+"Choose source" = "Источник";
+"Camera" = "Камера";
+"Photo gallery" = "Галерея";
+"Edit the board" = "Редактирование доски";
+"Log out" = "Выйти";
+"Creating Failed" = "Ошибка при попытке создания";
+"Try Again" = "Попробуйте снова";
+"Changing Failed" = "Ошибка при попытке изменения";
+"Error" = "Ошибка";
+"Deleting Failed" = "Ошибка при попытке удаления";
+"Password is incorrect" = "Неверный пароль";
+"New passwords don't match" = "Новые пароли не совпадают";
+"Password was changed" = "Пароль изменен";
+//BoardDesk
+"Choose type of unit" = "Новый элемент";
+"Text" = "Текст";
+"Photo from camera" = "Фото";
+"Image from gallery" = "Изображение из галереи";
+//FullScreenVC
+"Back" = "Назад";
+

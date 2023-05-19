@@ -117,13 +117,14 @@ extension CoreDataManager {
 
 extension CoreDataManager {
     
-    func createImageUnit(board: Board, unitType: String, data: Data) -> BoardUnit? {
+    func createImageUnit(board: Board, unitType: String, data: Data, id: Int) -> BoardUnit? {
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "BoardUnit", in: managedContext) else { return nil}
         let boardUnit = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! BoardUnit
         boardUnit.board = board
         boardUnit.data = data
         boardUnit.type = unitType
+        boardUnit.id = Int64(id)
         
         do {
             try managedContext.save()
@@ -135,13 +136,14 @@ extension CoreDataManager {
         return boardUnit
     }
     
-    func createTextUnit(board: Board, unitType: String, text: String) -> BoardUnit? {
+    func createTextUnit(board: Board, unitType: String, text: String, id: Int) -> BoardUnit? {
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "BoardUnit", in: managedContext) else { return nil}
         let boardUnit = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! BoardUnit
         boardUnit.board = board
         boardUnit.type = unitType
         boardUnit.text = text
+        boardUnit.id = Int64(id)
         
         do {
             try managedContext.save()

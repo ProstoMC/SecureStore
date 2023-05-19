@@ -17,27 +17,27 @@ import UIKit
 class LoginWorker {
     
     func check3Fields(userName: String?, password: String?, confirmPassword: String?) -> String {
-        let textList = TextList.shared.getloginUI()
-        var message = textList.messageSuccess
+        //let textList = TextList.shared.getloginUI()
+        var message = "Success".localized()
         //
         
         guard let userName = userName, let password = password, let confirmPassword = confirmPassword  else {
-            message = textList.messageFieldsEmpty
+            message = "Some fields are empty".localized()
             return message
         }
         if password != confirmPassword {
-            message = textList.messagePasswordsDontMatch
+            message = "Passwords do not match".localized()
         }
         
 
         
         if userName == "" || password == "" || confirmPassword == "" {
-            message = textList.messageFieldsEmpty
+            message = "Some fields are empty".localized()
         }
         
         for symbol in userName {
             if symbol == " " {
-                message = textList.messageUserNameCannotSpace
+                message = "Username cannot contain a space".localized()
             }
         }
         

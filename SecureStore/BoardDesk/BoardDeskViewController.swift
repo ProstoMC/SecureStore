@@ -112,26 +112,26 @@ extension BoardDeskViewController: BoardDeskDisplayLogic {
 extension BoardDeskViewController {
     
     private func choosingUnitAlert() {
-        let alert = UIAlertController(title: "Choose type of unit", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Choose type of unit".localized(), message: nil, preferredStyle: .actionSheet)
         
-        let textFieldAction = UIAlertAction(title: "Text", style: .default) { _ in
+        let textFieldAction = UIAlertAction(title: "Text".localized(), style: .default) { _ in
             let text = " "
             let request = BoardDesk.CreateUnit.Request(data: text.data(using: .utf8)!)
             self.interactor?.createTextUnit(request: request)
             return
         }
         
-        let cameraAction = UIAlertAction(title: "Photo from camera", style: .default) { _ in
+        let cameraAction = UIAlertAction(title: "Photo from camera".localized(), style: .default) { _ in
             self.fetchImageFromPicker(source: .camera)
             return
         }
         
-        let libraryAction = UIAlertAction(title: "Image from gallery", style: .default) { _ in
+        let libraryAction = UIAlertAction(title: "Image from gallery".localized(), style: .default) { _ in
             self.fetchImageFromPicker(source: .photoLibrary)
             return
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let cancelAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
         
         alert.addAction(textFieldAction)
         alert.addAction(cameraAction)
