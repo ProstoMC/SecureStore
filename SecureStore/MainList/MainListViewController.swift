@@ -12,7 +12,7 @@
 
 import UIKit
 
-protocol MainListDisplayLogic: class {
+protocol MainListDisplayLogic: AnyObject {
     func displayUser(viewModel: MainList.ShowUser.ViewModel)
     func displayBoards(viewModel: MainList.ShowBoards.ViewModel)
     func displayNewBoard(viewModel: MainList.CreateNewBoard.ViewModel)
@@ -182,8 +182,21 @@ extension MainListViewController: UIImagePickerControllerDelegate & UINavigation
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
         imagePicker.sourceType = source
-        present(imagePicker, animated: true, completion: nil)
+        if source == .camera {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                print("=====CAMERA=====")
+                present(imagePicker, animated: true, completion: nil)
+            } else {
+                let viewModel = MainList.DisplayMessage.ViewModel(title: "Error".localized(), message: "Camera is not available.".localized(), buttonTitle: "Ok")
+                displayMessage(viewModel: viewModel)
+                return
+            }
+        }
+        if source == .photoLibrary {
+            present(imagePicker, animated: true, completion: nil)
+        }
     }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             let request = MainList.ChangeUserImage.Request(imageData:editedImage.pngData()!)

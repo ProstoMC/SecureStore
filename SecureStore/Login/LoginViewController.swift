@@ -12,7 +12,7 @@
 
 import UIKit
 
-protocol LoginDisplayLogic: class {
+protocol LoginDisplayLogic: AnyObject {
     
 
     func showAlert(viewModel: Login.ShowAlert.ViewModel)
@@ -281,6 +281,7 @@ extension LoginViewController: UITextFieldDelegate {
         userNameTextField.translatesAutoresizingMaskIntoConstraints = false
         
         // Apperance
+
         userNameTextField.delegate = self
         userNameTextField.clearButtonMode = .always
         userNameTextField.borderStyle = .roundedRect
@@ -371,7 +372,7 @@ extension LoginViewController: UITextFieldDelegate {
         
         bigButton.setTitleColor(.lightGray, for: .normal)
         bigButton.setTitle(title, for: .normal)
-        bigButton.backgroundColor = ColorList.additionalBlue
+        bigButton.backgroundColor = ColorList.mainBlue
         bigButton.layer.cornerRadius = 5
         bigButton.addTarget(self, action: #selector(bigButtonPressed), for: .touchUpInside)
         
@@ -393,7 +394,7 @@ extension LoginViewController: UITextFieldDelegate {
         var title = "Sign Up".localized()
         if signUpMode {title = "Sign In".localized()}
         
-        smallButton.setTitleColor(ColorList.additionalBlue, for: .normal)
+        smallButton.setTitleColor(ColorList.mainBlue, for: .normal)
         smallButton.setTitle(title, for: .normal)
 
         //Constraints

@@ -26,7 +26,6 @@
 		A5605145299A83BE00A61213 /* SecureStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5605144299A83BE00A61213 /* SecureStoreTests.swift */; };
 		A5605150299A83BE00A61213 /* SecureStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560514F299A83BE00A61213 /* SecureStoreUITests.swift */; };
 		A5614BA229BA527E00B8C5A7 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5614BA129BA527E00B8C5A7 /* TestViewController.swift */; };
-		A56BE42829AB9CC5006DF505 /* TextList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56BE42729AB9CC5006DF505 /* TextList.swift */; };
 		A56BE42D29B13971006DF505 /* GlobalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56BE42C29B13971006DF505 /* GlobalSettings.swift */; };
 		A57E464529A10B1A004EFA16 /* UsersStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A57E464329A10B1A004EFA16 /* UsersStorage.xcdatamodeld */; };
 		A57E464A29A10EE0004EFA16 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57E464929A10EE0004EFA16 /* CoreDataManager.swift */; };
@@ -90,7 +89,6 @@
 		A560514F299A83BE00A61213 /* SecureStoreUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStoreUITests.swift; sourceTree = "<group>"; };
 		A5605151299A83BE00A61213 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5614BA129BA527E00B8C5A7 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
-		A56BE42729AB9CC5006DF505 /* TextList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextList.swift; sourceTree = "<group>"; };
 		A56BE42C29B13971006DF505 /* GlobalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettings.swift; sourceTree = "<group>"; };
 		A57E464429A10B1A004EFA16 /* UsersStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UsersStorage.xcdatamodel; sourceTree = "<group>"; };
 		A57E464929A10EE0004EFA16 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -180,7 +178,6 @@
 		A55D557D299D4A62008E19B3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A56BE42729AB9CC5006DF505 /* TextList.swift */,
 				A522654A299D7BC4005798B1 /* ColorList.swift */,
 				A56BE42C29B13971006DF505 /* GlobalSettings.swift */,
 				A5EE4E102A16322700C0F818 /* LocalizableTexts.strings */,
@@ -430,7 +427,6 @@
 				A5226546299D7B06005798B1 /* LoginInteractor.swift in Sources */,
 				A57E464A29A10EE0004EFA16 /* CoreDataManager.swift in Sources */,
 				A5F3E44929F6EDF300BD09B0 /* BoardDeskPresenter.swift in Sources */,
-				A56BE42829AB9CC5006DF505 /* TextList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

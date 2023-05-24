@@ -12,9 +12,8 @@
 
 import UIKit
 
-protocol BoardDeskDisplayLogic: class {
+protocol BoardDeskDisplayLogic: AnyObject {
     func displayMessageAlert(viewModel: BoardDesk.Message.ViewModel)
-    
     func displayBoard(viewModel: BoardDesk.ShowBoard.ViewModel)
     func displayNewUnit()
     func deleteUnit(viewModel: BoardDesk.DeleteUnit.ViewModel)
