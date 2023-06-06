@@ -12,6 +12,12 @@
 
 import UIKit
 
+
+enum BoardType {
+    static let data = "data"
+    static let todo = "todo"
+}
+
 enum MainList {
     
     // MARK: - User models
@@ -68,27 +74,41 @@ enum MainList {
     
     // MARK:  - Boards models
    
+    enum GetBoard {
+        struct Request {
+            var indexPath: IndexPath
+        }
+        struct Response {
+            var indexPath: IndexPath
+            var name: String
+            var type: String
+            var status: Bool
+        }
+    }
+    
     enum ShowBoards {
         struct Request {
             
         }
         struct Response {
-            var boardsNames: [String]
+            
         }
         struct ViewModel {
-            var boardsNames: [String]
+            
         }
     }
     
     enum CreateNewBoard {
         struct Request {
             var name: String
+            var type: String
         }
         struct Response {
-            var name: String
+            var board: Board
         }
         struct ViewModel {
             var name: String
+            var type: String
         }
     }
     

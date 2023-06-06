@@ -22,6 +22,12 @@ protocol MainListBusinessLogic {
     func createNewBoard(request: MainList.CreateNewBoard.Request)
     func editBoardName(request: MainList.EditBoardName.Request)
     func deleteBoard(request: MainList.DeleteBoard.Request)
+    
+    //func getCountOfBoards() -> Int
+    func getBoard(request: MainList.GetBoard.Request) -> MainList.GetBoard.Response
+
+    func getCountOfDataBoards() -> Int
+    func getCountOfToDoBoards() -> Int
    
 
 }
@@ -29,22 +35,56 @@ protocol MainListBusinessLogic {
 protocol MainListDataStore {
     var user: User! { get set }
     
-    var boards: [Board] { get }
+   // var boards: [Board] { get }
+    var toDoBoards: [Board] { get }
+    var dataBoards: [Board] { get }
+    
+    
 }
 
 class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     
     var user: User!
-    var boards: [Board] = []
+    //var boards: [Board] = []
+    
+    var toDoBoards: [Board] = []
+    var dataBoards: [Board] = []
 
     
     //var name: String
     weak var viewController: MainListViewController?
     var presenter: MainListPresentationLogic?
     
+    // MARK: - GETTING FROM DATASTORE
+   
+//    func getCountOfBoards() -> Int {
+//        return boards.count
+//    }
+    func getCountOfDataBoards() -> Int {
+        return dataBoards.count
+    }
+    func getCountOfToDoBoards() -> Int {
+        return toDoBoards.count
+    }
     
-    
-    // MARK: Do something
+    func getBoard(request: MainList.GetBoard.Request) -> MainList.GetBoard.Response {
+        var board = Board()
+        
+        if request.indexPath.section == 0 {
+            board = toDoBoards[request.indexPath.row]
+            
+        } else if request.indexPath.section == 1 {
+            board = dataBoards[request.indexPath.row]
+        }
+        let response = MainList.GetBoard.Response(
+            indexPath: request.indexPath,
+            name: board.name ?? "Error".localized(),
+            type: board.type ?? BoardType.data,
+            status: board.status)
+        return response
+    }
+  
+    // MARK:  ACTIONS
     
     func showUser (request: MainList.ShowUser.Request) {
         let response = MainList.ShowUser.Response(user: user)
@@ -52,37 +92,57 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     }
     
     func showBoards (request: MainList.ShowBoards.Request) {
-        boards = CoreDataManager.shared.getBoards(user: user)
-        boards.sort { (board1, board2) -> Bool in
+        let boards = CoreDataManager.shared.getBoards(user: user)
+        for board in boards {
+            if board.type == BoardType.data { dataBoards.append(board) }
+            if board.type == BoardType.todo { toDoBoards.append(board) }
+        }
+        dataBoards.sort { (board1, board2) -> Bool in
             board1.id < board2.id
         }
-        
-        var boardsNames: [String] = []
-        boards.forEach { board in
-            boardsNames.append(board.name ?? "Error")
+        toDoBoards.sort { (board1, board2) -> Bool in
+            board1.id < board2.id
         }
-        
-        let response = MainList.ShowBoards.Response(boardsNames: boardsNames)
+          
+        let response = MainList.ShowBoards.Response()
         presenter?.presentBoards(response: response)
     }
     
     
     
     func createNewBoard(request: MainList.CreateNewBoard.Request) {
-        //let board = CoreDataManager.shared.createBoard(userName: name, boardName: request.name)
-        guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name, id: boards.count) else {
-            let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
-            presenter?.presentError(response: response)
-            return
+        if request.type == BoardType.data {
+            guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name, type: request.type, id: dataBoards.count) else {
+                let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
+                presenter?.presentError(response: response)
+                return
+            }
+            dataBoards.append(board)
+            let response = MainList.CreateNewBoard.Response(board: board)
+            presenter?.presentNewBoard(response: response)
         }
-        boards.append(board)
-        let response = MainList.CreateNewBoard.Response(name: board.name ?? "Error")
-        presenter?.presentNewBoard(response: response)
+        if request.type == BoardType.todo {
+            guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name, type: request.type, id: toDoBoards.count) else {
+                let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
+                presenter?.presentError(response: response)
+                return
+            }
+            toDoBoards.append(board)
+            let response = MainList.CreateNewBoard.Response(board: board)
+            presenter?.presentNewBoard(response: response)
+        }
+
         
     }
     
     func editBoardName(request: MainList.EditBoardName.Request) {
-        let board = boards[request.indexPath.row]
+        var board = Board()
+        if request.indexPath.section == 0 {
+            board = toDoBoards[request.indexPath.row]
+        } else {
+            board = dataBoards[request.indexPath.row]
+        }
+        
         board.name = request.name
         if CoreDataManager.shared.saveChanges() {
             let response = MainList.EditBoardName.Response(name: board.name ?? "Error", indexPath: request.indexPath)
@@ -95,8 +155,13 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     }
     
     func deleteBoard(request: MainList.DeleteBoard.Request) {
-        if CoreDataManager.shared.deleteBoard(board: boards[request.indexPath.row]) {
-            boards.remove(at: request.indexPath.row)
+        var board = Board()
+        if request.indexPath.section == 0 { board = toDoBoards[request.indexPath.row] }
+        else { board = dataBoards[request.indexPath.row] }
+            
+        if CoreDataManager.shared.deleteBoard(board: board) {
+            if request.indexPath.section == 0 { toDoBoards.remove(at: request.indexPath.row) }
+            else { dataBoards.remove(at: request.indexPath.row) }
             renumberBoards()
             let response = MainList.DeleteBoard.Response(indexPath: request.indexPath)
             presenter?.deleteBoard(response: response)
@@ -108,7 +173,10 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
     }
     //Used when delete board
     func renumberBoards() {
-        for (index, board) in boards.enumerated() {
+        for (index, board) in toDoBoards.enumerated() {
+            board.id = Int64(index)
+        }
+        for (index, board) in dataBoards.enumerated() {
             board.id = Int64(index)
         }
     }

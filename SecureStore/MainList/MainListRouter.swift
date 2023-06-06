@@ -13,7 +13,7 @@
 import UIKit
 
 @objc protocol MainListRoutingLogic {
-    func navigateToBoardDesk(indexPath: IndexPath)
+    func navigateByIndexPath(indexPath: IndexPath)
 }
 
 protocol MainListDataPassing {
@@ -24,16 +24,43 @@ class MainListRouter: NSObject, MainListRoutingLogic, MainListDataPassing {
     weak var viewController: MainListViewController?
     var dataStore: MainListDataStore?
     
-    
-    
     //MARK: Navigation
     
-    func navigateToBoardDesk(indexPath: IndexPath) {
-        let boardDeskVC = BoardDeskViewController(nibName: nil, bundle: nil)
+    func navigateByIndexPath(indexPath: IndexPath) {
         
-        let navigationController = UINavigationController(rootViewController: boardDeskVC)
+        if indexPath.section == 0 {
+            navigateToTaskList(indexPath: indexPath)
+        } else {
+            navigateToDeskBoard(indexPath: indexPath)
+        }
+      
+    }
+    
+     // MARK:  - Navigate to TASK LIST
+    
+    private func navigateToTaskList(indexPath: IndexPath) {
+        let taskListVC = TaskListViewController(nibName: nil, bundle: nil)
+        let navigationController = UINavigationController(rootViewController: taskListVC)
         navigationController.modalPresentationStyle = .fullScreen
         
+        var taskListDS = taskListVC.router!.dataStore!
+
+        viewController!.present(navigationController, animated: true)
+        passDataToTaskList(source: dataStore!, destination: &taskListDS, indexPath: indexPath)
+
+    }
+    
+    func passDataToTaskList(source: MainListDataStore, destination: inout TaskListDataStore, indexPath: IndexPath) {
+        let board = source.toDoBoards[indexPath.row]
+        destination.board = board
+    }
+    
+    
+    // MARK:  - Navigate to Desk Board
+    
+    private func navigateToDeskBoard(indexPath: IndexPath) {
+        let boardDeskVC = BoardDeskViewController(nibName: nil, bundle: nil)
+        let navigationController = UINavigationController(rootViewController: boardDeskVC)
         navigationController.modalPresentationStyle = .fullScreen
         
         var boardDeskDS = boardDeskVC.router!.dataStore!
@@ -42,9 +69,9 @@ class MainListRouter: NSObject, MainListRoutingLogic, MainListDataPassing {
         passDataToBoardDesk(source: dataStore!, destination: &boardDeskDS, indexPath: indexPath)
     }
     
-    // MARK: Passing data
-    
     func passDataToBoardDesk(source: MainListDataStore, destination: inout BoardDeskDataStore, indexPath: IndexPath) {
-        destination.board = source.boards[indexPath.row]
+        let board = source.dataBoards[indexPath.row]
+        destination.board = board
     }
+    
 }

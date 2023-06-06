@@ -131,15 +131,13 @@ extension BoardDeskViewController {
         }
         
         let cancelAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
-        
         alert.addAction(textFieldAction)
         alert.addAction(cameraAction)
         alert.addAction(libraryAction)
         alert.addAction(cancelAction)
+        
         present(alert, animated: true)
     }
-    
-
     
 }
 
@@ -150,12 +148,14 @@ extension BoardDeskViewController {
         view.backgroundColor = ColorList.mainBlue
         tableView.register(ImageCell.self, forCellReuseIdentifier: UnitType.image)
         tableView.register(TextViewCell.self, forCellReuseIdentifier: UnitType.text)
-        tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: "task")
+        tableView.tableFooterView = UIView() // Dont show unused rows
+        tableView.separatorStyle = .none // Dont show borders between rows
+        tableView.estimatedRowHeight = UITableView.automaticDimension // Flexible height of row
+        tableView.rowHeight = UITableView.automaticDimension // Flexible height of row
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.keyboardDismissMode = .onDrag
+        tableView.keyboardDismissMode = .onDrag // Close the keyboard by scrolling
+        //tableView.contentInset.top = UIScreen.main.bounds.width*0.1 //Space above tableview
         
         let request = BoardDesk.ShowBoard.Request()
         interactor?.showBoard(request: request)
@@ -177,7 +177,6 @@ extension BoardDeskViewController {
         appearance.largeTitleTextAttributes = [.foregroundColor: ColorList.textColor]
         appearance.titleTextAttributes = [.foregroundColor: ColorList.textColor]
         UINavigationBar.appearance().backgroundColor = ColorList.mainBlue
-        
         
         // Add bottom line
         
@@ -212,22 +211,17 @@ extension BoardDeskViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return interactor!.getCountOfUnits()
     }
-    
-//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//
-//        return UITableView.automaticDimension
-//    }
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let unit = interactor?.getUnit(indexPath: indexPath)  // Hear unit is cortege
         
         switch unit!.type {
+            // MARK:  - IMAGE CELL
         case UnitType.image:
             let cell = tableView.dequeueReusableCell(withIdentifier: UnitType.image, for: indexPath) as! ImageCell
             cell.configure(data: unit!.data!)
             return cell
-            
+            // MARK:  - TEXT CELL
         case UnitType.text:
             let cell = tableView.dequeueReusableCell(withIdentifier: UnitType.text, for: indexPath) as! TextViewCell
             cell.configure(text: unit!.text!)

@@ -26,7 +26,7 @@ class BoardDeskRouter: NSObject, BoardDeskRoutingLogic, BoardDeskDataPassing {
     
     // MARK: Navigation
     
-    func navigateToFullScreenImage(indexPath: IndexPath){
+    func navigateToFullScreenImage(indexPath: IndexPath) {
         
         let fullScreanImageVC = FullScreenImageViewController()
         fullScreanImageVC.image = UIImage(data: dataStore!.units[indexPath.row].data!)
@@ -35,6 +35,7 @@ class BoardDeskRouter: NSObject, BoardDeskRoutingLogic, BoardDeskDataPassing {
         viewController?.present(fullScreanImageVC, animated: true, completion: nil)
         
     }
+    
     
     // MARK: Passing data
     

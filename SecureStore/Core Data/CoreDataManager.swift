@@ -73,13 +73,15 @@ class CoreDataManager {
 extension CoreDataManager {
     
     
-    func createBoard(user: User, boardName: String, id: Int) -> Board? {
+    func createBoard(user: User, boardName: String, type: String, id: Int) -> Board? {
         
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "Board", in: managedContext) else { return nil}
         let board = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Board
         board.name = boardName
+        board.type = type
         board.user = user
         board.id = Int64(id)
+        board.status = false
         
         do {
             try managedContext.save()
@@ -155,6 +157,23 @@ extension CoreDataManager {
         return boardUnit
     }
     
+    func createToDoUnit(board: Board, unitType: String, id: Int) -> BoardUnit? {
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "BoardUnit", in: managedContext) else { return nil }
+        let boardUnit = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! BoardUnit
+        boardUnit.board = board
+        boardUnit.type = unitType
+        boardUnit.id = Int64(id)
+        
+        do {
+            try managedContext.save()
+            print ("Succeess saving to CoreData")
+        } catch let error {
+            print (error.localizedDescription)
+            return nil
+        }
+        return boardUnit
+    }
+    
     
     
     // MARK:  - ANY ACTIONS WHITH UNITS
@@ -181,7 +200,63 @@ extension CoreDataManager {
     }
 }
 
-// MARK:  ENCRYPTION
+// MARK:  - TASKS
+
+extension CoreDataManager {
+    
+    func createTask(board: Board, name: String, id: Int) -> Task? {
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: managedContext) else { return nil }
+        let task = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! Task
+        task.board = board
+        task.name = name
+        task.id = Int64(id)
+        task.complited = false
+        
+        do {
+            try managedContext.save()
+            print ("Succeess saving to CoreData")
+        } catch let error {
+            print (error.localizedDescription)
+            return nil
+        }
+        return task
+    }
+    
+    func changeTaskStatus(task: Task) -> Bool {
+        task.complited.toggle()
+        if saveChanges() { return true }
+        else { return false }
+    }
+    
+    func changeTaskName(task: Task, newName: String) -> Bool {
+        task.name = newName
+        if saveChanges() { return true }
+        else { return false }
+    }
+    
+    func getTasks(board: Board) -> [Task] {
+        var tasks: [Task] = []
+        guard let tasksElements = board.tasks else { return [] }
+        
+        for element in tasksElements {
+            let task = element as! Task
+            tasks.append(task)
+            //print (unit.type ?? "Error getting")
+        }
+        return tasks
+    }
+    
+    func deleteTask(task: Task) -> Bool {
+        managedContext.delete(task)
+        if saveChanges() {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+// MARK:  - ENCRYPTION
 
 extension CoreDataManager {
     func encryptString(string: String) -> String {

@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = LoginViewController()
-        //window.rootViewController = TestViewController() //for tests
+        //window.rootViewController = TaskListViewController(nibName: nil, bundle: nil) //for tests
         window.makeKeyAndVisible()
        
         self.window = window

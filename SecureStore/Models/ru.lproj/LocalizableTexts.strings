@@ -19,6 +19,10 @@
 "Username cannot contain a space" = "Имя пользователя не должно содержать пробел";
 "User name already taken" = "Такой пользователь уже существует";
 //MainList
+"Tasks" = "Задачи";
+"Storages" = "Хранилища";
+"New task list" = "Новый список задач";
+"New storage" = "Новое хранилище";
 "New board" = "Новая доска";
 "Enter new board" = "Ввод новой доски";
 "Save" = "Сохранить";

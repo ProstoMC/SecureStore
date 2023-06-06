@@ -19,6 +19,7 @@ protocol BoardDeskBusinessLogic {
     
     func createImageUnit(request: BoardDesk.CreateUnit.Request)
     func createTextUnit(request: BoardDesk.CreateUnit.Request)
+    func createToDoUnit(request: BoardDesk.CreateUnit.Request)
     func deleteUnit(request: BoardDesk.DeleteUnit.Request)
     
     func changeTextUnit(request: BoardDesk.ChangingTextUnit.Request) 
@@ -63,8 +64,13 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     
     // MARK:  - CREATING UNITS
     
-    func createImageUnit(request: BoardDesk.CreateUnit.Request){
-        guard let unit = CoreDataManager.shared.createImageUnit(board: board, unitType: UnitType.image, data: request.data, id: units.count) else {
+    func createImageUnit(request: BoardDesk.CreateUnit.Request) {
+        guard let data = request.data else {
+            let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
+            presenter?.presentMessage(response: response)
+            return
+        }
+        guard let unit = CoreDataManager.shared.createImageUnit(board: board, unitType: UnitType.image, data: data, id: units.count) else {
             
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
@@ -78,7 +84,17 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
     
     func createTextUnit(request: BoardDesk.CreateUnit.Request) {
         guard let unit = CoreDataManager.shared.createTextUnit(board: board, unitType: UnitType.text, text: "", id: units.count) else {
-            
+            let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
+            presenter?.presentMessage(response: response)
+            return
+        }
+        
+        units.append(unit)
+        presenter?.presentNewUnit()
+    }
+    
+    func createToDoUnit(request: BoardDesk.CreateUnit.Request){
+        guard let unit = CoreDataManager.shared.createToDoUnit(board: board, unitType: UnitType.todo, id: units.count) else {
             let response = BoardDesk.Message.Response(title: "Unit saving unsuccess", message: "Try again")
             presenter?.presentMessage(response: response)
             return

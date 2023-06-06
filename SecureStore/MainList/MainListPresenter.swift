@@ -38,12 +38,14 @@ class MainListPresenter: MainListPresentationLogic {
     }
     
     func presentBoards(response: MainList.ShowBoards.Response) {
-        let viewModel = MainList.ShowBoards.ViewModel(boardsNames: response.boardsNames)
+        let viewModel = MainList.ShowBoards.ViewModel()
         viewController?.displayBoards(viewModel: viewModel)
     }
     
     func presentNewBoard(response: MainList.CreateNewBoard.Response) {
-        let viewModel = MainList.CreateNewBoard.ViewModel(name: response.name)
+        let viewModel = MainList.CreateNewBoard.ViewModel(
+            name: response.board.name ?? "Error",
+            type: response.board.type ?? BoardType.data)
         viewController?.displayNewBoard(viewModel: viewModel)
     }
     

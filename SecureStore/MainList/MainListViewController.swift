@@ -43,7 +43,7 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         return button
     }()
        
-    private var boardsList: [String] = []
+    //private var boardsList: [String] = []
     private var userImageData: Data?
     
     
@@ -102,26 +102,36 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     }
     
     func displayBoards(viewModel: MainList.ShowBoards.ViewModel) {
-        boardsList = viewModel.boardsNames
+        //boardsList = viewModel.boardsNames
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
     
     func displayNewBoard(viewModel: MainList.CreateNewBoard.ViewModel) {
-        boardsList.append(viewModel.name)
-        self.tableView.insertRows(at: [IndexPath(row: self.boardsList.count - 1, section: 0)], with: .automatic)
+        var row = 0
+        var section = 0
+        
+        if viewModel.type == BoardType.todo {
+            section = 0
+            row = interactor!.getCountOfToDoBoards() - 1
+        }
+        if viewModel.type == BoardType.data {
+            section = 1
+            row = interactor!.getCountOfDataBoards() - 1
+        }
+        self.tableView.insertRows(at: [IndexPath(row: row, section: section)], with: .automatic)
     }
     
 
     
     func displayEditedBoard(viewModel: MainList.EditBoardName.ViewModel) {
-        boardsList[viewModel.indexPath.row] = viewModel.name
+        
         tableView.reloadRows(at: [viewModel.indexPath], with: .automatic)
     }
     
     func deleteBoard(viewModel: MainList.DeleteBoard.ViewModel) {
-        boardsList.remove(at: viewModel.indexPath.row)
+        
         tableView.deleteRows(at: [viewModel.indexPath], with: .automatic)
     }
     
@@ -140,7 +150,9 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
 // MARK: -  ACTIONS
 extension MainListViewController {
     @objc private func addNewTask() {
-        showAlert(title: "New board".localized(), message: "Enter new board".localized(), indexPath: nil)
+        
+        chooseTypeAlert()
+        //showAlert(title: "New board".localized(), message: "Enter new board".localized(), indexPath: nil)
     }
     
     @objc private func menuPanelToggle() {
@@ -216,10 +228,38 @@ extension MainListViewController: UIImagePickerControllerDelegate & UINavigation
 extension MainListViewController: UITextFieldDelegate {
     
     // Lines edditing Alert
-    
-    private func showAlert(title: String, message: String, indexPath: IndexPath?) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    private func chooseTypeAlert() {
         
+        let alert = UIAlertController(title: "Choose type".localized(), message: nil, preferredStyle: .actionSheet)
+        
+        let toDoAction = UIAlertAction(title: "Todo".localized(), style: .default) { _ in
+            self.boardNameAlert(
+                title: "New board".localized(),
+                message: "Enter new board".localized(),
+                indexPath: nil,
+                type: BoardType.todo)
+            return
+        }
+        
+        let dataAction = UIAlertAction(title: "Data type".localized(), style: .default) { _ in
+            self.boardNameAlert(
+                title: "New board",
+                message: "Enter new board",
+                indexPath: nil,
+                type: BoardType.data)
+            return
+        }
+                
+        let cancelAction = UIAlertAction(title: "Cancel".localized(), style: .destructive)
+        alert.addAction(toDoAction)
+        alert.addAction(dataAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func boardNameAlert(title: String, message: String, indexPath: IndexPath?, type: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save".localized(), style: .default) { _ in
             guard let boardName = alert.textFields?.first?.text, !boardName.isEmpty else {
@@ -229,7 +269,7 @@ extension MainListViewController: UITextFieldDelegate {
                 
             //Save or edit with CoreData
             if indexPath == nil {
-                let request = MainList.CreateNewBoard.Request(name: boardName)
+                let request = MainList.CreateNewBoard.Request(name: boardName, type: type!)
                 self.interactor?.createNewBoard(request: request)
             } else {
                 print("Edditing ".localized(), boardName)
@@ -350,27 +390,96 @@ extension MainListViewController: UITextFieldDelegate {
 
 
 
-// MARK: - TableView Configuration
+// MARK: - TableView Section Configuration
 extension MainListViewController {
     
+    
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // 2 sections: To Do and Data
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var title = "Error"
+        if section == 0 { // For To Do
+            title = "Tasks".localized()
+        }
+        if section == 1 { // For Data
+            title = "Storages".localized()
+        }
+        return title
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let headerView = view as? UITableViewHeaderFooterView {
+            
+            headerView.contentView.backgroundColor = ColorList.mainBlue
+            headerView.backgroundView?.backgroundColor = ColorList.mainBlue
+            headerView.textLabel?.textColor = ColorList.textColor
+            headerView.textLabel?.font = UIFont.systemFont(ofSize: 19)
+            //headerView.textLabel?.textAlignment = .center
+            
+            let lineView = UIView()
+            lineView.backgroundColor = ColorList.textColor
+            lineView.frame = CGRect(
+                x: headerView.contentView.bounds.minX,
+                y: headerView.contentView.bounds.maxY - headerView.contentView.bounds.width*0.001,
+                width: headerView.contentView.bounds.width,
+                height: headerView.contentView.bounds.width*0.001
+            )
+            headerView.addSubview(lineView)
+        }
+
+    }
+    
+    // MARK: - TableView Rows Configuration
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return boardsList.count
+        var count = 0
+        if section == 0 { // For To Do
+            count = interactor!.getCountOfToDoBoards() + 1 //For cell with plus
+        }
+        if section == 1 {
+            count = interactor!.getCountOfDataBoards() + 1  //For cell with plus
+        }
+        return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = ColorList.mainBlue
-        cell.selectionStyle = .none
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        cell.textLabel?.textColor = ColorList.textColor
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BoardTableViewCell
         
-        let board = boardsList[indexPath.row]
-        cell.textLabel?.text = board
+        // Catching last row for making plus cell
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            cell.configureEmptyCell()
+        } else {
+            let request = MainList.GetBoard.Request(indexPath: indexPath)
+            let getBoardResponse = interactor!.getBoard(request: request)
+            cell.configure(board: getBoardResponse)
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        router?.navigateToBoardDesk(indexPath: indexPath)
+        //do nt process last row "plus cell"
+        if indexPath.row + 1 < tableView.numberOfRows(inSection: indexPath.section) {
+            router?.navigateByIndexPath(indexPath: indexPath)
+        } else {
+            if indexPath.section == 0 { // For TO DO
+                boardNameAlert(
+                    title: "New task list".localized(),
+                    message: "Enter name".localized(),
+                    indexPath: nil,
+                    type: BoardType.todo)
+            }
+            if indexPath.section == 1 { // For Data
+                boardNameAlert(
+                    title: "New storage".localized(),
+                    message: "Enter name".localized(),
+                    indexPath: nil,
+                    type: BoardType.data)
+            }
+        }
     }
     
     // MARK:  - Add buttons
@@ -378,29 +487,36 @@ extension MainListViewController {
     
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        var actions: [UIContextualAction] = []
+        // We haven't add buttons to last "plus" cell
+        if indexPath.row + 1 < tableView.numberOfRows(inSection: indexPath.section) {
+            
+            let deleteButton = UIContextualAction(style: .normal, title:  "", handler: {
+                [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
+               in
+                let request = MainList.DeleteBoard.Request(indexPath: indexPath)
+                self.interactor?.deleteBoard(request: request)
 
-        let deleteButton = UIContextualAction(style: .normal, title:  "", handler: {
-            [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
-           in
-            let request = MainList.DeleteBoard.Request(indexPath: indexPath)
-            self.interactor?.deleteBoard(request: request)
+            })
+            deleteButton.image = UIImage(systemName: "trash")
+            
 
-        })
-        deleteButton.image = UIImage(systemName: "trash")
-        
+            let editButton = UIContextualAction(style: .normal, title: "", handler: {
+                [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
+                in
+                let request = MainList.GetBoard.Request(indexPath: indexPath)
+                self.boardNameAlert(title: "Edit the board".localized(), message: interactor!.getBoard(request: request).name, indexPath: indexPath, type: nil)
+            })
+            editButton.image = UIImage(systemName: "square.and.pencil")
 
-        let editButton = UIContextualAction(style: .normal, title: "", handler: {
-            [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
-            in
-            self.showAlert(title: "Edit the board".localized(), message: self.boardsList[indexPath.row], indexPath: indexPath)
-        })
-        editButton.image = UIImage(systemName: "square.and.pencil")
-
-        editButton.backgroundColor = ColorList.additionalBlue
-        deleteButton.backgroundColor = ColorList.textColor
-     
-
-        return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
+            editButton.backgroundColor = ColorList.additionalBlue
+            deleteButton.backgroundColor = ColorList.textColor
+            actions.append(deleteButton)
+            actions.append(editButton)
+            
+            //return UISwipeActionsConfiguration(actions: [deleteButton, editButton])
+        }
+        return UISwipeActionsConfiguration(actions: actions)
     }
     
 }
@@ -411,7 +527,7 @@ extension MainListViewController {
     
     
     private func setupUI() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(BoardTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView()
         
         view.backgroundColor = ColorList.mainBlue
