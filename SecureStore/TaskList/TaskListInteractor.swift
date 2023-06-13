@@ -21,6 +21,7 @@ protocol TaskListBusinessLogic {
     func createNewTask(request: TaskList.CreateTask.Request)
     func editTaskName(request: TaskList.EditTaskName.Request)
     func deleteTask(request: TaskList.DeleteTask.Request)
+    func changeTaskStatus(request: TaskList.ChangeTaskStatus.Request)
 }
 
 protocol TaskListDataStore {
@@ -98,7 +99,27 @@ class TaskListInteractor: TaskListBusinessLogic, TaskListDataStore {
             presenter?.presentMessage(response: response)
         }
     }
-    //Used when delete board
+    
+    func changeTaskStatus(request: TaskList.ChangeTaskStatus.Request){
+        tasks[request.indexPath.row].complited.toggle()
+        setBoardStatus()
+        
+        if CoreDataManager.shared.saveChanges() {
+            //We can reuse edit task name presenter here
+            let response = TaskList.EditTaskName.Response(task: tasks[request.indexPath.row], indexPath: request.indexPath)
+            presenter?.presentChangedTask(response: response)
+        }
+        else {
+            let response = TaskList.DisplayMessage.Response(title: "Changing Failed".localized(), message: "Try Again".localized())
+            presenter?.presentMessage(response: response)
+        }
+    }
+    
+}
+
+extension TaskListInteractor {
+    
+    //Used when task was delete
     func renumberTasks() {
         for (index, task) in tasks.enumerated() {
             task.id = Int64(index)
@@ -106,4 +127,15 @@ class TaskListInteractor: TaskListBusinessLogic, TaskListDataStore {
 
     }
     
+    //Used when task status was changed
+    private func setBoardStatus(){
+        var listStatus = true
+        for task in tasks {
+            if !task.complited {
+                listStatus = false
+                break
+            }
+        }
+        board.status = listStatus
+    }
 }

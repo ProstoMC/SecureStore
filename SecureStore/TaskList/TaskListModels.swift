@@ -80,4 +80,16 @@ enum TaskList
         }
     }
     
+    enum ChangeTaskStatus {
+        struct Request {
+            var indexPath: IndexPath
+        }
+        struct Response {
+            var indexPath: IndexPath
+        }
+        struct ViewModel {
+            var indexPath: IndexPath
+        }
+    }
+    
 }

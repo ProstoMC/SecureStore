@@ -90,6 +90,11 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         let requestSB = MainList.ShowBoards.Request()
         interactor?.showBoards(request: requestSB)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tableView.reloadData()
+    }
   
   // MARK: - DISPLAY LOGIC
 
@@ -426,7 +431,7 @@ extension MainListViewController {
                 x: headerView.contentView.bounds.minX,
                 y: headerView.contentView.bounds.maxY - headerView.contentView.bounds.width*0.001,
                 width: headerView.contentView.bounds.width,
-                height: headerView.contentView.bounds.width*0.001
+                height: 0.5
             )
             headerView.addSubview(lineView)
         }
@@ -483,9 +488,7 @@ extension MainListViewController {
     }
     
     // MARK:  - Add buttons
-    
-    
-    
+
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         var actions: [UIContextualAction] = []
         // We haven't add buttons to last "plus" cell
@@ -560,7 +563,7 @@ extension MainListViewController {
         constraints.append(lineView.bottomAnchor.constraint(equalTo: navigationController!.navigationBar.bottomAnchor))
         constraints.append(lineView.leftAnchor.constraint(equalTo: navigationController!.navigationBar.leftAnchor))
         constraints.append(lineView.rightAnchor.constraint(equalTo: navigationController!.navigationBar.rightAnchor))
-        constraints.append(lineView.heightAnchor.constraint(equalToConstant: navigationController!.navigationBar.bounds.width*0.002))
+        constraints.append(lineView.heightAnchor.constraint(equalToConstant: 1))
         NSLayoutConstraint.activate(constraints)
                 
         // Add button +
@@ -575,10 +578,7 @@ extension MainListViewController {
     }
     
     private func setupMenuPanel() {
-       
-        //menuPanel.translatesAutoresizingMaskIntoConstraints = false
-        //closeTapArea.translatesAutoresizingMaskIntoConstraints = false
-        
+               
         //Behavior for touch outside of menuPanel
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(menuPanelToggle))

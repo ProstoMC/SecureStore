@@ -87,6 +87,12 @@ extension TaskListViewController {
             indexPath: nil
         )
     }
+    @objc func editModeToggle() {
+        self.isEditing.toggle()
+        
+    }
+    
+    
 }
 
 // MARK:  - DISPLAY LOGIC
@@ -161,25 +167,73 @@ extension TaskListViewController {
 extension TaskListViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return interactor!.getCountOfTasks()
+        return interactor!.getCountOfTasks() + 1 // For plus cell
     }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let task = interactor?.getTask(indexPath: indexPath)  // Here task is cortege
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
-        cell.configure(taskName: task!.name, complitedStatus: task!.complited)
         
+        // Catching last row for making plus cell
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            cell.configureEmptyCell()
+        } else {
+            
+            let task = interactor?.getTask(indexPath: indexPath)  // Here task is cortege
+            cell.configure(taskName: task!.name, complitedStatus: task!.complited)
+            
+            //Closure from cell for changing status by interactor
+            cell.changeStaus = { [weak self] in
+                self!.interactor!.changeTaskStatus(request: TaskList.ChangeTaskStatus.Request(indexPath: indexPath))
+            }
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-//        guard let unit = interactor?.getTask(indexPath: indexPath) else { return }
-//        if unit.type == UnitType.image {
-//            router?.navigateToFullScreenImage(indexPath: indexPath)
-//        }
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            addNewTask()
+        }
     }
+    
+    // MARK: - Reordering Cells
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        var cellIsNotLast = true
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            cellIsNotLast = false
+        }
+        return cellIsNotLast
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        var cellIsNotLast = true
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            cellIsNotLast = false
+        }
+        return cellIsNotLast
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+
+    }
+    
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if proposedDestinationIndexPath.row + 1 == tableView.numberOfRows(inSection: 0) {
+            return IndexPath(row: tableView.numberOfRows(inSection: 0) - 2, section: 0)
+        } else {
+            return proposedDestinationIndexPath
+        }
+    }
+        
+    // MARK:  - Add buttons to cell
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
@@ -220,10 +274,12 @@ extension TaskListViewController {
         setupNavigationBar()
     }
     
+    
+    
     private func setupNavigationBar() {
         title = "Error"
         
-        navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.prefersLargeTitles = true
 
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = ColorList.mainBlue
@@ -249,9 +305,12 @@ extension TaskListViewController {
         NSLayoutConstraint.activate(constraints)
                 
         // Add button +
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
+//        navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+//
+        // Add edit button
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
         navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
-        
         
         // Add button Menu
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))

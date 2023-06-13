@@ -52,6 +52,9 @@ class BoardTableViewCell: UITableViewCell {
         
         content.text = board.name
         content.image = UIImage(systemName: "checkmark.circle")
+        if board.status {
+            content.image = UIImage(systemName: "checkmark.circle.fill")
+        }
         self.contentConfiguration = content
     }
     

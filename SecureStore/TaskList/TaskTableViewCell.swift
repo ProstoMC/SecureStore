@@ -8,11 +8,14 @@
 import UIKit
 
 class TaskTableViewCell: UITableViewCell {
+    
+    var changeStaus : (() -> ()) = {}  //Closure for changing status. Using on TaskListVC
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
+    
+    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -20,18 +23,43 @@ class TaskTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(taskName: String, complitedStatus: Bool){
+    @objc private func imagePressed(_ sender: UITapGestureRecognizer) {
+        print ("IMAGE PRESSED")
+        changeStaus()
+    }
+    
+    func configure(taskName: String, complitedStatus: Bool) {
+        
         selectionStyle = .none
         backgroundColor = ColorList.mainBlue
         
-        var content = self.defaultContentConfiguration()
+        imageView?.tintColor = ColorList.textColor
+        textLabel?.textColor = ColorList.textColor
         
-        content.imageProperties.tintColor = ColorList.textColor
-        content.textProperties.color = ColorList.textColor
         
-        content.image = UIImage(systemName: "plus")
-        content.text = taskName
-        self.contentConfiguration = content
+        var statusImage = UIImage(systemName: "circle")
+        
+        if complitedStatus {
+            statusImage = UIImage(systemName: "checkmark.circle.fill")
+        }
+        
+        imageView?.image = statusImage
+        textLabel?.text = taskName
+        
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(imagePressed))
+        imageView!.isUserInteractionEnabled = true
+        imageView!.addGestureRecognizer(tap)
+            
+    }
+    
+    func configureEmptyCell() {
+        
+        selectionStyle = .none
+        backgroundColor = ColorList.mainBlue
+        imageView?.tintColor = ColorList.textColor
+        
+        imageView?.image = UIImage(systemName: "plus")
     }
 
 }
