@@ -90,6 +90,14 @@ extension TaskListViewController {
     @objc func editModeToggle() {
         self.isEditing.toggle()
         
+        if self.isEditing {
+            
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done".localized(), style: .plain, target: self, action: #selector(editModeToggle))
+            navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
+            navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+        }
     }
     
     

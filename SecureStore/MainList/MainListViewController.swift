@@ -42,6 +42,7 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
         button.isHidden = true
         return button
     }()
+    
        
     //private var boardsList: [String] = []
     private var userImageData: Data?
@@ -187,6 +188,19 @@ extension MainListViewController {
     }
     @objc private func userImageTapped(){
         choosingImageSourceAlert()
+    }
+    @objc func editModeToggle() {
+        self.isEditing.toggle()
+        
+        if self.isEditing {
+            
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done".localized(), style: .plain, target: self, action: #selector(editModeToggle))
+            navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
+            navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+        }
+        
     }
     
 }
@@ -522,6 +536,54 @@ extension MainListViewController {
         return UISwipeActionsConfiguration(actions: actions)
     }
     
+    // MARK: - Reordering Cells
+    
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        var cellIsNotLast = true
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            cellIsNotLast = false
+        }
+        return cellIsNotLast
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+    
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    //Do not touch cell with plus
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        var cellIsNotLast = true
+        if indexPath.row + 1 == tableView.numberOfRows(inSection: indexPath.section) {
+            cellIsNotLast = false
+        }
+        return cellIsNotLast
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+
+    }
+    
+    //Replacing cell from wrong place
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if sourceIndexPath.section != proposedDestinationIndexPath.section {
+            if sourceIndexPath.section < proposedDestinationIndexPath.section {
+                return IndexPath(row: tableView.numberOfRows(inSection: sourceIndexPath.section)-2, section: sourceIndexPath.section)
+            }else {
+                return IndexPath(row: 0, section: sourceIndexPath.section)
+            }
+            
+        }
+                
+        if proposedDestinationIndexPath.row + 1 == tableView.numberOfRows(inSection: sourceIndexPath.section) {
+            return IndexPath(row: tableView.numberOfRows(inSection: proposedDestinationIndexPath.section) - 2, section: proposedDestinationIndexPath.section)
+        } else {
+            return proposedDestinationIndexPath
+        }
+    }
+    
 }
 
 
@@ -566,8 +628,10 @@ extension MainListViewController {
         constraints.append(lineView.heightAnchor.constraint(equalToConstant: 1))
         NSLayoutConstraint.activate(constraints)
                 
-        // Add button +
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
+        // Add edit button
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
         navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
         
         

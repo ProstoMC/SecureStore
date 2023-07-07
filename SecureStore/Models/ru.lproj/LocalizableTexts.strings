@@ -19,6 +19,8 @@
 "Username cannot contain a space" = "Имя пользователя не должно содержать пробел";
 "User name already taken" = "Такой пользователь уже существует";
 //MainList
+"Edit" = "Изм.";
+"Done" = "Готово";
 "Tasks" = "Задачи";
 "Storages" = "Хранилища";
 "New task list" = "Новый список задач";
