@@ -11,6 +11,10 @@ class ImageCell: UITableViewCell {
     
     var imgView = UIImageView()
     
+    var centerXConstraintEdditing = NSLayoutConstraint()
+    var centerXConstraintNormal = NSLayoutConstraint()
+    
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
@@ -27,15 +31,30 @@ class ImageCell: UITableViewCell {
         imgView.clipsToBounds = true
         imgView.layer.masksToBounds = true
     }
+    
+    override func didTransition(to state: UITableViewCell.StateMask) {
+        if self.isEditing {
+            
+            centerXConstraintNormal.isActive = false
+            centerXConstraintEdditing.isActive = true
+
+        } else {
+            centerXConstraintEdditing.isActive = false
+            centerXConstraintNormal.isActive = true
+        }
+    }
 
     
 
     func commonInit() {
-        
+        let screensize = UIScreen.main.bounds
+        //Constraints for behavior edditing mode
+        centerXConstraintEdditing = imgView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -UIScreen.main.bounds.width*0.15)
+        centerXConstraintNormal = imgView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         
         contentView.addSubview(imgView)
         
-        let screensize = UIScreen.main.bounds
+        
         contentView.translatesAutoresizingMaskIntoConstraints = false
         imgView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -43,12 +62,13 @@ class ImageCell: UITableViewCell {
         selectionStyle = .none
         
         NSLayoutConstraint.activate([
-            imgView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            imgView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            imgView.widthAnchor.constraint(equalToConstant: screensize.width*0.8),
             imgView.heightAnchor.constraint(equalToConstant: screensize.width*0.8),
-            imgView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screensize.width*0.1),
-            imgView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            imgView.widthAnchor.constraint(equalToConstant: screensize.width*0.8),
+            imgView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            centerXConstraintNormal,
+
+            imgView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UIScreen.main.bounds.height*0.02), //space between cells
+            imgView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -UIScreen.main.bounds.height*0.02), //space between cells
             
             contentView.leftAnchor.constraint(equalTo: self.leftAnchor),
             contentView.rightAnchor.constraint(equalTo: self.rightAnchor),

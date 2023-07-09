@@ -15,6 +15,7 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
     var saveText : (() -> ()) = {}  //Closure for saving. Using on BoardDesckVC
     
     
+    
     var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,6 +39,10 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
         
         return textView
     }()
+    
+    //Constraint for behavior of edditing mode
+    var rightConstraintEdit = NSLayoutConstraint()
+    var rightConstraintNormal = NSLayoutConstraint()
     
     // MARK:  - Setup SaveButton
     var buttonSave: UIButton = {
@@ -68,6 +73,8 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
         commonInit()
     }
     
+    
+    
     func configure(text: String) {
         textView.text = text
     }
@@ -88,13 +95,30 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
     // MARK:  - SETUP UI
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         //Setup corners
-        buttonSave.layer.cornerRadius = buttonSave.bounds.height/2
+        buttonSave.layer.cornerRadius = buttonSave.bounds.height / 2
         textView.layer.cornerRadius = contentView.bounds.width / 100
+        
+    }
+    
+    override func didTransition(to state: UITableViewCell.StateMask) {
+        
+        if self.isEditing {
+            rightConstraintNormal.isActive = false
+            rightConstraintEdit.isActive = true
+        } else {
+            rightConstraintEdit.isActive = false
+            rightConstraintNormal.isActive = true
+        }
     }
 
     func commonInit() {
+        //Constraints for behavior of edditing mode
+        rightConstraintEdit = textView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -UIScreen.main.bounds.width*0.15)
+        rightConstraintNormal = textView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -UIScreen.main.bounds.width*0.05)
         
+        self.automaticallyUpdatesContentConfiguration = true
         backgroundColor = ColorList.mainBlue
         let screensize = UIScreen.main.bounds
         textView.delegate = self
@@ -113,10 +137,10 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
         //SETUP STACK VIEW
         contentView.addSubview(stackView)
         stackView.spacing = screensize.width*0.05
-        
+        //Spacing between cells
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: screensize.width*0.1),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -screensize.width*0.01)
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UIScreen.main.bounds.height*0.02),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -UIScreen.main.bounds.height*0.02)
         ])
         
         //SETUP TEXT VIEW
@@ -124,7 +148,8 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
         
         NSLayoutConstraint.activate([
             textView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: screensize.width*0.05),
-            textView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -screensize.width*0.05),
+            //textView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -screensize.width*0.05),
+            rightConstraintNormal
         ])
         
         //SETUP SAVE BUTTON

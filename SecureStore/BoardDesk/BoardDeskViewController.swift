@@ -20,11 +20,15 @@ protocol BoardDeskDisplayLogic: AnyObject {
     
 }
 
-class BoardDeskViewController: UITableViewController {
+class BoardDeskViewController: UIViewController {
     var interactor: BoardDeskBusinessLogic?
     var router: (NSObjectProtocol & BoardDeskRoutingLogic & BoardDeskDataPassing)?
     
-    // MARK: Object lifecycle
+    let tableView = UITableView()
+    let toolBar = UIView()
+    
+    
+    // MARK: - Object lifecycle
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -59,6 +63,11 @@ class BoardDeskViewController: UITableViewController {
         setupUI()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.reloadData()  //For making corner radius well
+    }
+
 }
 
 // MARK:  - ACTIONS
@@ -71,6 +80,31 @@ extension BoardDeskViewController {
     @objc func addNewUnit() {
         choosingUnitAlert()
     }
+    @objc func textImageTapped() {
+        let text = " "
+        let request = BoardDesk.CreateUnit.Request(data: text.data(using: .utf8)!)
+        interactor?.createTextUnit(request: request)
+    }
+    @objc func imageImageTapped() {
+        fetchImageFromPicker(source: .photoLibrary)
+    }
+    @objc func cameraImageTapped() {
+        fetchImageFromPicker(source: .camera)
+    }
+    @objc func editModeToggle() {
+        tableView.isEditing.toggle()
+        tableView.reloadData()
+        if self.tableView.isEditing {
+            
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done".localized(), style: .plain, target: self, action: #selector(editModeToggle))
+            navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
+            navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+        }
+    }
+    
+    
 }
 
 // MARK:  - DISPLAY LOGIC
@@ -145,11 +179,36 @@ extension BoardDeskViewController {
 
 extension BoardDeskViewController {
     func setupUI() {
+        
         view.backgroundColor = ColorList.mainBlue
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIScreen.main.bounds.height*0.06),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height*0.02),
+            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            
+        ])
+        
+     
+        //Setup tableView
+        
+        tableView.tableFooterView = UIView() // Dont show unused rows
+        tableView.contentInset.bottom = UIScreen.main.bounds.height*0.4 // Making bottom space
+        tableView.contentInset.top = UIScreen.main.bounds.height*0.02  //Making top space
+        
+        
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.backgroundColor = ColorList.mainBlue
         tableView.register(ImageCell.self, forCellReuseIdentifier: UnitType.image)
         tableView.register(TextViewCell.self, forCellReuseIdentifier: UnitType.text)
         tableView.register(TaskTableViewCell.self, forCellReuseIdentifier: "task")
-        tableView.tableFooterView = UIView() // Dont show unused rows
+
         tableView.separatorStyle = .none // Dont show borders between rows
         tableView.estimatedRowHeight = UITableView.automaticDimension // Flexible height of row
         tableView.rowHeight = UITableView.automaticDimension // Flexible height of row
@@ -161,7 +220,7 @@ extension BoardDeskViewController {
         interactor?.showBoard(request: request)
         
         setupNavigationBar()
-        
+        setupToolBar()
     }
     
     private func setupNavigationBar() {
@@ -191,10 +250,14 @@ extension BoardDeskViewController {
         constraints.append(lineView.heightAnchor.constraint(equalToConstant: navigationController!.navigationBar.bounds.width*0.002))
         NSLayoutConstraint.activate(constraints)
                 
-        // Add button +
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewUnit))
+        // Add Edit button
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Edit".localized(),
+            style: .plain,
+            target: self,
+            action: #selector(editModeToggle))
         navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
-
 
         // Add back button
 
@@ -202,16 +265,97 @@ extension BoardDeskViewController {
         navigationItem.leftBarButtonItem?.tintColor = ColorList.textColor
         
     }
+    
+    private func setupToolBar() {
+        
+        
+        view.addSubview(toolBar)
+        toolBar.translatesAutoresizingMaskIntoConstraints = false
+//        toolBar.frame = CGRect(x: 0, y: UIScreen.main.bounds.maxY-UIScreen.main.bounds.height*0.06, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height*0.06)
+        NSLayoutConstraint.activate([
+            toolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            toolBar.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height*0.06),
+            toolBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            toolBar.rightAnchor.constraint(equalTo: view.rightAnchor)
+            
+        ])
+        //UIScreen.saf
+        toolBar.backgroundColor = ColorList.mainBlue
+        
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        toolBar.addSubview(stackView)
+        stackView.spacing = UIScreen.main.bounds.width * 0.2
+        //stackView.alignment = .center
+        
+        let textImage = UIImageView()
+        let imageImage = UIImageView()
+        let cameraImage = UIImageView()
+        
+        textImage.translatesAutoresizingMaskIntoConstraints = false
+        imageImage.translatesAutoresizingMaskIntoConstraints = false
+        cameraImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        textImage.image = UIImage(systemName: "text.alignleft")
+        imageImage.image = UIImage(systemName: "photo")
+        cameraImage.image = UIImage(systemName: "camera")
+        
+        textImage.contentMode = .scaleAspectFit
+        imageImage.contentMode = .scaleAspectFit
+        cameraImage.contentMode = .scaleAspectFit
+        
+        
+        textImage.tintColor = ColorList.textColor
+        imageImage.tintColor = ColorList.textColor
+        cameraImage.tintColor = ColorList.textColor
+        
+        let sizeOfimage = UIScreen.main.bounds.height*0.07
+        
+        NSLayoutConstraint.activate([
+            stackView.centerYAnchor.constraint(equalTo: toolBar.centerYAnchor),
+            stackView.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
+            
+            textImage.heightAnchor.constraint(equalToConstant: sizeOfimage),
+            //textImage.widthAnchor.constraint(equalToConstant: sizeOfimage),
+           
+            imageImage.heightAnchor.constraint(equalToConstant: sizeOfimage),
+            //imageImage.widthAnchor.constraint(equalToConstant: sizeOfimage),
+            
+            cameraImage.heightAnchor.constraint(equalToConstant: sizeOfimage),
+            //photoImage.widthAnchor.constraint(equalToConstant: sizeOfimage)
+            
+        ])
+        
+        stackView.addArrangedSubview(textImage)
+        stackView.addArrangedSubview(imageImage)
+        stackView.addArrangedSubview(cameraImage)
+        
+        //Behavior
+        let textImageTapped = UITapGestureRecognizer(target: self, action: #selector(textImageTapped))
+        let imageImageTapped = UITapGestureRecognizer(target: self, action: #selector(imageImageTapped))
+        let cameraImageTapped = UITapGestureRecognizer(target: self, action: #selector(cameraImageTapped))
+        textImage.isUserInteractionEnabled = true
+        textImage.addGestureRecognizer(textImageTapped)
+        
+        imageImage.isUserInteractionEnabled = true
+        imageImage.addGestureRecognizer(imageImageTapped)
+        
+        cameraImage.isUserInteractionEnabled = true
+        cameraImage.addGestureRecognizer(cameraImageTapped)
+        
+        
+        
+    }
 }
 
 // MARK:  - TableView configure
 
-extension BoardDeskViewController {
+extension BoardDeskViewController: UITableViewDelegate, UITableViewDataSource {
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return interactor!.getCountOfUnits()
     }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let unit = interactor?.getUnit(indexPath: indexPath)  // Hear unit is cortege
         
@@ -250,7 +394,7 @@ extension BoardDeskViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let unit = interactor?.getUnit(indexPath: indexPath) else { return }
         if unit.type == UnitType.image {
@@ -258,7 +402,7 @@ extension BoardDeskViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 
         let deleteButton = UIContextualAction(style: .normal, title:  "", handler: {
             [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
@@ -273,6 +417,25 @@ extension BoardDeskViewController {
 
         return UISwipeActionsConfiguration(actions: [deleteButton])
     }
+    // MARK:  - Reordering cells
+    
+//    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+//
+//    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+//        return .none
+//    }
+//
+//    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+//        return false
+//    }
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+//    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//
+//    }
 }
 
 // MARK:  - Image picker
