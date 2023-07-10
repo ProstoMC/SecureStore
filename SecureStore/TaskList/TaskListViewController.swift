@@ -228,9 +228,13 @@ extension TaskListViewController {
         }
         return cellIsNotLast
     }
-    
+    //Saving of replacement
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-
+        let request = TaskList.MoveObjects.Request(
+            sourceIndexPath: sourceIndexPath,
+            destinationIndexPath: destinationIndexPath
+        )
+        interactor?.moveObjects(request: request)
     }
     
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {

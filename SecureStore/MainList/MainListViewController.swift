@@ -561,9 +561,13 @@ extension MainListViewController {
         }
         return cellIsNotLast
     }
-    
+    //Saving of reordering
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-
+        let request = MainList.MoveObjects.Request(
+            sourceIndexPath: sourceIndexPath,
+            destinationIndexPath: destinationIndexPath
+        )
+        interactor?.moveObjects(request: request)
     }
     
     //Replacing cell from wrong place

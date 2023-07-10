@@ -84,7 +84,18 @@ enum BoardDesk {
             
         }
     }
-    
+    enum MoveObjects {
+        struct Request {
+            var sourceIndexPath: IndexPath
+            var destinationIndexPath: IndexPath
+        }
+        struct Response {
+            
+        }
+        struct ViewModel {
+            
+        }
+    }
     
     
 }

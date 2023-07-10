@@ -22,6 +22,7 @@ protocol TaskListBusinessLogic {
     func editTaskName(request: TaskList.EditTaskName.Request)
     func deleteTask(request: TaskList.DeleteTask.Request)
     func changeTaskStatus(request: TaskList.ChangeTaskStatus.Request)
+    func moveObjects(request: TaskList.MoveObjects.Request)
 }
 
 protocol TaskListDataStore {
@@ -113,6 +114,13 @@ class TaskListInteractor: TaskListBusinessLogic, TaskListDataStore {
             let response = TaskList.DisplayMessage.Response(title: "Changing Failed".localized(), message: "Try Again".localized())
             presenter?.presentMessage(response: response)
         }
+    }
+    
+    func moveObjects(request: TaskList.MoveObjects.Request) {
+        let object = tasks[request.sourceIndexPath.row]
+        tasks.remove(at: request.sourceIndexPath.row)
+        tasks.insert(object, at: request.destinationIndexPath.row)
+        renumberTasks()
     }
     
 }

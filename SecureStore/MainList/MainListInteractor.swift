@@ -22,6 +22,7 @@ protocol MainListBusinessLogic {
     func createNewBoard(request: MainList.CreateNewBoard.Request)
     func editBoardName(request: MainList.EditBoardName.Request)
     func deleteBoard(request: MainList.DeleteBoard.Request)
+    func moveObjects(request: MainList.MoveObjects.Request)
     
     //func getCountOfBoards() -> Int
     func getBoard(request: MainList.GetBoard.Request) -> MainList.GetBoard.Response
@@ -171,7 +172,20 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
             presenter?.presentError(response: response)
         }
     }
-    //Used when delete board
+    func moveObjects(request: MainList.MoveObjects.Request) {
+        if request.sourceIndexPath.section == 0 {
+            let object = toDoBoards[request.sourceIndexPath.row]
+            toDoBoards.remove(at: request.sourceIndexPath.row)
+            toDoBoards.insert(object, at: request.destinationIndexPath.row)
+        } else {
+            let object = dataBoards[request.sourceIndexPath.row]
+            dataBoards.remove(at: request.sourceIndexPath.row)
+            dataBoards.insert(object, at: request.destinationIndexPath.row)
+        }
+        renumberBoards()
+    }
+    
+    //Used when delete or move board
     func renumberBoards() {
         for (index, board) in toDoBoards.enumerated() {
             board.id = Int64(index)

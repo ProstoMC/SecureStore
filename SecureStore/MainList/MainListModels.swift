@@ -137,6 +137,19 @@ enum MainList {
             var indexPath: IndexPath
         }
     }
+    enum MoveObjects {
+        struct Request {
+            var sourceIndexPath: IndexPath
+            var destinationIndexPath: IndexPath
+        }
+        struct Response {
+            
+        }
+        struct ViewModel {
+            
+        }
+    }
+    
     enum DisplayMessage {
         struct Request {
             

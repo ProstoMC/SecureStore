@@ -21,6 +21,7 @@ protocol BoardDeskBusinessLogic {
     func createTextUnit(request: BoardDesk.CreateUnit.Request)
     func createToDoUnit(request: BoardDesk.CreateUnit.Request)
     func deleteUnit(request: BoardDesk.DeleteUnit.Request)
+    func moveObjects(request: BoardDesk.MoveObjects.Request)
     
     func changeTextUnit(request: BoardDesk.ChangingTextUnit.Request) 
 }
@@ -134,13 +135,21 @@ class BoardDeskInteractor: BoardDeskBusinessLogic, BoardDeskDataStore {
         let unit = units[request.indexPatch.row]
         unit.text = request.text
         if CoreDataManager.shared.saveChanges() {
-            let response = BoardDesk.Message.Response(title: "Saving successful", message: "")
-            presenter?.presentMessage(response: response)
+//            let response = BoardDesk.Message.Response(title: "Saving successful", message: "")
+//            presenter?.presentMessage(response: response)
+            
         }
         else {
             let response = BoardDesk.Message.Response(title: "Saving Failed", message: "Try Again")
             presenter?.presentMessage(response: response)
         }
+    }
+    
+    func moveObjects(request: BoardDesk.MoveObjects.Request) {
+        let object = units[request.sourceIndexPath.row]
+        units.remove(at: request.sourceIndexPath.row)
+        units.insert(object, at: request.destinationIndexPath.row)
+        renumberUnits()
     }
     
 }

@@ -432,8 +432,13 @@ extension BoardDeskViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+    //Saving of reordering
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-
+        let request = BoardDesk.MoveObjects.Request(
+            sourceIndexPath: sourceIndexPath,
+            destinationIndexPath: destinationIndexPath
+        )
+        interactor?.moveObjects(request: request)
     }
 }
 
