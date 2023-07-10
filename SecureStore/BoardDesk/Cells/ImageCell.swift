@@ -32,6 +32,7 @@ class ImageCell: UITableViewCell {
         imgView.layer.masksToBounds = true
     }
     
+    
     override func didTransition(to state: UITableViewCell.StateMask) {
         if self.isEditing {
             
