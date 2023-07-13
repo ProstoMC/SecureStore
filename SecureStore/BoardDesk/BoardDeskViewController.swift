@@ -27,6 +27,7 @@ class BoardDeskViewController: UIViewController {
     let tableView = UITableView()
     let toolBar = UIView()
     
+    var tableViewBottomConstraint = NSLayoutConstraint() //Used for keyboard appearing
     
     // MARK: - Object lifecycle
     
@@ -118,6 +119,7 @@ extension BoardDeskViewController: BoardDeskDisplayLogic {
     func displayNewUnit() {
         
         tableView.insertRows(at: [IndexPath(row: interactor!.getCountOfUnits()-1, section: 0)], with: .automatic)
+        tableView.scrollToRow(at: IndexPath(row: interactor!.getCountOfUnits()-1, section: 0), at: .bottom, animated: true)
     }
     
     func deleteUnit(viewModel: BoardDesk.DeleteUnit.ViewModel) {
@@ -180,24 +182,37 @@ extension BoardDeskViewController {
 extension BoardDeskViewController {
     func setupUI() {
         
+        //Setup keyboards behavior
+        
+        NotificationCenter.default.addObserver(
+            self, selector:#selector(self.keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        //Setup tableView
+        
         view.backgroundColor = ColorList.mainBlue
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
+        tableViewBottomConstraint = tableView.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -UIScreen.main.bounds.height*0.06)
+        
         NSLayoutConstraint.activate([
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIScreen.main.bounds.height*0.06),
+            tableViewBottomConstraint,
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height*0.02),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor)
             
         ])
         
-     
-        //Setup tableView
-        
         tableView.tableFooterView = UIView() // Dont show unused rows
-        tableView.contentInset.bottom = UIScreen.main.bounds.height*0.4 // Making bottom space
+        tableView.contentInset.bottom = UIScreen.main.bounds.height*0.3 // Making bottom space
         tableView.contentInset.top = UIScreen.main.bounds.height*0.02  //Making top space
         
         
@@ -213,7 +228,7 @@ extension BoardDeskViewController {
         tableView.estimatedRowHeight = UITableView.automaticDimension // Flexible height of row
         tableView.rowHeight = UITableView.automaticDimension // Flexible height of row
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.keyboardDismissMode = .onDrag // Close the keyboard by scrolling
+        tableView.keyboardDismissMode = .interactiveWithAccessory // Close the keyboard by scrolling
         //tableView.contentInset.top = UIScreen.main.bounds.width*0.1 //Space above tableview
         
         let request = BoardDesk.ShowBoard.Request()
@@ -394,7 +409,6 @@ extension BoardDeskViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         guard let unit = interactor?.getUnit(indexPath: indexPath) else { return }
         if unit.type == UnitType.image {
             router?.navigateToFullScreenImage(indexPath: indexPath)
@@ -464,4 +478,31 @@ extension BoardDeskViewController: UIImagePickerControllerDelegate & UINavigatio
     }
 }
 
+// MARK:  - Keyboard Dissmiss
+extension BoardDeskViewController {
+    @objc func keyboardWillShow(notification: NSNotification) {
+        print("===EDDITING====")
+        let info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        
+        //Up tableview above keyboard
+        NSLayoutConstraint.deactivate([tableViewBottomConstraint])
+        
+        tableViewBottomConstraint = tableView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor,
+                constant: -keyboardFrame.size.height + 10)
+        NSLayoutConstraint.activate([tableViewBottomConstraint])
+    
+    }
+    @objc func keyboardWillHide(notification: NSNotification) {
+        
+        //Return normal constraint
+        NSLayoutConstraint.deactivate([tableViewBottomConstraint])
+        
+        tableViewBottomConstraint = tableView.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -UIScreen.main.bounds.height*0.06)
+        NSLayoutConstraint.activate([tableViewBottomConstraint])
+    }
+}
 
