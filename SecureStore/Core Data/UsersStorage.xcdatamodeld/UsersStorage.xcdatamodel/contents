@@ -26,6 +26,7 @@
         <attribute name="imageData" optional="YES" attributeType="Binary"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="passwordHash" attributeType="String"/>
+        <attribute name="rememberLoginOnUserDefaults" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="boards" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Board" inverseName="user" inverseEntity="Board"/>
     </entity>
 </model>

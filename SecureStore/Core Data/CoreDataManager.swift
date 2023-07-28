@@ -24,6 +24,7 @@ class CoreDataManager {
         let user = NSManagedObject(entity: entityDescription, insertInto: managedContext) as! User
         user.name = name
         user.passwordHash = passwordHash
+        user.rememberLoginOnUserDefaults = false
         
         do {
             try managedContext.save()

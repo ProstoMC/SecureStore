@@ -30,12 +30,14 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     var router: (NSObjectProtocol & MainListRoutingLogic & MainListDataPassing)?
     
     var menuMode = false
+    var rememberUserName = false
 
     var menuPanel = UIView()
     var closeTapArea = UIView() // Hide menuPanel when u tap here
     let horizontalLine = UIView()
     let userImageView = UIImageView()
     let userNameLabel = UILabel()
+    let userNameSavingSwitch = UISwitch()
     //Changing language don't used
     let languageButton: UIButton = {
         let button = UIButton()
@@ -102,6 +104,8 @@ class MainListViewController: UITableViewController, MainListDisplayLogic {
     func displayUser(viewModel: MainList.ShowUser.ViewModel) {
         title = viewModel.username
         userNameLabel.text = viewModel.username
+        userNameSavingSwitch.setOn(viewModel.rememberingUserName, animated: false)
+        
         guard let imageData = viewModel.imageData else { return }
         userImageData = imageData   //Behavior during making Menu panel
         userImageView.image = UIImage(data: imageData)
@@ -158,7 +162,7 @@ extension MainListViewController {
     @objc private func addNewTask() {
         
         chooseTypeAlert()
-        //showAlert(title: "New board".localized(), message: "Enter new board".localized(), indexPath: nil)
+        
     }
     
     @objc private func menuPanelToggle() {
@@ -176,6 +180,10 @@ extension MainListViewController {
     }
     
     @objc private func logout() {
+        //Saving userName to defaults before logging out
+        let request = MainList.ChangeRememberingUserName.Request(rememberingStatus: userNameSavingSwitch.isOn)
+        interactor?.rememberingUserNameToggle(request: request)
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -199,8 +207,14 @@ extension MainListViewController {
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
             navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+            
+            self.tableView.reloadData() //For renumbering cells
         }
-        
+    }
+    
+    @objc func rememberingUserNameToggle() {
+        let request = MainList.ChangeRememberingUserName.Request(rememberingStatus: userNameSavingSwitch.isOn)
+        interactor?.rememberingUserNameToggle(request: request)
     }
     
 }
@@ -409,7 +423,7 @@ extension MainListViewController: UITextFieldDelegate {
 
 
 
-// MARK: - TableView Section Configuration
+// MARK: - TableView Configuration
 extension MainListViewController {
     
     
@@ -425,7 +439,7 @@ extension MainListViewController {
             title = "Tasks".localized()
         }
         if section == 1 { // For Data
-            title = "Storages".localized()
+            title = "Workspaces".localized()
         }
         return title
     }
@@ -487,14 +501,14 @@ extension MainListViewController {
             if indexPath.section == 0 { // For TO DO
                 boardNameAlert(
                     title: "New task list".localized(),
-                    message: "Enter name".localized(),
+                    message: "".localized(),
                     indexPath: nil,
                     type: BoardType.todo)
             }
             if indexPath.section == 1 { // For Data
                 boardNameAlert(
-                    title: "New storage".localized(),
-                    message: "Enter name".localized(),
+                    title: "New workspace".localized(),
+                    message: "".localized(),
                     indexPath: nil,
                     type: BoardType.data)
             }
@@ -522,7 +536,7 @@ extension MainListViewController {
                 [self] (ac:UIContextualAction, view:UIView, success:(Bool) -> Void)
                 in
                 let request = MainList.GetBoard.Request(indexPath: indexPath)
-                self.boardNameAlert(title: "Edit the board".localized(), message: interactor!.getBoard(request: request).name, indexPath: indexPath, type: nil)
+                self.boardNameAlert(title: "Edit name".localized(), message: interactor!.getBoard(request: request).name, indexPath: indexPath, type: nil)
             })
             editButton.image = UIImage(systemName: "square.and.pencil")
 
@@ -670,6 +684,7 @@ extension MainListViewController {
         setupLines()
         setupUserImage()
         setupUserNameLabel()
+        setupUserNameSavingSwitch()
         setupButtons()
         setupLanguageButton()
         
@@ -763,6 +778,41 @@ extension MainListViewController {
         
     }
     
+    private func setupUserNameSavingSwitch() {
+        //switch already exist in class
+        let saveUserNameLabel = UILabel()
+        menuPanel.addSubview(userNameSavingSwitch)
+        menuPanel.addSubview(saveUserNameLabel)
+        
+        saveUserNameLabel.text = "Remember login".localized()
+        saveUserNameLabel.textColor = ColorList.textColor
+        saveUserNameLabel.lineBreakMode = .byWordWrapping
+        saveUserNameLabel.numberOfLines = 0
+        saveUserNameLabel.textAlignment = .center
+        
+        userNameSavingSwitch.onTintColor = ColorList.mainBlue
+        userNameSavingSwitch.thumbTintColor = ColorList.textColor
+        userNameSavingSwitch.addTarget(self, action: #selector(rememberingUserNameToggle), for: .allEvents)
+        
+        saveUserNameLabel.frame = CGRect(
+            x: menuPanel.frame.width*0.35,
+            y: horizontalLine.frame.minY + menuPanel.frame.height/25,
+            width: menuPanel.frame.width/1.8,
+            height: menuPanel.frame.height/15
+        )
+        
+        userNameSavingSwitch.frame = CGRect(
+            x: menuPanel.frame.width*0.05,
+            y: saveUserNameLabel.frame.midY - menuPanel.frame.height/50,
+            width: menuPanel.frame.width/5,
+            height: menuPanel.frame.height/25
+        )
+        
+
+        
+        
+    }
+    
     private func setupButtons() {
         
         let editButton = UIButton()
@@ -785,7 +835,7 @@ extension MainListViewController {
         
         editButton.frame = CGRect(
             x: menuPanel.frame.width*0.05,
-            y: horizontalLine.frame.minY + menuPanel.frame.height/50,
+            y: userNameSavingSwitch.frame.minY + menuPanel.frame.height/14,
             width: menuPanel.frame.width/1.1,
             height: menuPanel.frame.height/20
         )

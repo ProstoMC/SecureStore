@@ -47,8 +47,8 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         user = worker?.compareUsers(userName: userName ?? "", passwordHash: passwordHash)
         
         if user != nil {
-            //Saving to User defaults
-            GlobalSettings.shared.saveUserNameToDefaults(userName: userName!)
+            //Saving to User defaults -> We dont save username to userDafaults with login
+            //GlobalSettings.shared.saveUserNameToDefaults(userName: userName!)
             presenter?.moveToMainlist()
         }
         else {
@@ -99,7 +99,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
 
         user = CoreDataManager.shared.saveUser(name: userName!, passwordHash: passwordHash)
         if user == nil {
-            errorMessage = "Making user error"
+            errorMessage = "Making user error".lowercased()
             let alert = Login.ShowAlert.Response(title: "", errorMessage: errorMessage ?? "")
             presenter?.showAlert(response: alert)
             return
@@ -122,7 +122,7 @@ class LoginInteractor: LoginBusinessLogic, LoginDataStore {
 //        presenter?.getLanguage(response: response)
 //    }
     func getDefaultUserName() {
-        let userName = GlobalSettings.shared.fetchUserNameFromeDefaults()
+        let userName = GlobalSettings.shared.fetchUserNameFromDefaults()
         let response = Login.Texts.Response(defaultUserName: userName)
         presenter?.presentUserName(response: response)
     }

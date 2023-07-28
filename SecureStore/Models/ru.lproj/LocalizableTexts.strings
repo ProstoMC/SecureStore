@@ -22,11 +22,9 @@
 "Edit" = "Изм.";
 "Done" = "Готово";
 "Tasks" = "Задачи";
-"Storages" = "Хранилища";
+"Workspaces" = "Пространства";
 "New task list" = "Новый список задач";
-"New storage" = "Новое хранилище";
-"New board" = "Новая доска";
-"Enter new board" = "Ввод новой доски";
+"New workspace" = "Новое пространство";
 "Save" = "Сохранить";
 "Epmty field" = "Пустое поле";
 "Edditing " = "Редактирование ";
@@ -39,7 +37,8 @@
 "Choose source" = "Источник";
 "Camera" = "Камера";
 "Photo gallery" = "Галерея";
-"Edit the board" = "Редактирование доски";
+"Edit name" = "Редактировать имя";
+"Remember login" = "Запоминать логин";
 "Log out" = "Выйти";
 "Creating Failed" = "Ошибка при попытке создания";
 "Try Again" = "Попробуйте снова";
@@ -56,4 +55,6 @@
 "Image from gallery" = "Изображение из галереи";
 //FullScreenVC
 "Back" = "Назад";
+//TaskList
+"New task" = "Новая задача";
 

@@ -83,7 +83,7 @@ extension TaskListViewController {
     @objc func addNewTask() {
         taskNameAlert(
             title: "New task".localized(),
-            message: "Enter new task".localized(),
+            message: "",
             indexPath: nil
         )
     }
@@ -97,6 +97,8 @@ extension TaskListViewController {
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
             navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+            
+            self.tableView.reloadData() //For renumbering cells
         }
     }
     

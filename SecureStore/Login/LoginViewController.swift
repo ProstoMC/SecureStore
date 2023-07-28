@@ -86,11 +86,12 @@ class LoginViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        interactor?.getDefaultUserName()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        interactor?.getDefaultUserName()
     }
 }
 

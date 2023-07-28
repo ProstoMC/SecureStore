@@ -11,29 +11,22 @@ class GlobalSettings  {
     static let shared = GlobalSettings()
     
     var language = "EN"
-    
+    var rememberUserName = true
 }
-
-extension GlobalSettings {
-    func toggleLanguage() {
-        if language == "EN" {
-            language = "RU"
-        } else {
-            language = "EN"
-        }
-    }
-}
-
-// MARK:  - User Defaults
 
 extension GlobalSettings {
     func saveUserNameToDefaults(userName: String){
         let userDefauls = UserDefaults.standard
         userDefauls.setValue(userName, forKey: "username")
     }
-    func fetchUserNameFromeDefaults() -> String? {
+    func fetchUserNameFromDefaults() -> String? {
         let userDefauls = UserDefaults.standard
         let userName = userDefauls.string(forKey: "username")
         return userName
     }
+    func removeUserNameFromDefaults(){
+        let userDefauls = UserDefaults.standard
+        userDefauls.removeObject(forKey: "username")
+    }
 }
+

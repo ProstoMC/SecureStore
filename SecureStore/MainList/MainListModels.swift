@@ -32,6 +32,7 @@ enum MainList {
         struct ViewModel {
             var username: String
             var imageData: Data?
+            var rememberingUserName: Bool
         }
     }
     enum ChangeUserName {
@@ -63,6 +64,17 @@ enum MainList {
     enum ChangeUserImage {
         struct Request {
             var imageData: Data
+        }
+        struct Response {
+            
+        }
+        struct ViewModel {
+            
+        }
+    }
+    enum ChangeRememberingUserName {
+        struct Request {
+            var rememberingStatus: Bool
         }
         struct Response {
             
@@ -109,6 +121,7 @@ enum MainList {
         struct ViewModel {
             var name: String
             var type: String
+            
         }
     }
     

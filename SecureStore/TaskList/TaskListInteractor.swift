@@ -121,6 +121,10 @@ class TaskListInteractor: TaskListBusinessLogic, TaskListDataStore {
         tasks.remove(at: request.sourceIndexPath.row)
         tasks.insert(object, at: request.destinationIndexPath.row)
         renumberTasks()
+//        if !CoreDataManager.shared.saveChanges() {
+//            let response = TaskList.DisplayMessage.Response(title: "Changing Failed".localized(), message: "Try Again".localized())
+//            presenter?.presentMessage(response: response)
+//        }
     }
     
 }
@@ -132,7 +136,6 @@ extension TaskListInteractor {
         for (index, task) in tasks.enumerated() {
             task.id = Int64(index)
         }
-
     }
     
     //Used when task status was changed

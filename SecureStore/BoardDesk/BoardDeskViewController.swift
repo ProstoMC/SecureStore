@@ -102,6 +102,8 @@ extension BoardDeskViewController {
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(), style: .plain, target: self, action: #selector(editModeToggle))
             navigationItem.rightBarButtonItem?.tintColor = ColorList.textColor
+            
+            self.tableView.reloadData() //For renumbering cells
         }
     }
     

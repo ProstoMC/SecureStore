@@ -58,8 +58,8 @@ class TaskTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = ColorList.mainBlue
         imageView?.tintColor = ColorList.textColor
-        
         imageView?.image = UIImage(systemName: "plus")
+        textLabel?.text = ""
     }
 
 }

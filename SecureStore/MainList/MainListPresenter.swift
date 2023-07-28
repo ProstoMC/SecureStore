@@ -33,7 +33,11 @@ class MainListPresenter: MainListPresentationLogic {
     
     func presentUser(response: MainList.ShowUser.Response) {
         
-        let viewModel = MainList.ShowUser.ViewModel(username: response.user?.name ?? "Error", imageData: response.user?.imageData)
+        let viewModel = MainList.ShowUser.ViewModel(
+            username: response.user?.name ?? "Error",
+            imageData: response.user?.imageData,
+            rememberingUserName: response.user?.rememberLoginOnUserDefaults ?? false)
+        
         viewController?.displayUser(viewModel: viewModel)
     }
     

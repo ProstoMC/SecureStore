@@ -17,6 +17,7 @@ protocol MainListBusinessLogic {
     func changeUserName(request: MainList.ChangeUserName.Request)
     func changePassword(request: MainList.ChangePassword.Request)
     func changeUserImage(request: MainList.ChangeUserImage.Request)
+    func rememberingUserNameToggle(request: MainList.ChangeRememberingUserName.Request)
     
     func showBoards(request: MainList.ShowBoards.Request)
     func createNewBoard(request: MainList.CreateNewBoard.Request)
@@ -85,7 +86,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
         return response
     }
   
-    // MARK:  ACTIONS
+    // MARK:  - ACTIONS
     
     func showUser (request: MainList.ShowUser.Request) {
         let response = MainList.ShowUser.Response(user: user)
@@ -109,12 +110,30 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
         presenter?.presentBoards(response: response)
     }
     
+    // MARK:  - User
+    
+    func rememberingUserNameToggle(request: MainList.ChangeRememberingUserName.Request) {
+        user.rememberLoginOnUserDefaults = request.rememberingStatus
+        print (user.rememberLoginOnUserDefaults)
+        if !CoreDataManager.shared.saveChanges() {
+            let response = MainList.DisplayMessage.Response(title: "Changing Failed".localized(), message: "Try Again".localized())
+            presenter?.presentError(response: response)
+        }
+        
+        if user.rememberLoginOnUserDefaults {
+            GlobalSettings.shared.saveUserNameToDefaults(userName: user.name!)
+        } else {
+            GlobalSettings.shared.removeUserNameFromDefaults()
+            
+        }
+    }
     
     
+    // MARK:  - Boards
     func createNewBoard(request: MainList.CreateNewBoard.Request) {
         if request.type == BoardType.data {
             guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name, type: request.type, id: dataBoards.count) else {
-                let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
+                let response = MainList.DisplayMessage.Response(title: "Creating Failed".localized(), message: "Try Again".localized())
                 presenter?.presentError(response: response)
                 return
             }
@@ -124,7 +143,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
         }
         if request.type == BoardType.todo {
             guard let board = CoreDataManager.shared.createBoard(user: user, boardName: request.name, type: request.type, id: toDoBoards.count) else {
-                let response = MainList.DisplayMessage.Response(title: "Creating Failed", message: "Try Again")
+                let response = MainList.DisplayMessage.Response(title: "Creating Failed".localized(), message: "Try Again".localized())
                 presenter?.presentError(response: response)
                 return
             }
@@ -150,7 +169,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
             presenter?.presentChangedBoard(response: response)
         }
         else {
-            let response = MainList.DisplayMessage.Response(title: "Changing Failed", message: "Try Again")
+            let response = MainList.DisplayMessage.Response(title: "Changing Failed".localized(), message: "Try Again".localized())
             presenter?.presentError(response: response)
         }
     }
@@ -168,7 +187,7 @@ class MainListInteractor: MainListBusinessLogic, MainListDataStore {
             presenter?.deleteBoard(response: response)
         }
         else {
-            let response = MainList.DisplayMessage.Response(title: "Error", message: "Deleting Failed")
+            let response = MainList.DisplayMessage.Response(title: "Error".localized(), message: "Deleting Failed".localized())
             presenter?.presentError(response: response)
         }
     }
