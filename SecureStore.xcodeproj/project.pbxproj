@@ -33,12 +33,7 @@
 		A59091B729B2624E00EC628D /* MainListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B129B2624E00EC628D /* MainListModels.swift */; };
 		A59091B829B2624E00EC628D /* MainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B229B2624E00EC628D /* MainListViewController.swift */; };
 		A59091B929B2624E00EC628D /* MainListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B329B2624E00EC628D /* MainListInteractor.swift */; };
-		A5AD6E5B2A9B706E00A6468B /* WorkSpace Screen 1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E552A9B706D00A6468B /* WorkSpace Screen 1.png */; };
-		A5AD6E5C2A9B706E00A6468B /* Tasks Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E562A9B706D00A6468B /* Tasks Screen.png */; };
-		A5AD6E5D2A9B706E00A6468B /* MainList Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E572A9B706D00A6468B /* MainList Screen.png */; };
-		A5AD6E5E2A9B706E00A6468B /* Worspace Screen 2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E582A9B706D00A6468B /* Worspace Screen 2.png */; };
-		A5AD6E5F2A9B706E00A6468B /* Menu Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E592A9B706D00A6468B /* Menu Screen.png */; };
-		A5AD6E602A9B706E00A6468B /* Login Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E5A2A9B706E00A6468B /* Login Screen.png */; };
+		A5AD6E622A9B71D400A6468B /* Screenshots in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E612A9B71D400A6468B /* Screenshots */; };
 		A5BE8FE62A2B07130022EF66 /* TaskListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8FE02A2B07130022EF66 /* TaskListPresenter.swift */; };
 		A5BE8FE72A2B07130022EF66 /* TaskListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8FE12A2B07130022EF66 /* TaskListWorker.swift */; };
 		A5BE8FE82A2B07130022EF66 /* TaskListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8FE22A2B07130022EF66 /* TaskListRouter.swift */; };
@@ -106,12 +101,7 @@
 		A59091B129B2624E00EC628D /* MainListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListModels.swift; sourceTree = "<group>"; };
 		A59091B229B2624E00EC628D /* MainListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListViewController.swift; sourceTree = "<group>"; };
 		A59091B329B2624E00EC628D /* MainListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListInteractor.swift; sourceTree = "<group>"; };
-		A5AD6E552A9B706D00A6468B /* WorkSpace Screen 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WorkSpace Screen 1.png"; path = "../../../../../WorkSpace Screen 1.png"; sourceTree = "<group>"; };
-		A5AD6E562A9B706D00A6468B /* Tasks Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Tasks Screen.png"; path = "../../../../../Tasks Screen.png"; sourceTree = "<group>"; };
-		A5AD6E572A9B706D00A6468B /* MainList Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MainList Screen.png"; path = "../../../../../MainList Screen.png"; sourceTree = "<group>"; };
-		A5AD6E582A9B706D00A6468B /* Worspace Screen 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Worspace Screen 2.png"; path = "../../../../../Worspace Screen 2.png"; sourceTree = "<group>"; };
-		A5AD6E592A9B706D00A6468B /* Menu Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Menu Screen.png"; path = "../../../../../Menu Screen.png"; sourceTree = "<group>"; };
-		A5AD6E5A2A9B706E00A6468B /* Login Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Login Screen.png"; path = "../../../../../Login Screen.png"; sourceTree = "<group>"; };
+		A5AD6E612A9B71D400A6468B /* Screenshots */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Screenshots; path = SecureStore/Screenshots; sourceTree = SOURCE_ROOT; };
 		A5BE8FE02A2B07130022EF66 /* TaskListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenter.swift; sourceTree = "<group>"; };
 		A5BE8FE12A2B07130022EF66 /* TaskListWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorker.swift; sourceTree = "<group>"; };
 		A5BE8FE22A2B07130022EF66 /* TaskListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListRouter.swift; sourceTree = "<group>"; };
@@ -173,12 +163,6 @@
 		A514248A2A0CFC230000794E /* Screenshots */ = {
 			isa = PBXGroup;
 			children = (
-				A5AD6E5A2A9B706E00A6468B /* Login Screen.png */,
-				A5AD6E572A9B706D00A6468B /* MainList Screen.png */,
-				A5AD6E592A9B706D00A6468B /* Menu Screen.png */,
-				A5AD6E562A9B706D00A6468B /* Tasks Screen.png */,
-				A5AD6E552A9B706D00A6468B /* WorkSpace Screen 1.png */,
-				A5AD6E582A9B706D00A6468B /* Worspace Screen 2.png */,
 			);
 			path = Screenshots;
 			sourceTree = "<group>";
@@ -237,6 +221,7 @@
 				A5BE8FEC2A2B07210022EF66 /* TaskList */,
 				A503F4BE29F6EC50000B4045 /* BoardDesk */,
 				A55D557D299D4A62008E19B3 /* Models */,
+				A5AD6E612A9B71D400A6468B /* Screenshots */,
 				A57E464229A10AAD004EFA16 /* Core Data */,
 				A5605138299A83BE00A61213 /* LaunchScreen.storyboard */,
 				A5804E122A0283CA004C3B45 /* Assets.xcassets */,
@@ -415,15 +400,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5AD6E622A9B71D400A6468B /* Screenshots in Resources */,
 				A5804E132A0283CB004C3B45 /* Assets.xcassets in Resources */,
-				A5AD6E5D2A9B706E00A6468B /* MainList Screen.png in Resources */,
-				A5AD6E5B2A9B706E00A6468B /* WorkSpace Screen 1.png in Resources */,
 				A5EE4E0E2A16322700C0F818 /* LocalizableTexts.strings in Resources */,
 				A560513A299A83BE00A61213 /* LaunchScreen.storyboard in Resources */,
-				A5AD6E5C2A9B706E00A6468B /* Tasks Screen.png in Resources */,
-				A5AD6E5E2A9B706E00A6468B /* Worspace Screen 2.png in Resources */,
-				A5AD6E5F2A9B706E00A6468B /* Menu Screen.png in Resources */,
-				A5AD6E602A9B706E00A6468B /* Login Screen.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
