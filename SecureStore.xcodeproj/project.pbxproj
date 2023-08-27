@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A5051E2329FD51D3005DA4AC /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5051E2229FD51D3005DA4AC /* FullScreenImageViewController.swift */; };
-		A51424AE2A0CFF470000794E /* MainList Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424AA2A0CFF470000794E /* MainList Screen.png */; };
-		A51424AF2A0CFF470000794E /* Board Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424AB2A0CFF470000794E /* Board Screen.png */; };
-		A51424B02A0CFF470000794E /* Login Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424AC2A0CFF470000794E /* Login Screen.png */; };
-		A51424B12A0CFF470000794E /* Menu Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A51424AD2A0CFF470000794E /* Menu Screen.png */; };
 		A5226541299D7B06005798B1 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653B299D7B06005798B1 /* LoginPresenter.swift */; };
 		A5226542299D7B06005798B1 /* LoginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653C299D7B06005798B1 /* LoginWorker.swift */; };
 		A5226543299D7B06005798B1 /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A522653D299D7B06005798B1 /* LoginRouter.swift */; };
@@ -37,6 +33,12 @@
 		A59091B729B2624E00EC628D /* MainListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B129B2624E00EC628D /* MainListModels.swift */; };
 		A59091B829B2624E00EC628D /* MainListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B229B2624E00EC628D /* MainListViewController.swift */; };
 		A59091B929B2624E00EC628D /* MainListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59091B329B2624E00EC628D /* MainListInteractor.swift */; };
+		A5AD6E5B2A9B706E00A6468B /* WorkSpace Screen 1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E552A9B706D00A6468B /* WorkSpace Screen 1.png */; };
+		A5AD6E5C2A9B706E00A6468B /* Tasks Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E562A9B706D00A6468B /* Tasks Screen.png */; };
+		A5AD6E5D2A9B706E00A6468B /* MainList Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E572A9B706D00A6468B /* MainList Screen.png */; };
+		A5AD6E5E2A9B706E00A6468B /* Worspace Screen 2.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E582A9B706D00A6468B /* Worspace Screen 2.png */; };
+		A5AD6E5F2A9B706E00A6468B /* Menu Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E592A9B706D00A6468B /* Menu Screen.png */; };
+		A5AD6E602A9B706E00A6468B /* Login Screen.png in Resources */ = {isa = PBXBuildFile; fileRef = A5AD6E5A2A9B706E00A6468B /* Login Screen.png */; };
 		A5BE8FE62A2B07130022EF66 /* TaskListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8FE02A2B07130022EF66 /* TaskListPresenter.swift */; };
 		A5BE8FE72A2B07130022EF66 /* TaskListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8FE12A2B07130022EF66 /* TaskListWorker.swift */; };
 		A5BE8FE82A2B07130022EF66 /* TaskListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8FE22A2B07130022EF66 /* TaskListRouter.swift */; };
@@ -73,10 +75,6 @@
 
 /* Begin PBXFileReference section */
 		A5051E2229FD51D3005DA4AC /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
-		A51424AA2A0CFF470000794E /* MainList Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MainList Screen.png"; sourceTree = "<group>"; };
-		A51424AB2A0CFF470000794E /* Board Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Board Screen.png"; sourceTree = "<group>"; };
-		A51424AC2A0CFF470000794E /* Login Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Login Screen.png"; sourceTree = "<group>"; };
-		A51424AD2A0CFF470000794E /* Menu Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Menu Screen.png"; sourceTree = "<group>"; };
 		A522653B299D7B06005798B1 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
 		A522653C299D7B06005798B1 /* LoginWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWorker.swift; sourceTree = "<group>"; };
 		A522653D299D7B06005798B1 /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
@@ -108,6 +106,12 @@
 		A59091B129B2624E00EC628D /* MainListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListModels.swift; sourceTree = "<group>"; };
 		A59091B229B2624E00EC628D /* MainListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListViewController.swift; sourceTree = "<group>"; };
 		A59091B329B2624E00EC628D /* MainListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainListInteractor.swift; sourceTree = "<group>"; };
+		A5AD6E552A9B706D00A6468B /* WorkSpace Screen 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WorkSpace Screen 1.png"; path = "../../../../../WorkSpace Screen 1.png"; sourceTree = "<group>"; };
+		A5AD6E562A9B706D00A6468B /* Tasks Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Tasks Screen.png"; path = "../../../../../Tasks Screen.png"; sourceTree = "<group>"; };
+		A5AD6E572A9B706D00A6468B /* MainList Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "MainList Screen.png"; path = "../../../../../MainList Screen.png"; sourceTree = "<group>"; };
+		A5AD6E582A9B706D00A6468B /* Worspace Screen 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Worspace Screen 2.png"; path = "../../../../../Worspace Screen 2.png"; sourceTree = "<group>"; };
+		A5AD6E592A9B706D00A6468B /* Menu Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Menu Screen.png"; path = "../../../../../Menu Screen.png"; sourceTree = "<group>"; };
+		A5AD6E5A2A9B706E00A6468B /* Login Screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Login Screen.png"; path = "../../../../../Login Screen.png"; sourceTree = "<group>"; };
 		A5BE8FE02A2B07130022EF66 /* TaskListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListPresenter.swift; sourceTree = "<group>"; };
 		A5BE8FE12A2B07130022EF66 /* TaskListWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListWorker.swift; sourceTree = "<group>"; };
 		A5BE8FE22A2B07130022EF66 /* TaskListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListRouter.swift; sourceTree = "<group>"; };
@@ -169,10 +173,12 @@
 		A514248A2A0CFC230000794E /* Screenshots */ = {
 			isa = PBXGroup;
 			children = (
-				A51424AB2A0CFF470000794E /* Board Screen.png */,
-				A51424AC2A0CFF470000794E /* Login Screen.png */,
-				A51424AA2A0CFF470000794E /* MainList Screen.png */,
-				A51424AD2A0CFF470000794E /* Menu Screen.png */,
+				A5AD6E5A2A9B706E00A6468B /* Login Screen.png */,
+				A5AD6E572A9B706D00A6468B /* MainList Screen.png */,
+				A5AD6E592A9B706D00A6468B /* Menu Screen.png */,
+				A5AD6E562A9B706D00A6468B /* Tasks Screen.png */,
+				A5AD6E552A9B706D00A6468B /* WorkSpace Screen 1.png */,
+				A5AD6E582A9B706D00A6468B /* Worspace Screen 2.png */,
 			);
 			path = Screenshots;
 			sourceTree = "<group>";
@@ -410,12 +416,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5804E132A0283CB004C3B45 /* Assets.xcassets in Resources */,
+				A5AD6E5D2A9B706E00A6468B /* MainList Screen.png in Resources */,
+				A5AD6E5B2A9B706E00A6468B /* WorkSpace Screen 1.png in Resources */,
 				A5EE4E0E2A16322700C0F818 /* LocalizableTexts.strings in Resources */,
-				A51424AE2A0CFF470000794E /* MainList Screen.png in Resources */,
 				A560513A299A83BE00A61213 /* LaunchScreen.storyboard in Resources */,
-				A51424B02A0CFF470000794E /* Login Screen.png in Resources */,
-				A51424AF2A0CFF470000794E /* Board Screen.png in Resources */,
-				A51424B12A0CFF470000794E /* Menu Screen.png in Resources */,
+				A5AD6E5C2A9B706E00A6468B /* Tasks Screen.png in Resources */,
+				A5AD6E5E2A9B706E00A6468B /* Worspace Screen 2.png in Resources */,
+				A5AD6E5F2A9B706E00A6468B /* Menu Screen.png in Resources */,
+				A5AD6E602A9B706E00A6468B /* Login Screen.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
